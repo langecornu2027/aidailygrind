@@ -15,7 +15,7 @@ import feedparser
 
 from . import sources
 
-USER_AGENT = "CafeIA/1.0 (daily AI recap)"
+USER_AGENT = "AIDailyGrind/1.0 (daily AI recap)"
 SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 
 # Words that tell us a Hacker News story is about AI

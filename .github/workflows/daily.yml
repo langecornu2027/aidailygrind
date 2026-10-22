@@ -1,4 +1,4 @@
-name: Daily Café IA
+name: The AI Daily Grind
 
 on:
   schedule:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: cafe-ia
+  group: aidailygrind
   cancel-in-progress: false
 
 jobs:
@@ -33,14 +33,14 @@ jobs:
       - name: Write today's edition
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python -m cafe_ia
+        run: python -m daily_grind
 
       - name: Save the edition in the repo
         run: |
-          git config user.name "Café IA bot"
+          git config user.name "AI Daily Grind bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/editions
-          git diff --cached --quiet || git commit -m "☕ Café IA for $(TZ=America/Toronto date +%F)"
+          git diff --cached --quiet || git commit -m "☕ AI Daily Grind for $(TZ=America/Toronto date +%F)"
           git push
 
       - uses: actions/configure-pages@v5

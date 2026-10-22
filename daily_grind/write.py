@@ -1,4 +1,4 @@
-"""Ask Claude to pick the most important stories and write today's Café IA."""
+"""Ask Claude to pick the most important stories and write today's AI Daily Grind."""
 
 import json
 from pathlib import Path
@@ -8,8 +8,8 @@ import anthropic
 MODEL = "claude-opus-5-5"
 ROOT = Path(__file__).resolve().parent.parent
 
-SYSTEM = """You are the writer of Café IA, a daily recap of what is happening in AI.
-The reader opens Café IA with their morning coffee. In five minutes, they want to know
+SYSTEM = """You are the writer of The AI Daily Grind, a daily recap of what is happening in AI.
+The reader opens The AI Daily Grind with their morning coffee. In five minutes, they want to know
 what really matters in AI today, explained in simple English.
 
 You will get a list of fresh stories from news sites, AI company blogs, community sites
@@ -100,7 +100,7 @@ def write_edition(items: list[dict], date_label: str) -> dict:
     prompt = (
         f"Today is {date_label}. Here are the {len(stories)} fresh stories, as JSON:\n\n"
         f"{json.dumps(stories, ensure_ascii=False, indent=1)}\n\n"
-        "Write today's Café IA."
+        "Write today's AI Daily Grind."
     )
 
     client = anthropic.Anthropic()

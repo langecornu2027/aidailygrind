@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 ROOT = Path(__file__).resolve().parent.parent
 EDITIONS = ROOT / "data" / "editions"
 SITE = ROOT / "site"
+DOMAIN = "aidailygrind.com"
 
 TAG_ICONS = {
     "Launch": "🚀", "Tool": "🛠️", "Research": "🔬", "Business": "💼",
@@ -56,4 +57,5 @@ def build_site() -> Path:
     archive = env.get_template("archive.html").render(editions=editions)
     (SITE / "archive.html").write_text(archive, encoding="utf-8")
     (SITE / ".nojekyll").touch()
+    (SITE / "CNAME").write_text(DOMAIN + "\n")
     return SITE

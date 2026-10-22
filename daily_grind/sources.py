@@ -1,4 +1,4 @@
-"""The list of places Café IA reads every morning.
+"""The list of places The AI Daily Grind reads every morning.
 
 To add a source, copy a line and change the name and URL.
 To remove one, delete its line (or put a # in front).

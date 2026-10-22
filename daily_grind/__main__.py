@@ -1,9 +1,9 @@
-"""Make today's Café IA.
+"""Make today's AI Daily Grind.
 
-    python -m cafe_ia              fetch news, ask Claude, save, build the site
-    python -m cafe_ia --fetch-only show what the sources found (no Claude call)
-    python -m cafe_ia --build-only rebuild the site from saved editions
-    python -m cafe_ia --force      write today's edition again even if it exists
+    python -m daily_grind              fetch news, ask Claude, save, build the site
+    python -m daily_grind --fetch-only show what the sources found (no Claude call)
+    python -m daily_grind --build-only rebuild the site from saved editions
+    python -m daily_grind --force      write today's edition again even if it exists
 """
 
 import argparse
@@ -17,7 +17,7 @@ TIMEZONE = ZoneInfo("America/Toronto")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Make today's Café IA.")
+    parser = argparse.ArgumentParser(description="Make today's AI Daily Grind.")
     parser.add_argument("--fetch-only", action="store_true")
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--force", action="store_true")
