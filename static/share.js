@@ -61,10 +61,23 @@
     n.textContent = text;
   }
 
+  function track(method, box) {
+    if (window.grindTrack) window.grindTrack("share", {
+      method: method,
+      content_type: document.body.dataset.pageType === "token" || box.closest(".token") ? "token" : "edition",
+      item_id: box.dataset.url,
+    });
+  }
+
   document.querySelectorAll(".share").forEach(function (box) {
     var url = box.dataset.url;
+    box.querySelectorAll("a:not(.post-linkedin)").forEach(function (a) {
+      a.addEventListener("click", function () {
+        track(a.hasAttribute("download") ? "image" : a.textContent.trim().toLowerCase(), box);
+      });
+    });
     var post = box.dataset.post || box.dataset.text;
-    var fullPost = post + "\n\n" + url;
+    var fullPost = post + "\n\n" + (box.dataset.shareUrl || url);
     var card = box.dataset.card;
 
     // Get the image ready before the click (phones need it at once for the share sheet)
@@ -76,6 +89,7 @@
     var li = box.querySelector(".post-linkedin");
     if (li) {
       li.addEventListener("click", function (event) {
+        track("linkedin", box);
         var file = cards[card];
         if (isPhone && file instanceof File && navigator.canShare && navigator.canShare({ files: [file] })) {
           event.preventDefault();
@@ -97,6 +111,7 @@
 
     var copyPost = box.querySelector(".copy-post");
     if (copyPost) copyPost.addEventListener("click", function () {
+      track("copy_post", box);
       copy(fullPost).then(function () { flash(copyPost, "Copied ✓", "Copy post"); });
     });
 
@@ -104,6 +119,7 @@
     if (copyLink) {
       if (navigator.share) copyLink.textContent = "More…";
       copyLink.addEventListener("click", function () {
+        track(navigator.share ? "native_share" : "copy_link", box);
         if (navigator.share) {
           navigator.share({ title: box.dataset.text, text: box.dataset.text, url: url }).catch(function () {});
         } else {

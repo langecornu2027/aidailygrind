@@ -45,7 +45,10 @@
     stopBtn.hidden = !started;
   }
 
+  function track(name, params) { if (window.grindTrack) window.grindTrack(name, params); }
+
   function finish() {
+    track("listen_complete", { voice: mode });
     playing = false;
     started = false;
     mark(null);
@@ -196,6 +199,7 @@
   function browserStop() { gen += 1; synth.cancel(); index = 0; }
 
   function useBrowserVoice(message) {
+    track("listen_fallback", { voice: "browser" });
     aiStop();
     mode = "browser";
     if (!hasSpeech) { playing = false; started = false; updateButtons(); setProgress(0, "Audio is not available on this browser."); return; }
@@ -216,6 +220,7 @@
       setProgress(mode === "ai" ? aiProgress() : index / (chunks.length || 1));
       return;
     }
+    if (!started) track("listen_start", { voice: mode, scope: aiOnly ? "token" : "edition" });
     playing = true;
     started = true;
     updateButtons();

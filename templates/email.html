@@ -13,13 +13,13 @@
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;font-family:Georgia,'Times New Roman',serif;color:#2b1d14;">
 
   <tr><td align="center" style="padding:0 0 16px;">
-    <a href="{{ site_url }}" style="color:#2b1d14;text-decoration:none;font-size:26px;font-weight:bold;">☕ The AI Daily Grind</a>
+    <a href="{{ site_url }}/?utm_source=newsletter&utm_medium=email&utm_campaign=daily" style="color:#2b1d14;text-decoration:none;font-size:26px;font-weight:bold;">☕ The AI Daily Grind</a>
     <div style="font-family:Arial,sans-serif;font-size:13px;color:#7a6656;padding-top:4px;">{{ edition.date_label }}</div>
   </td></tr>
 
   {% if edition.cover %}
   <tr><td style="padding:0 0 16px;">
-    <a href="{{ site_url }}/{{ edition.date }}.html"><img src="{{ site_url }}/{{ edition.cover }}" width="600" alt="" style="width:100%;max-width:600px;height:auto;border-radius:12px;display:block;border:0;"></a>
+    <a href="{{ site_url }}/{{ edition.date }}.html?utm_source=newsletter&utm_medium=email&utm_campaign=daily"><img src="{{ site_url }}/{{ edition.cover }}" width="600" alt="" style="width:100%;max-width:600px;height:auto;border-radius:12px;display:block;border:0;"></a>
   </td></tr>
   {% endif %}
 
@@ -35,10 +35,10 @@
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #eadccd;border-radius:12px;">
     <tr><td style="padding:18px 20px;">
       <div style="font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:#b5652b;text-transform:uppercase;letter-spacing:1px;">Morning Token #{{ loop.index }} · {{ token.tag }}</div>
-      <h2 style="font-size:20px;line-height:1.3;margin:6px 0 10px;"><a href="{{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html" style="color:#2b1d14;text-decoration:none;">{{ token.title }}</a></h2>
+      <h2 style="font-size:20px;line-height:1.3;margin:6px 0 10px;"><a href="{{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html?utm_source=newsletter&utm_medium=email&utm_campaign=daily" style="color:#2b1d14;text-decoration:none;">{{ token.title }}</a></h2>
       <p style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;margin:0 0 10px;">{{ token.summary.split("\n\n")[0] }}</p>
       <p style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;margin:0 0 10px;border-left:3px solid #b5652b;padding-left:10px;"><strong>Why it matters:</strong> {{ token.why_it_matters }}</p>
-      <a href="{{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html" style="font-family:Arial,sans-serif;font-size:14px;color:#b5652b;font-weight:bold;text-decoration:none;">Read more →</a>
+      <a href="{{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html?utm_source=newsletter&utm_medium=email&utm_campaign=daily" style="font-family:Arial,sans-serif;font-size:14px;color:#b5652b;font-weight:bold;text-decoration:none;">Read more →</a>
     </td></tr>
     </table>
   </td></tr>

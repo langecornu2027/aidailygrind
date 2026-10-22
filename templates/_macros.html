@@ -1,10 +1,12 @@
 {% macro share_bar(url, text, label="Share", card=None, post=None) %}
 {% set post = post or text %}
-<div class="share" data-url="{{ url }}" data-text="{{ text }}" data-post="{{ post }}"{% if card %} data-card="{{ card }}"{% endif %}>
+{# Links in shared posts carry the network name, so Analytics shows where readers come from #}
+{% set tag = "utm_medium=social&utm_campaign=share&utm_source=" %}
+<div class="share" data-url="{{ url }}" data-share-url="{{ url }}?{{ tag }}linkedin" data-text="{{ text }}" data-post="{{ post }}"{% if card %} data-card="{{ card }}"{% endif %}>
   <span class="share-label">{{ label }}</span>
-  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text={{ (post ~ "\n\n" ~ url) | urlencode }}" target="_blank" rel="noopener">Post on LinkedIn</a>
-  <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ url | urlencode }}" target="_blank" rel="noopener">X</a>
-  <a href="https://www.facebook.com/sharer/sharer.php?u={{ url | urlencode }}" target="_blank" rel="noopener">Facebook</a>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text={{ (post ~ "\n\n" ~ url ~ "?" ~ tag ~ "linkedin") | urlencode }}" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ (url ~ "?" ~ tag ~ "x") | urlencode }}" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{ (url ~ "?" ~ tag ~ "facebook") | urlencode }}" target="_blank" rel="noopener">Facebook</a>
   <button type="button" class="copy-post">Copy post</button>
   {% if card %}<a href="{{ card }}" download="ai-daily-grind.jpg">Image</a>{% endif %}
   <button type="button" class="copy-link">Copy link</button>

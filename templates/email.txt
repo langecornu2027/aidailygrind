@@ -4,7 +4,7 @@
 
 {{ edition.intro }}
 
-Read it online: {{ site_url }}/{{ edition.date }}.html
+Read it online: {{ site_url }}/{{ edition.date }}.html?utm_source=newsletter&utm_medium=email&utm_campaign=daily
 {% for token in edition.tokens %}
 ------------------------------------------------------------
 MORNING TOKEN #{{ loop.index }} · {{ token.tag }}
@@ -14,7 +14,7 @@ MORNING TOKEN #{{ loop.index }} · {{ token.tag }}
 
 Why it matters: {{ token.why_it_matters }}
 
-Read more: {{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html
+Read more: {{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html?utm_source=newsletter&utm_medium=email&utm_campaign=daily
 {% endfor %}
 ------------------------------------------------------------
 🍩 LE DERNIER MOT

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "_macros.html" import token_card, listen_player %}
 {% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
+{% block body_attrs %}data-page-type="token" data-edition="{{ edition.date }}" data-token="{{ n }}" data-tag="{{ token.tag }}"{% endblock %}
 {% block title %}{{ token.title }} · The AI Daily Grind{% endblock %}
 {% block description %}{{ token.share_text or token.why_it_matters }}{% endblock %}
 {% block social %}
