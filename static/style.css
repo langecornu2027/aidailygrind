@@ -569,3 +569,13 @@ h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 
 .project-name { font-family: var(--display); font-size: 21px; font-weight: 700; }
 .project-text { color: var(--text-soft); font-size: 15px; line-height: 1.55; }
 .project-host { font: 13px var(--mono); color: var(--amber); margin-top: 4px; }
+
+/* byline, topic links */
+.meta-row time { color: inherit; }
+.meta-row .byline { color: var(--text-soft); }
+a.tag { text-decoration: none; }
+a.tag:hover { filter: brightness(1.2); }
+.topic-list { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font: 12px var(--mono); color: var(--muted); }
+.topic-list .tag { font: 12px var(--mono); }
+.topic-list .is-current { box-shadow: 0 0 0 1px currentColor; }
+.m-why { display: block; color: var(--muted); font-size: 13px; font-weight: 400; margin-top: 3px; line-height: 1.45; }

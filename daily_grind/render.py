@@ -23,6 +23,7 @@ LINKEDIN_URL = "https://www.linkedin.com/company/ai-daily-grind/"  # company pag
 AUTHOR = "François Gravel"
 # Google Search Console ownership check (HTML tag method). Keep it, or Search Console stops working.
 GOOGLE_SITE_VERIFICATION = "SHvFTdzmYz2Y-8Z75A0XGGp9NsXz_N2Oh37l4-bQ_IM"
+INDEXNOW_KEY = "fb8381e0f631a46988745f9fbb7309b2"  # public by design: Bing checks it at /<key>.txt
 PUBLISH_TIME = "06:30"  # editions go out around this time, Montréal time
 
 # Who sends the emails. The law (CASL in Canada, CAN-SPAM in the US) requires a real
@@ -43,6 +44,7 @@ PAGES = [
     ("privacy.html", "privacy.html"),
     ("disclaimer.html", "disclaimer.html"),
     ("projects.html", "projects.html"),
+    ("about.html", "about.html"),
 ]
 
 TAG_ICONS = {
@@ -92,6 +94,7 @@ def build_site() -> Path:
         p.read_bytes() for p in sorted((ROOT / "static").rglob("*")) if p.is_file())).hexdigest()[:8]
     env.globals["google_site_verification"] = GOOGLE_SITE_VERIFICATION
     env.globals["linkedin_url"] = LINKEDIN_URL
+    env.globals["topic_slug"] = topic_slug
     env.globals.update(sender=SENDER, postal_address=POSTAL_ADDRESS, contact_email=CONTACT_EMAIL,
                        privacy_officer=PRIVACY_OFFICER, policy_date=POLICY_DATE,
                        subscribe_open=bool(POSTAL_ADDRESS and CONTACT_EMAIL))
@@ -126,8 +129,15 @@ def build_site() -> Path:
             html = token_page.render(edition=edition, token=token, n=n, jsonld=jsonld_token(edition, token, n))
             (SITE / f"{edition['date']}-token-{n}.html").write_text(html, encoding="utf-8")
 
-    archive = env.get_template("archive.html").render(editions=editions)
+    archive = env.get_template("archive.html").render(editions=editions, topics=sorted(topics(editions)))
     (SITE / "archive.html").write_text(archive, encoding="utf-8")
+
+    topic_page = env.get_template("topic.html")
+    all_topics = topics(editions)
+    for tag, items in all_topics.items():
+        html = topic_page.render(tag=tag, items=items, intro=TOPIC_INTROS.get(tag, ""), page_name=topic_slug(tag),
+                                 all_tags=sorted(all_topics))
+        (SITE / f"{topic_slug(tag)}.html").write_text(html, encoding="utf-8")
 
     for template, out in PAGES:
         html = env.get_template(template).render(page_name=out.removesuffix(".html"))
@@ -161,13 +171,19 @@ def _ld(data) -> str:
 
 
 def _org() -> dict:
-    return {"@type": "Organization", "name": "The AI Daily Grind", "url": SITE_URL + "/",
-            "sameAs": [LINKEDIN_URL],
+    about = f"{SITE_URL}/about.html"
+    return {"@type": "NewsMediaOrganization", "name": "The AI Daily Grind", "url": SITE_URL + "/",
+            "sameAs": [LINKEDIN_URL], "foundingDate": "2026-10-22",
+            "description": "A daily recap of the AI news that matters, in simple English, with a critical eye on AI risks.",
+            "publishingPrinciples": f"{about}#editorial", "correctionsPolicy": f"{about}#corrections",
+            "ethicsPolicy": f"{about}#ai", "actionableFeedbackPolicy": f"{about}#contact",
+            "email": CONTACT_EMAIL,
             "logo": {"@type": "ImageObject", "url": f"{SITE_URL}/static/logo-512.png", "width": 512, "height": 512}}
 
 
 def _author() -> dict:
-    return {"@type": "Person", "name": AUTHOR, "url": SITE_URL + "/"}
+    return {"@type": "Person", "name": AUTHOR, "url": f"{SITE_URL}/about.html",
+            "sameAs": ["https://langecornu.com/"]}
 
 
 def _article(edition: dict, url: str, headline: str, description: str, card: str, section: str = "") -> dict:
@@ -182,6 +198,8 @@ def _article(edition: dict, url: str, headline: str, description: str, card: str
     }
     if section:
         article["articleSection"] = section
+        article["about"] = {"@type": "Thing", "name": section}
+    article["keywords"] = ["artificial intelligence", "AI news"] + ([section] if section else [])
     return article
 
 
@@ -216,6 +234,39 @@ def jsonld_token(edition: dict, token: dict, n: int) -> str:
     ]})
 
 
+def topic_slug(tag: str) -> str:
+    return "topic-" + tag.lower().replace(" ", "-")
+
+
+def topics(editions: list[dict]) -> dict[str, list]:
+    """Tag -> [(edition, n, token), ...], newest first."""
+    out: dict[str, list] = {}
+    for e in editions:
+        for n, t in enumerate(e["tokens"], start=1):
+            out.setdefault(t["tag"], []).append((e, n, t))
+    return out
+
+
+TOPIC_INTROS = {
+    "Safety": "AI safety and risk news: jailbreaks, misuse, security holes, and the warnings worth hearing.",
+    "Policy": "AI rules, laws, lobbying and politics: who decides how AI is used, and how.",
+    "Launch": "New AI models, apps and features from the big labs and startups.",
+    "Tool": "AI tools you can try today, explained simply.",
+    "Open source": "Open-source and open-weight AI projects, often trending on GitHub.",
+    "Research": "AI research papers and discoveries, in plain words.",
+    "Business": "The money and power behind AI: deals, funding, jobs and big company moves.",
+    "Community": "What the AI community is talking about on Hacker News, Reddit and beyond.",
+}
+
+
+def _rss_item(title, url, when, description, body, image, category) -> str:
+    return (f"<item><title>{escape(title)}</title><link>{url}</link><guid isPermaLink=\"true\">{url}</guid>"
+            f"<pubDate>{when}</pubDate><dc:creator>{escape(AUTHOR)}</dc:creator><category>{escape(category)}</category>"
+            f"<description>{escape(description)}</description><content:encoded><![CDATA[{body}]]></content:encoded>"
+            f'<enclosure url="{escape(image)}" type="image/jpeg" length="0"/>'
+            f'<media:content url="{escape(image)}" medium="image" type="image/jpeg" width="1200" height="630"/></item>')
+
+
 def build_seo_files(editions: list[dict]) -> None:
     newest = editions[0]["date"] if editions else date.today().isoformat()
     urls = [(f"{SITE_URL}/", newest, "daily", "1.0", editions[0].get("cover") if editions else None),
@@ -224,7 +275,9 @@ def build_seo_files(editions: list[dict]) -> None:
         urls.append((f"{SITE_URL}/{e['date']}.html", e["date"], "monthly", "0.8", e.get("cover")))
         for n in range(1, len(e["tokens"]) + 1):
             urls.append((f"{SITE_URL}/{e['date']}-token-{n}.html", e["date"], "monthly", "0.7", None))
-    for page in ("subscribe", "privacy", "disclaimer", "projects"):
+    for tag in topics(editions):
+        urls.append((f"{SITE_URL}/{topic_slug(tag)}.html", newest, "daily", "0.6", None))
+    for page in ("about", "subscribe", "privacy", "disclaimer", "projects"):
         urls.append((f"{SITE_URL}/{page}.html", newest, "yearly", "0.3", None))
 
     items = []
@@ -241,28 +294,65 @@ def build_seo_files(editions: list[dict]) -> None:
 
     (SITE / "robots.txt").write_text(
         "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /email/\nDisallow: /speech/\n\n"
-        f"Sitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
+        f"Sitemap: {SITE_URL}/sitemap.xml\nSitemap: {SITE_URL}/news-sitemap.xml\n", encoding="utf-8")
 
+    # Google News sitemap: only articles from the last 2 days, as Google asks
+    cutoff = datetime.now(ZoneInfo("America/Toronto")).date().toordinal() - 2
+    news = []
+    for e in editions:
+        if date.fromisoformat(e["date"]).toordinal() < cutoff:
+            continue
+        pages = [(f"{SITE_URL}/{e['date']}.html", e["headline"])]
+        pages += [(f"{SITE_URL}/{e['date']}-token-{n}.html", t["title"]) for n, t in enumerate(e["tokens"], start=1)]
+        for loc, title in pages:
+            news.append(f"<url><loc>{escape(loc)}</loc><news:news><news:publication>"
+                        "<news:name>The AI Daily Grind</news:name><news:language>en</news:language>"
+                        f"</news:publication><news:publication_date>{published(e)}</news:publication_date>"
+                        f"<news:title>{escape(title)}</news:title></news:news></url>")
+    (SITE / "news-sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+        'xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n' + "\n".join(news) + "\n</urlset>\n",
+        encoding="utf-8")
+
+    # IndexNow (Bing, DuckDuckGo, Yandex...): the VM sends this right after a new edition goes live
+    (SITE / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY, encoding="utf-8")
+    if editions:
+        e = editions[0]
+        fresh = [f"{SITE_URL}/", f"{SITE_URL}/{e['date']}.html", f"{SITE_URL}/archive.html"]
+        fresh += [f"{SITE_URL}/{e['date']}-token-{n}.html" for n in range(1, len(e["tokens"]) + 1)]
+        fresh += [f"{SITE_URL}/{topic_slug(t['tag'])}.html" for t in e["tokens"]]
+        (SITE / "indexnow.json").write_text(json.dumps({
+            "host": DOMAIN, "key": INDEXNOW_KEY, "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
+            "urlList": list(dict.fromkeys(fresh))}), encoding="utf-8")
+
+    # Main RSS feed, for readers and news aggregators: one item per Morning Token, plus the edition
     entries = []
-    for e in editions[:30]:
-        url = f"{SITE_URL}/{e['date']}.html"
+    for e in editions[:15]:
         when = format_datetime(datetime.fromisoformat(published(e)).astimezone(timezone.utc))
+        url = f"{SITE_URL}/{e['date']}.html"
         body = "".join(f"<p>{escape(p)}</p>" for p in e["intro"].split("\n\n"))
         body += "<ul>" + "".join(
             f'<li><a href="{SITE_URL}/{e["date"]}-token-{n}.html">{escape(t["title"])}</a></li>'
             for n, t in enumerate(e["tokens"], start=1)) + "</ul>"
-        image = f'<enclosure url="{escape(SITE_URL + "/" + e["card"])}" type="image/jpeg" length="0"/>'
-        entries.append(f"<item><title>{escape(e['headline'])}</title><link>{url}</link><guid>{url}</guid>"
-                       f"<pubDate>{when}</pubDate><dc:creator>{escape(AUTHOR)}</dc:creator>"
-                       f"<description>{escape(short(e['intro'].split(chr(10) * 2)[0], 300))}</description>"
-                       f"<content:encoded><![CDATA[{body}]]></content:encoded>{image}</item>")
+        entries.append(_rss_item(e["headline"], url, when, short(e["intro"].split("\n\n")[0], 300), body,
+                                 f"{SITE_URL}/{e['card']}", "Daily edition"))
+        for n, tok in enumerate(e["tokens"], start=1):
+            turl = f"{SITE_URL}/{e['date']}-token-{n}.html"
+            tbody = "".join(f"<p>{escape(p)}</p>" for p in tok["summary"].split("\n\n"))
+            tbody += f"<p><strong>Why it matters:</strong> {escape(tok['why_it_matters'])}</p>"
+            tbody += "<p>Sources: " + ", ".join(
+                f'<a href="{escape(s["url"])}">{escape(s["name"])}</a>' for s in tok.get("sources", [])) + "</p>"
+            entries.append(_rss_item(tok["title"], turl, when, short(tok["summary"].split("\n\n")[0], 300),
+                                     tbody, f"{SITE_URL}/{tok['card']}", tok["tag"]))
     (SITE / "feed.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" '
         'xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" '
-        'xmlns:atom="http://www.w3.org/2005/Atom"><channel>'
+        'xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'
         f"<title>The AI Daily Grind</title><link>{SITE_URL}/</link>"
-        "<description>The AI news that matters, freshly ground every morning. In simple words.</description>"
+        "<description>The AI news that matters, freshly ground every morning. In simple words, "
+        "with a critical eye on AI risks.</description>"
         f'<language>en</language><atom:link href="{SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>'
+        f"<copyright>The AI Daily Grind</copyright><category>Artificial Intelligence</category><ttl>60</ttl>"
         f"<image><url>{SITE_URL}/static/logo-512.png</url><title>The AI Daily Grind</title><link>{SITE_URL}/</link></image>"
         + "".join(entries) + "</channel></rss>\n", encoding="utf-8")
 

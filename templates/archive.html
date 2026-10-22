@@ -6,6 +6,9 @@
 <section class="hero page">
   <h1>All the coffees</h1>
   <p class="intro">Every AI Daily Grind edition, newest first.</p>
+  <p class="topic-list">Browse by topic:
+    {% for t in topics %}<a class="tag tag-{{ t | lower | replace(' ', '-') }}" href="{{ topic_slug(t) }}.html">{{ tag_icons.get(t, "") }} {{ t }}</a>{% endfor %}
+  </p>
 </section>
 <ul class="archive">
   {% for edition in editions %}

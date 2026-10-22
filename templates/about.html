@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}About The AI Daily Grind: who writes it and how{% endblock %}
+{% block description %}The AI Daily Grind is a daily AI news recap in simple English by François Gravel. How stories are picked, how AI is used, our sources, corrections and contact.{% endblock %}
+{% block content %}
+<section class="hero page legal">
+  <p class="section-label">About</p>
+  <h1>About The AI Daily Grind</h1>
+  <p class="intro">Every morning, the AI news that matters, freshly ground and explained in simple English. With a critical eye on where AI is going, and on its risks.</p>
+
+  <h2 id="author">Who writes it</h2>
+  <p>The AI Daily Grind is made by <strong>François Gravel</strong>, a French Canadian software engineering leader, silversmith and long-time technology watcher. English is his second language, so the Grind is written for people like him: curious, busy, and not always native English speakers. More about François on <a href="https://langecornu.com/" rel="noopener">langecornu.com</a>, and his other work on the <a href="projects.html">projects page</a>.</p>
+
+  <h2 id="editorial">How we pick the stories (editorial policy)</h2>
+  <ul>
+    <li>Each morning, we read public sources: AI news sites, AI company blogs, research papers, AI risk and safety newsletters, a daily AI podcast, and what is trending on Hacker News, Reddit and GitHub.</li>
+    <li>We pick the 5 to 7 stories that matter most to normal people and businesses: big launches, useful tools, research, policy, safety, jobs and big business moves. When many sources cover the same story, we merge them.</li>
+    <li>Every Morning Token links to its sources, so you can check them.</li>
+    <li>We say clearly when something is a rumour or early research.</li>
+    <li>We are independent. Nobody pays to be in the Grind, and there are no ads or sponsored stories.</li>
+  </ul>
+
+  <h2 id="ai">How we use AI</h2>
+  <p>We are open about it: The AI Daily Grind is written with the help of AI tools. A program collects the public news; an AI model picks the stories and writes them in François's voice, following his written guidelines; another AI model draws the cover image (an illustration, never a photo of a real event); and an AI voice can read the edition aloud. François sets the rules, the voice and the topics, and keeps improving them. AI can make mistakes, so always check the sources. See also the <a href="disclaimer.html">Disclaimer</a>.</p>
+
+  <h2 id="corrections">Corrections</h2>
+  <p>If we get something wrong, we want to know. Write to <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> with the link to the story. We correct factual errors quickly and update the page.</p>
+
+  <h2 id="contact">Contact</h2>
+  <ul>
+    <li>Email: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></li>
+    <li>LinkedIn: <a href="{{ linkedin_url }}" rel="noopener">The AI Daily Grind</a></li>
+    <li>Mail: {{ postal_address }}</li>
+  </ul>
+
+  <h2>Follow the Grind</h2>
+  <p><a href="subscribe.html">Get it by email</a> · <a href="{{ linkedin_url }}" rel="noopener">Follow on LinkedIn</a> · <a href="feed.xml">RSS feed</a> · <a href="archive.html">Archive</a></p>
+</section>
+{% endblock %}

@@ -37,4 +37,12 @@ fi
 rsync -rlt --delete --chmod=D755,F644 "$tmp"/ "$WEB_ROOT"/
 echo "$sha" > "$STATE"
 logger -t aidailygrind-sync "deployed $sha"
+
+# Tell Bing, DuckDuckGo, Yandex... (IndexNow) which pages are new
+if [ -f "$WEB_ROOT/indexnow.json" ]; then
+  code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.indexnow.org/indexnow" \
+    -H "Content-Type: application/json; charset=utf-8" --data-binary "@$WEB_ROOT/indexnow.json" || true)
+  logger -t aidailygrind-sync "indexnow answered $code"
+fi
+
 send_email

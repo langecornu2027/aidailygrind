@@ -25,7 +25,8 @@
 {% block content %}
 <section class="hero hero-token">
   <div class="meta-row">
-    <a href="{{ edition.date }}.html">← {{ edition.date_label }}</a>
+    <a href="{{ edition.date }}.html">← <time datetime="{{ edition.date }}T06:30:00">{{ edition.date_label }}</time></a>
+    <a class="byline" href="about.html" rel="author">By François Gravel</a>
     <span>Edition #{{ edition.number }}</span>
   </div>
   {{ listen_player("Listen to this token · about " ~ ((token.summary.split() | length + token.why_it_matters.split() | length) / 150) | round(0, "ceil") | int ~ " min", edition.date, n) }}

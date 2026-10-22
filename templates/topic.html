@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ tag }} AI news in simple words | AI Daily Grind{% endblock %}
+{% block description %}{{ intro or ("All " ~ tag ~ " stories from The AI Daily Grind.") }} Every story in simple English, with sources.{% endblock %}
+{% block content %}
+<section class="hero page">
+  <p class="section-label">Topic</p>
+  <h1>{{ tag_icons.get(tag, "") }} {{ tag }} AI news</h1>
+  <p class="intro">{{ intro }}</p>
+  <p class="topic-list">
+    {% for t in all_tags %}<a class="tag tag-{{ t | lower | replace(' ', '-') }}{% if t == tag %} is-current{% endif %}" href="{{ topic_slug(t) }}.html">{{ tag_icons.get(t, "") }} {{ t }}</a>{% endfor %}
+  </p>
+</section>
+
+<section class="manifest" aria-label="{{ tag }} stories">
+  <p class="section-label">{{ items | length }} {{ "story" if items | length == 1 else "stories" }}, newest first</p>
+  <ol>
+    {% for edition, n, token in items %}
+    <li>
+      <a href="{{ edition.date }}-token-{{ n }}.html">
+        <span class="m-num"><time datetime="{{ edition.date }}">{{ edition.date[5:] }}</time></span>
+        <span class="m-title">{{ token.title }}<span class="m-why">{{ token.why_it_matters }}</span></span>
+        <span class="m-tag">#{{ n }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% set form_id = "topic" %}
+{% include "_subscribe_form.html" %}
+{% endblock %}

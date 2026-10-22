@@ -28,7 +28,7 @@
 <article class="token{% if n == 1 %} token-top{% endif %}" id="token-{{ n }}" data-part="{{ n }}">
   <div class="token-label">
     <span class="token-num">Morning Token <b>{{ "%02d" | format(n) }}</b></span>
-    <span class="tag tag-{{ token.tag | lower | replace(' ', '-') }}">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
+    <a class="tag tag-{{ token.tag | lower | replace(' ', '-') }}" href="{{ topic_slug(token.tag) }}.html" title="More {{ token.tag }} stories">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</a>
   </div>
   <{{ heading }} data-speak data-speak-prefix="Morning Token {{ n }}.">{% if standalone %}{{ token.title }}{% else %}<a class="token-link" href="{{ edition.date }}-token-{{ n }}.html">{{ token.title }}</a>{% endif %}</{{ heading }}>
   <div class="token-body" data-speak>

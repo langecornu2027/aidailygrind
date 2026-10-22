@@ -27,7 +27,8 @@
 <section class="hero">
   <div class="meta-row">
     {% if is_latest %}<span class="live"><i></i>Today</span>{% endif %}
-    <span>{{ edition.date_label }}</span>
+    <time datetime="{{ edition.date }}T06:30:00">{{ edition.date_label }}</time>
+    <a class="byline" href="about.html" rel="author">By François Gravel</a>
     <span>Edition #{{ edition.number }}</span>
     <span>{{ edition.tokens | length }} tokens</span>
     <span>{{ edition.read_minutes }} min read</span>
