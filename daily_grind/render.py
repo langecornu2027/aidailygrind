@@ -111,16 +111,21 @@ def build_site() -> Path:
 
 
 def build_speech(editions: list[dict]) -> None:
-    """What the AI voice reads, one part per section. The VM turns a part into an MP3
-    only when a visitor first clicks Listen (deploy/mailer.py, /api/audio)."""
+    """What the AI voice reads, in short parts (about one paragraph each), so the first
+    part is ready in a few seconds. "s" is the page section: 0 = headline and recap,
+    1..N = Morning Token N, N+1 = le dernier mot. The VM turns a part into an MP3 only
+    when a visitor first clicks Listen (deploy/mailer.py, /api/audio)."""
     out = SITE / "speech"
     out.mkdir()
     for edition in editions:
-        parts = [f"The AI Daily Grind, {edition['date_label']}. {edition['headline']}.\n\n{edition['intro']}"]
+        parts = [{"s": 0, "text": f"The AI Daily Grind, {edition['date_label']}. {edition['headline']}."}]
+        parts += [{"s": 0, "text": para} for para in edition["intro"].split("\n\n")]
         for n, token in enumerate(edition["tokens"], start=1):
-            parts.append(f"Morning Token {n}. {token['title']}.\n\n{token['summary']}\n\n"
-                         f"Why it matters: {token['why_it_matters']}")
-        parts.append(f"Le dernier mot. {edition['last_word']}")
+            paras = token["summary"].split("\n\n")
+            parts.append({"s": n, "text": f"Morning Token {n}. {token['title']}.\n\n{paras[0]}"})
+            parts += [{"s": n, "text": para} for para in paras[1:]]
+            parts.append({"s": n, "text": f"Why it matters: {token['why_it_matters']}"})
+        parts.append({"s": len(edition["tokens"]) + 1, "text": f"Le dernier mot. {edition['last_word']}"})
         (out / f"{edition['date']}.json").write_text(json.dumps(parts, ensure_ascii=False), encoding="utf-8")
 
 

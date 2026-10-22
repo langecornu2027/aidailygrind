@@ -9,7 +9,7 @@
 
   var hasSpeech = "speechSynthesis" in window && !!window.SpeechSynthesisUtterance;
   var aiDate = player.dataset.audioDate;
-  var aiOnly = player.dataset.audioPart; // token pages: just that part
+  var aiOnly = player.dataset.audioPart; // token pages: just that section
   var mode = aiDate ? "ai" : "browser";
   if (mode === "browser" && !hasSpeech) { player.hidden = true; return; }
   player.hidden = false;
@@ -64,14 +64,14 @@
   var SILENT = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
 
   function api(method) {
-    var url = "/api/audio?date=" + encodeURIComponent(aiDate) + (aiOnly ? "&part=" + aiOnly : "");
+    var url = "/api/audio?date=" + encodeURIComponent(aiDate) + (aiOnly ? "&section=" + aiOnly : "");
     return fetch(url, { method: method }).then(function (r) {
       if (!r.ok) throw new Error("audio " + r.status);
       return r.json();
     });
   }
 
-  function partEls(p) { return Array.prototype.slice.call(document.querySelectorAll('[data-part="' + p.n + '"]')); }
+  function partEls(p) { return Array.prototype.slice.call(document.querySelectorAll('[data-part="' + p.s + '"]')); }
 
   function aiProgress() {
     if (!manifest) return 0;

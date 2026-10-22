@@ -59,7 +59,7 @@ TTS_VOICE = "Sulafat"  # "Warm"
 TTS_STYLE = ("warm, friendly morning radio host reading the news over coffee; "
              "clear, calm, natural pace, easy to understand for people who speak English as a second language")
 AUDIO_MAX_AGE_DAYS = 45  # only recent editions can be voiced
-AUDIO_DAILY_CAP = 40  # max parts made per day (about 4 full editions), protects the bill
+AUDIO_DAILY_CAP = 150  # max parts made per day (about 5 full editions), protects the bill
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
@@ -202,7 +202,7 @@ audio_made: dict[str, int] = {}  # day -> parts made today
 audio_pool = ThreadPoolExecutor(max_workers=3)
 
 
-def speech_parts(day: str) -> list[str] | None:
+def speech_parts(day: str) -> list[dict] | None:
     path = WEB_ROOT / "speech" / f"{day}.json"
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
@@ -251,19 +251,20 @@ def make_part(day: str, n: int, text: str) -> None:
             audio_failed_at[name] = time.time()
 
 
-def audio_status(day: str, parts: list[int], start: bool) -> dict | None:
-    """Status of each part; with start=True, begin making the missing ones (in order)."""
+def audio_status(day: str, sections: list[int], start: bool) -> dict | None:
+    """Status of each part (all, or only some page sections); with start=True, begin
+    making the missing ones, first parts first."""
     texts = speech_parts(day)
     if texts is None:
         return None
-    parts = [n for n in parts if 0 <= n < len(texts)] or list(range(len(texts)))
+    parts = [n for n, p in enumerate(texts) if not sections or p["s"] in sections]
     today = datetime.now(TIMEZONE).date().isoformat()
     out = []
     with audio_lock:
         for n in parts:
             name = part_name(day, n)
             if (AUDIO_DIR / f"{name}.mp3").exists():
-                out.append({"n": n, "status": "ready", "url": f"/audio/{name}.mp3"})
+                out.append({"n": n, "s": texts[n]["s"], "status": "ready", "url": f"/audio/{name}.mp3"})
                 continue
             state = audio_jobs.get(name, "idle")
             if state == "failed" and time.time() - audio_failed_at.get(name, 0) > 600:
@@ -274,8 +275,8 @@ def audio_status(day: str, parts: list[int], start: bool) -> dict | None:
                 else:
                     audio_made[today] = audio_made.get(today, 0) + 1
                     audio_jobs[name] = state = "working"
-                    audio_pool.submit(make_part, day, n, texts[n])
-            out.append({"n": n, "status": state, "url": None})
+                    audio_pool.submit(make_part, day, n, texts[n]["text"])
+            out.append({"n": n, "s": texts[n]["s"], "status": state, "url": None})
     return {"date": day, "total": len(texts), "parts": out}
 
 
@@ -335,8 +336,8 @@ class Handler(BaseHTTPRequestHandler):
         age = (datetime.now(TIMEZONE).date() - date.fromisoformat(day)).days
         if not 0 <= age <= AUDIO_MAX_AGE_DAYS:
             return self.send_error(404)
-        parts = [int(n) for n in query.get("part", []) if n.isdigit()][:20]
-        self.send_json(audio_status(day, parts, start))
+        sections = [int(n) for n in query.get("section", []) if n.isdigit()][:20]
+        self.send_json(audio_status(day, sections, start))
 
     def do_GET(self):
         path = urlparse(self.path).path
