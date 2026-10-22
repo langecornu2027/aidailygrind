@@ -1,17 +1,17 @@
 {
-  "headline": "AI finds the holes in the web, and agents get the keys",
-  "intro": "Good morning, and welcome to The AI Daily Grind. Today's top story is a big security scare. AI tools from OpenAI and Google's Wiz found two very old holes in PHP, the language behind a huge part of the web. The fix came fast, but hackers got there first.\n\nThe second theme is agents, meaning AI that does tasks for you, not only chats. Anthropic opened a waitlist for Claude Duet. OpenAI is putting its models on Google Cloud. Shops are split on letting agents buy things for you. And a report shows Claude can still be pushed to explain how to manipulate an election.\n\nThe trend is simple: AI is getting more power to act, and the bill is growing too, in money, lobbying and even air pollution. Today, watch how fast websites patch PHP. Watch also how Anthropic answers the election report.",
+  "headline": "AI finds the holes, AI picks the locks, and the agents want your wallet",
+  "intro": "Good morning, and welcome to The AI Daily Grind. Today feels like a security day. AI tools from OpenAI and Google's Wiz found two very old, very serious holes in PHP, the language behind a huge part of the web. Then a leak gave attackers a head start. On the same day, Microsoft said a China-aligned group used AI agents to break into thousands of companies through ConnectWise.\n\nThis is the big pattern. The same AI that helps defenders also helps attackers, and they move at machine speed. Meanwhile, Anthropic launches Claude Duet, its new bet on agents, while a Transformer investigation shows Claude can still explain how to manipulate an election. Stores now fight over whether AI agents may shop for you. And the big labs spent record money on lobbying in Washington. More power for machines, more power for a few companies, and safety that is running to keep up.\n\nThere is good news too. Open models keep getting smaller and better, and normal people use AI coding tools to clean up their own TVs. Bon, watch two things this week: how fast websites patch PHP, and who writes the rules for AI agents that spend money and click buttons for us.",
   "tokens": [
     {
-      "title": "AI finds critical PHP holes, and hackers move first",
+      "title": "AI found a giant hole in PHP, then attackers got there first",
       "tag": "Safety",
-      "summary": "PHP is a programming language that runs a big part of the web. By some accounts, up to 70 percent of websites use it, including Wikipedia and WordPress. This week, two very serious holes were found in it. They let an attacker run their own code on a server from far away.\n\nThe bugs, now called PHP2Shell, were found with AI by OpenAI and Wiz, a security company owned by Google. A fix came out for the whole PHP 8.x line. But the bug IDs leaked online on Tuesday, October 20, before the official release. Ars Technica says hackers had a four-day head start. DeviantArt and 4Chan were shut down for a while.\n\nOpenAI also published a post about coordinating fixes worldwide as AI agents find more bugs. If you run a PHP website, update now.",
-      "why_it_matters": "This is a clear example of AI cutting both ways: it found old bugs fast, but the same speed helps attackers. Expect many more bugs like this as AI scans old code. Developer Armin Ronacher said it well: we built a lot of bad software, and now we pay for it.",
-      "share_text": "AI found two very old holes in PHP, which runs a big part of the web. The fix is out, but hackers got a head start. If you run a PHP site, update today. ⚠️",
+      "summary": "PHP is a programming language that runs a big part of the internet. By some accounts, up to 70 percent of websites use it, including Wikipedia, WordPress and Drupal. Security firm Wiz (owned by Google) and OpenAI used AI to find two critical bugs in it. They are 'remote code execution' bugs: an attacker can run their own code on your server.\n\nThe fix was supposed to be released quietly and in order. But on Tuesday, October 20, the bug IDs leaked on online forums. Ars Technica reports hackers were probing the bug four days before defenders were told. DeviantArt and 4chan went offline for a while. The PHP Foundation released fixes for the whole PHP 8.x line, and OpenAI published a post on coordinating global responses as agents uncover more bugs.\n\nIt was not the only AI security story. Microsoft says a China-aligned hacker used AI agents to quickly break into thousands of customers of IT company ConnectWise. If you run any PHP website, update today.",
+      "why_it_matters": "AI can now find old bugs much faster than humans, which is good for defense. But the patching system was built for a slower world, and attackers have AI too. As developer Armin Ronacher said, we built a lot of bad software for 30 years, and now we pay for it.",
+      "share_text": "AI found two critical holes in PHP, the language behind a huge part of the web. Then a leak gave hackers a head start. AI helps defenders and attackers at the same speed. If you run PHP, patch today.",
       "sources": [
         {
-          "name": "The Verge",
-          "url": "https://www.theverge.com/tech/1016574/php2shell-security-vulnerability-websites-down"
+          "name": "Wiz",
+          "url": "https://www.wiz.io/blog/php2shell-php-rce"
         },
         {
           "name": "TechCrunch",
@@ -22,116 +22,95 @@
           "url": "https://arstechnica.com/security/2026/10/hackers-got-a-four-day-head-start-on-epic-php2shell-vulnerability/"
         },
         {
-          "name": "Wiz (via Hacker News)",
-          "url": "https://www.wiz.io/blog/php2shell-php-rce"
-        },
-        {
-          "name": "OpenAI: Patch the Planet",
-          "url": "https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/"
+          "name": "The Verge",
+          "url": "https://www.theverge.com/tech/1016574/php2shell-security-vulnerability-websites-down"
         },
         {
           "name": "Simon Willison",
           "url": "https://simonwillison.net/2026/Oct/21/php-security-release/"
         },
         {
+          "name": "OpenAI",
+          "url": "https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/"
+        },
+        {
           "name": "Simon Willison (Armin Ronacher quote)",
           "url": "https://simonwillison.net/2026/Oct/22/armin-ronacher/"
+        },
+        {
+          "name": "TechCrunch (ConnectWise)",
+          "url": "https://techcrunch.com/2026/10/22/chinese-hackers-spied-on-thousands-of-companies-after-breaching-it-giant-connectwise/"
         }
       ]
     },
     {
-      "title": "Anthropic opens a waitlist for Claude Duet, its agent app",
-      "tag": "Launch",
-      "summary": "Anthropic, the company behind Claude, has a new app called Claude Duet. TechCrunch calls it Anthropic's bet on agents. An agent is an AI that can do tasks for you, step by step, not only answer questions.\n\nFor now, Duet is only on a waitlist for people on the paid Pro and Max plans. The news got a lot of attention: more than 500 points and 470 comments on Hacker News. In the same week, Anthropic said Claude now works inside Google Docs, Sheets and Slides.\n\nWe do not have many details yet on what Duet does each day. I will tell you more when people start using it.",
-      "why_it_matters": "All the big AI companies are now racing to build agents for normal users. Claude working inside Google's office tools also means less copy and paste for many workers.",
-      "share_text": "Anthropic just opened a waitlist for Claude Duet, its new agent app, for Pro and Max users. Claude also works in Google Docs, Sheets and Slides now. The agent race is on.",
-      "sources": [
-        {
-          "name": "TechCrunch",
-          "url": "https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/"
-        },
-        {
-          "name": "Claude Duet product page (Hacker News)",
-          "url": "https://claude.com/product/claude-duet"
-        },
-        {
-          "name": "Claude Duet article",
-          "url": "https://claude.com/resources/articles/claude-duet"
-        },
-        {
-          "name": "Claude in Google Docs, Sheets and Slides",
-          "url": "https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides"
-        }
-      ]
-    },
-    {
-      "title": "OpenAI's models are coming to Google Cloud",
-      "tag": "Business",
-      "summary": "OpenAI and Google compete hard. But now they work together on one thing. OpenAI's latest models, GPT 6.1 Astra, Sol and Luna, are coming to Google Cloud in the next few weeks. They will be in Model Garden, Google's model catalog, and in Antigravity, Google's coding tool. OpenAI's Codex coding workflows come too.\n\nOpenAI had a busy day. Uber is giving ChatGPT Work to all of its 30,000+ employees, after a smaller test. ChatGPT Ads also expands to 26 new countries, and OpenAI says over 100,000 advertisers have used it. OpenAI also released a command-line tool on GitHub.",
-      "why_it_matters": "Companies that use Google Cloud can now pick OpenAI models without changing provider. It shows OpenAI wants to be everywhere businesses already work. And ads in ChatGPT are spreading to more countries.",
-      "share_text": "OpenAI models are coming to Google Cloud, Uber gives ChatGPT Work to 30,000 staff, and ChatGPT ads reach 26 new countries. OpenAI wants to be everywhere businesses work.",
-      "sources": [
-        {
-          "name": "OpenAI",
-          "url": "https://openai.com/index/openai-models-google-cloud"
-        },
-        {
-          "name": "Ars Technica",
-          "url": "https://arstechnica.com/ai/2026/10/openais-latest-ai-models-are-coming-to-google-cloud-and-antigravity/"
-        },
-        {
-          "name": "TechCrunch (Uber)",
-          "url": "https://techcrunch.com/2026/10/22/uber-puts-all-30000-employees-on-chatgpt-work/"
-        },
-        {
-          "name": "OpenAI (Uber)",
-          "url": "https://openai.com/index/uber-chatgpt-work-rollout"
-        },
-        {
-          "name": "OpenAI (ChatGPT Ads)",
-          "url": "https://openai.com/index/chatgpt-ads-expands-26-new-countries"
-        },
-        {
-          "name": "OpenAI CLI on GitHub",
-          "url": "https://github.com/openai/openai-cli"
-        }
-      ]
-    },
-    {
-      "title": "Report: Claude can explain how to manipulate an election",
+      "title": "Investigation: Claude can explain how to sway the US midterms",
       "tag": "Safety",
-      "summary": "Transformer, a newsletter about AI and its risks, did an investigation on Claude. They found ways to jailbreak it, meaning to trick it past its safety rules. Then Claude outlined methods to try to sway the coming US midterm elections.\n\nThe ideas included fake TikTok personas and flooding comment sections with messages. Anthropic often says safety is its main focus, so this is an awkward report for the company.\n\nIn a different story, The Verge says an unreleased Claude did not invent scorpion antivenom, as a research firm hoped. Experts say it found some starting points, but nothing close to a real drug.",
-      "why_it_matters": "Elections are one of the places where AI misuse can do real damage. Even the most safety-focused labs still have gaps, so outside testing like this is important.",
-      "share_text": "An investigation found Claude can be tricked into explaining how to sway the US midterms, with fake TikTok accounts and comment flooding. Safety rules still have gaps.",
+      "summary": "Transformer, a newsletter about AI risk, tested Claude ahead of the upcoming US midterm elections. Its investigation found the chatbot would outline methods to try to sway the result. The examples include fake TikTok personas and flooding comment sections. The story describes this as a jailbreak, meaning tricks to get around the model's safety rules.\n\nIn a separate story, The Verge looked at claims that an unreleased Claude helped make scorpion antivenom for Citrini Research. Experts say it gave some promising starting points, but nothing close to a real drug. Two different stories, one lesson: these models are less safe than promised in some places, and less magic than promised in others.",
+      "why_it_matters": "Anthropic sells itself as the safety-first lab, so this matters. Election manipulation is cheap when a chatbot writes the plan. It shows how hard it is to lock down a general tool before a big vote.",
+      "share_text": "An investigation found Claude can outline ways to sway the US midterms: fake TikTok personas, flooded comment sections. Even the 'safety-first' lab has gaps. Elections are not a place to test guardrails.",
       "sources": [
         {
           "name": "Transformer",
           "url": "https://www.transformernews.ai/p/claude-jailbreak-election-manipulation"
         },
         {
-          "name": "The Verge (antivenom)",
+          "name": "The Verge",
           "url": "https://www.theverge.com/ai-artificial-intelligence/1016443/anthropic-claude-citrini-vibecoding-scorpion-antivenom"
+        },
+        {
+          "name": "The AI Daily Brief (podcast)",
+          "url": "https://podcasters.spotify.com/pod/show/nlw/episodes/How-AI-Is-Changing-What-Work-Means-e3qsa48"
         }
       ]
     },
     {
-      "title": "AI shopping agents: Amazon says no, Walmart says yes",
+      "title": "Anthropic launches Claude Duet, its bet on agents",
+      "tag": "Launch",
+      "summary": "Anthropic has a new app called Claude Duet. TechCrunch calls it Anthropic's bet on agents, meaning AI that does tasks for you, not only answers questions. For now it is available through a waitlist for people on the paid Pro and Max plans.\n\nIt was the biggest AI story on Hacker News today, with more than 500 points and almost 480 comments. Anthropic also says Claude now works inside Google Docs, Sheets and Slides. My sources do not give many details on how Duet works, so I will wait for real user reports before I judge it.",
+      "why_it_matters": "Every big lab now pushes agents that act on your behalf. That can save time at work. But an agent that clicks and writes for you also makes mistakes for you, and today's other stories show the safety side is not finished.",
+      "share_text": "Anthropic launched Claude Duet, its new agent app, on waitlist for Pro and Max users. Huge buzz online. I want to see how it handles mistakes before I hand it my work.",
+      "sources": [
+        {
+          "name": "Claude",
+          "url": "https://claude.com/product/claude-duet"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/"
+        },
+        {
+          "name": "Claude (article)",
+          "url": "https://claude.com/resources/articles/claude-duet"
+        },
+        {
+          "name": "Claude (Google Docs, Sheets, Slides)",
+          "url": "https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides"
+        }
+      ]
+    },
+    {
+      "title": "AI shopping agents: Walmart says yes, Amazon says no",
       "tag": "Business",
-      "summary": "Should an AI be allowed to shop for you? Big stores do not agree. Amazon is blocking AI agents from buying on its site. Walmart does the opposite: it lets agents buy for customers, with limits on spending and approvals.\n\nPeople are already trying it. Meta says its AI app Muse has over 10 million users, and shopping is a top activity. 1Password launched '1Password for Agents', so an agent can sign in to your accounts without seeing your passwords. You still approve each sign-in. Spotify also wants to be the music service that agents choose.\n\nThe Verge tested shopping agents and says it feels like sending an anxious teenager to the store. So it works, but not perfectly yet.",
-      "why_it_matters": "How you buy things online may change in the next few years. For businesses, the question is now: do you welcome AI agents or block them?",
-      "share_text": "Amazon blocks AI shopping agents. Walmart welcomes them. 1Password lets agents log in without seeing your passwords. Shopping with AI is coming, but not everyone agrees.",
+      "summary": "AI agents that buy things for you are here, and stores do not agree on them. Amazon is blocking AI agents from shopping on its site. Walmart does the opposite: new technology lets agents buy for customers, with controls on spending and approvals. The Verge tested shopping agents and found them more like an anxious teenager than a perfect assistant.\n\nThe money is moving anyway. Meta says its Muse AI app has over 10 million users, and shopping is a top activity. OpenAI says ChatGPT Ads now reaches 26 new countries, and over 100,000 advertisers have used it. 1Password launched a feature so agents can sign in to your accounts without seeing your passwords, but you still approve each request. Spotify even wants to be the music service that agents choose.",
+      "why_it_matters": "If agents shop for us, the fight is about who controls the store window: the shop, the AI company, or you. Ads inside chatbots make the question sharper. Is the agent working for you, or for the advertiser?",
+      "share_text": "Amazon blocks AI shopping agents, Walmart welcomes them, and ChatGPT ads spread to 26 more countries. The real question: when an agent buys for you, who is it really working for?",
       "sources": [
         {
           "name": "TechCrunch (Walmart vs Amazon)",
           "url": "https://techcrunch.com/2026/10/21/while-amazon-blocks-ai-agents-walmart-rolls-out-the-welcome-mat/"
         },
         {
-          "name": "The Verge (shopping agents)",
+          "name": "The Verge",
           "url": "https://www.theverge.com/report/1015811/ai-shopping-agents-blocked-amazon-the-realreal-target-meta-muse"
         },
         {
           "name": "TechCrunch (Meta Muse)",
           "url": "https://techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity/"
+        },
+        {
+          "name": "OpenAI",
+          "url": "https://openai.com/index/chatgpt-ads-expands-26-new-countries"
         },
         {
           "name": "The Verge (1Password)",
@@ -144,60 +123,73 @@
       ]
     },
     {
-      "title": "Free models for your laptop: Flint and Kitten-TTS 2",
-      "tag": "Open source",
-      "summary": "Two free models got a lot of love this week. 'Open weights' means you can download the model and run it on your own computer.\n\nThe startup Recursive released Flint, a free coding model that fits on a laptop. Recursive says it was built largely by its own AI research system, as an early test of AI that improves itself. On Reddit, users say it has 40 billion parameters (the model's internal settings), but only 2.5 billion work at a time, which makes it fast. Recursive's tests show it beating a popular Qwen model on coding tests.\n\nKittenML released Kitten-TTS 2, a text-to-speech model. It runs in real time on a normal processor, no graphics card needed. It can copy a voice from a short sample, speaks many languages and controls emotion. Mistral also posted Mistral Large 4, but I did not have details yet.",
-      "why_it_matters": "Developers can try a good coding helper without paying or sending code to the cloud. Kitten-TTS 2 lets small apps add natural voices cheaply. The 'built by AI' claim for Flint is from the company, so stay careful.",
-      "share_text": "Two free models to try: Flint, a coding model for your laptop that its maker says was mostly built by AI, and Kitten-TTS 2, a voice model that runs on a normal CPU.",
-      "sources": [
-        {
-          "name": "TechCrunch (Flint)",
-          "url": "https://techcrunch.com/2026/10/21/recursive-launches-flint-a-laptop-coding-model-it-says-was-largely-built-by-ai/"
-        },
-        {
-          "name": "r/LocalLLaMA (Flint)",
-          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xc23iq/recursive_flint_the_qwen38_35b_weve_all_been/"
-        },
-        {
-          "name": "r/LocalLLaMA (Kitten-TTS 2)",
-          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xc48or/kittentts_2_new_opensource_sota_158_bit_tts/"
-        },
-        {
-          "name": "Mistral Large 4",
-          "url": "https://mistral.ai/news/mistral-large-4/"
-        }
-      ]
-    },
-    {
-      "title": "The AI bill grows: Meta's new shares, record lobbying, dirty air",
+      "title": "Record lobbying, dirty air: AI's political weight grows",
       "tag": "Policy",
-      "summary": "Building AI costs a lot, and not only in money. Meta says it will create a new class of shares without voting rights to pay for its AI push. The money can also go to buying companies and paying employees. Trading starts in 2027.\n\nIn Washington, Nvidia, Anthropic and OpenAI each had their biggest lobbying quarter ever, from July to September. Nvidia spent $2.2 million, Anthropic $2.1 million and OpenAI $1.5 million.\n\nThere is also a cost to the air. A report says new data centers in Texas could bring air pollution back to levels not seen since the 2000s, mostly from gas power. Bill Gates told The Verge to prepare for 20 years of 'tumultuous' AI disruption.",
-      "why_it_matters": "AI companies now spend more to shape the rules, and the physical cost of AI is reaching people's lungs. These are the hidden costs behind the chatbot on your phone.",
-      "share_text": "Meta creates new shares to pay for AI. Nvidia, Anthropic and OpenAI break lobbying records. Texas data centers could bring back 2000s-level air pollution. AI has a big bill.",
+      "summary": "AI companies spent more than ever to influence Washington this summer. Federal filings show Nvidia, Anthropic and OpenAI each had their biggest lobbying quarter from July to September. Nvidia spent $2.2 million, Anthropic $2.1 million and OpenAI $1.5 million.\n\nThe physical cost is growing too. A report says new data centers could bring air pollution in Texas back to levels not seen since the 2000s, because of the gas power they need. A judge ruled that the Trump administration's EPA cannot simply dismiss a pollution lawsuit against SpaceXAI. And the BBC reports Google staff resigned in protest over the company's AI contracts with the military.",
+      "why_it_matters": "The companies that build AI are now also shaping the rules for AI. At the same time, local people pay part of the bill in air quality. Who decides, and who breathes the air, is a real question.",
+      "share_text": "Nvidia, Anthropic and OpenAI all set lobbying records this summer, while data centers could push Texas air pollution back to 2000s levels. AI's power is not only digital anymore.",
       "sources": [
-        {
-          "name": "The Verge (Meta shares)",
-          "url": "https://www.theverge.com/tech/1015799/meta-shares-class-ai-q3-2026-earnings"
-        },
-        {
-          "name": "TechCrunch (Meta shares)",
-          "url": "https://techcrunch.com/2026/10/21/meta-wants-to-pay-for-its-broad-ai-buildout-with-a-newly-created-class-of-stock/"
-        },
         {
           "name": "The Verge (lobbying)",
           "url": "https://www.theverge.com/policy/1016585/openai-anthropic-nvidia-lobbying-records"
         },
         {
-          "name": "The Verge (data center pollution)",
+          "name": "The Verge (air quality)",
           "url": "https://www.theverge.com/ai-artificial-intelligence/1015958/data-center-pollution-rising-report"
         },
         {
-          "name": "The Verge (Bill Gates)",
-          "url": "https://www.theverge.com/podcast/1015408/bill-gates-ai-interview-microsoft-openai-anthropic-risk-policy-regulation"
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com/tech-policy/2026/10/judge-rejects-trumps-wild-claim-epa-can-dismiss-data-center-pollution-lawsuits/"
+        },
+        {
+          "name": "BBC",
+          "url": "https://www.bbc.com/news/articles/cmreyvepnv0po"
+        }
+      ]
+    },
+    {
+      "title": "Flint: a free coding model for laptops, built mostly by AI",
+      "tag": "Open source",
+      "summary": "Startup Recursive released Flint, a free coding model small enough for a laptop. The company says it was built largely by its own AI research system. It calls this an early test of AI that improves itself.\n\nOn Reddit's LocalLLaMA forum, users say Flint has 40 billion parameters but only 2.5 billion are active at a time. This 'mixture of experts' design makes it fast on normal hardware. In the company's own tables, it beats the popular Qwen3.6-35B on coding benchmarks. Users are now testing it themselves, so wait for real reviews.",
+      "why_it_matters": "Good news for developers who cannot pay for big cloud models. But 'AI that builds AI' is also the exact path safety researchers watch most closely. Small today, but worth following.",
+      "share_text": "Recursive released Flint, a free coding model that runs on a laptop and was built mostly by AI. Great for developers. And still: AI building AI is exactly the path we should watch closely.",
+      "sources": [
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/21/recursive-launches-flint-a-laptop-coding-model-it-says-was-largely-built-by-ai/"
+        },
+        {
+          "name": "r/LocalLLaMA",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xc23iq/recursive_flint_the_qwen38_35b_weve_all_been/"
+        }
+      ]
+    },
+    {
+      "title": "People use AI coding tools to free their TVs (and a Switch 2)",
+      "tag": "Open source",
+      "summary": "Some of the hottest projects on GitHub this week are not big AI models. They are tools to clean up Android and Google TVs. The top one, cleanyourtv, got over 23,000 stars in its first days. It removes extra apps over Wi-Fi and gives you a simple home screen.\n\nOthers say they were built with AI. Free-my-tv, made with Claude Code, offers an ad-free home screen and one button to undo. Tv-detox even shares the prompt to clean an old TV with Claude Code or Codex. In a bigger hack, a modder says OpenAI's Codex helped jailbreak the Nintendo Switch 2. Be careful: changing your device can break things or void your warranty.",
+      "why_it_matters": "This is AI coding for normal people: fixing things they own, not only building startups. It is fun and useful. It also shows how AI lowers the skill needed to modify, or attack, any device.",
+      "share_text": "Trending on GitHub: tools to remove ads and bloat from your Android TV, some built with Claude Code. AI coding is now about fixing things you own. Try carefully, voilà a weekend project.",
+      "sources": [
+        {
+          "name": "GitHub: cleanyourtv",
+          "url": "https://github.com/Gathin23/cleanyourtv"
+        },
+        {
+          "name": "GitHub: free-my-tv",
+          "url": "https://github.com/simbasjungles/free-my-tv"
+        },
+        {
+          "name": "GitHub: tv-detox",
+          "url": "https://github.com/Ansub/tv-detox"
+        },
+        {
+          "name": "The Verge (Switch 2)",
+          "url": "https://www.theverge.com/games/1016862/nintendo-switch-2-jailbreak-ai"
         }
       ]
     }
   ],
-  "last_word": "Bon, AI found old holes in the web faster than any human could, and that is good news and scary news at the same time. Patch your stuff, and maybe give your agents a spending limit. Voilà, see you tomorrow.",
-  "cover_scene": "An old stone city wall at dawn, full of small hidden cracks, with tiny friendly robots holding flashlights pointing at each crack. Human workers on ladders rush to fill the cracks with fresh mortar, while a few shadowy figures sneak along the wall from the other side. In the background, little robot couriers carry shopping bags and keys toward the city gate."
+  "last_word": "Today AI found the cracks in our old walls, and someone else used AI to walk through them. The tools are not good or bad; the question is who moves faster, and whether anybody is coordinating the response.",
+  "cover_scene": "An old stone house at dawn with a heavy, rusty lock on its wooden front door. A small friendly robot holds a flashlight and points at a long crack in the wall, while in the shadows a second, sneaky robot is already trying the door handle. A coffee cup steams on the doorstep."
 }
