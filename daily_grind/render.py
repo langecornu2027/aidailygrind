@@ -262,6 +262,27 @@ def build_seo_files(editions: list[dict]) -> None:
         f"<image><url>{SITE_URL}/static/logo-512.png</url><title>The AI Daily Grind</title><link>{SITE_URL}/</link></image>"
         + "".join(entries) + "</channel></rss>\n", encoding="utf-8")
 
+    # Feed for the daily LinkedIn page post (Zapier / Make read it): one item per edition,
+    # with the ready-made post text, the share card and a tagged link
+    li = []
+    for e in editions[:10]:
+        url = f"{SITE_URL}/{e['date']}.html"
+        tagged = f"{url}?utm_source=linkedin&utm_medium=social&utm_campaign=page_autopost"
+        text = f"{e.get('social_post') or e['headline']}\n\n👉 Read or listen: {tagged}"
+        card = f"{SITE_URL}/{e['card']}"
+        when = format_datetime(datetime.fromisoformat(published(e)).astimezone(timezone.utc))
+        li.append(f"<item><title>{escape(e['headline'])}</title><link>{escape(tagged)}</link>"
+                  f"<guid isPermaLink=\"false\">aidailygrind-{e['date']}</guid><pubDate>{when}</pubDate>"
+                  f"<description>{escape(text)}</description>"
+                  f'<enclosure url="{escape(card)}" type="image/jpeg" length="0"/>'
+                  f'<media:content url="{escape(card)}" medium="image" type="image/jpeg" width="1200" height="630"/>'
+                  "</item>")
+    (SITE / "linkedin.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel>'
+        f"<title>The AI Daily Grind · LinkedIn posts</title><link>{SITE_URL}/</link>"
+        "<description>One ready-to-post LinkedIn update per edition.</description><language>en</language>"
+        + "".join(li) + "</channel></rss>\n", encoding="utf-8")
+
 
 def make_card(edition: dict, name: str, label: str, title: str, tag: str = "") -> str:
     """Share card (1200x630) for social media previews. Returns its link, with a fingerprint."""
