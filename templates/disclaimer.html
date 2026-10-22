@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Disclaimer · The AI Daily Grind{% endblock %}
+{% block content %}
+<section class="edition-head page legal">
+  <h1>Disclaimer</h1>
+  <p class="date">Last updated: {{ policy_date }}</p>
+
+  <h2>Written with AI</h2>
+  <p>The AI Daily Grind is made with the help of AI tools. Every morning, a program collects public news, an AI model picks the stories and writes the text in our voice, and another AI model draws the cover image. The cover images are AI-generated illustrations, not photos of real events.</p>
+
+  <h2>It can be wrong</h2>
+  <p>We do our best, but AI can make mistakes, miss details, or misunderstand a story. News can also change after we publish. Always check the original sources linked under each Morning Token before you rely on a fact.</p>
+
+  <h2>Not professional advice</h2>
+  <p>The AI Daily Grind is for general information and fun. It is not legal, financial, investment, medical, security or professional advice. If you need advice, talk to a qualified professional.</p>
+
+  <h2>Sources and trademarks</h2>
+  <p>We summarize public news in our own words and always link to the original source. The original articles, videos, podcasts and projects belong to their authors. Company and product names are trademarks of their owners. We are not connected to, sponsored by, or endorsed by the companies, creators or sources we mention.</p>
+
+  <h2>Links to other sites</h2>
+  <p>We link to other websites. We do not control them and are not responsible for their content or their privacy practices.</p>
+
+  <h2>Contact</h2>
+  <p>See a mistake, or want a story corrected or removed? {% if contact_email %}Write to <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% else %}Contact details coming soon.{% endif %}</p>
+</section>
+{% endblock %}

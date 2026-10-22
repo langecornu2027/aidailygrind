@@ -157,6 +157,56 @@ h1, h2 { font-family: "Fraunces", Georgia, serif; line-height: 1.25; letter-spac
 .more { padding: 8px 0 16px; }
 .more h2 { font-size: 20px; }
 
+.button {
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.button:hover { filter: brightness(1.08); }
+
+.subscribe {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+.subscribe-title { font-family: "Fraunces", Georgia, serif; font-size: 20px; font-weight: 700; margin: 0 0 12px; }
+.subscribe-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.subscribe input[type="email"] {
+  flex: 1 1 220px;
+  font: inherit;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text);
+}
+.consent { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--muted); margin-top: 12px; }
+.consent input { margin-top: 4px; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.notice { background: var(--accent-soft); border-radius: 12px; padding: 12px 16px; }
+.notice-error { border-left: 4px solid var(--accent); }
+
+.page h2 { font-size: 22px; margin-top: 28px; }
+.legal p, .legal li { font-size: 16px; }
+
+.footer-links a { color: var(--muted); }
+
 .last-word {
   text-align: center;
   padding: 24px 8px;

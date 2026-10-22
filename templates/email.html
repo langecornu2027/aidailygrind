@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>{{ edition.headline }}</title>
+</head>
+<body style="margin:0;padding:0;background:#fbf6ef;">
+<div style="display:none;max-height:0;overflow:hidden;">{{ edition.intro.split("\n\n")[0] }}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fbf6ef;">
+<tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;font-family:Georgia,'Times New Roman',serif;color:#2b1d14;">
+
+  <tr><td align="center" style="padding:0 0 16px;">
+    <a href="{{ site_url }}" style="color:#2b1d14;text-decoration:none;font-size:26px;font-weight:bold;">☕ The AI Daily Grind</a>
+    <div style="font-family:Arial,sans-serif;font-size:13px;color:#7a6656;padding-top:4px;">{{ edition.date_label }}</div>
+  </td></tr>
+
+  {% if edition.cover %}
+  <tr><td style="padding:0 0 16px;">
+    <a href="{{ site_url }}/{{ edition.date }}.html"><img src="{{ site_url }}/{{ edition.cover }}" width="600" alt="" style="width:100%;max-width:600px;height:auto;border-radius:12px;display:block;border:0;"></a>
+  </td></tr>
+  {% endif %}
+
+  <tr><td style="padding:0 0 8px;">
+    <h1 style="font-size:26px;line-height:1.25;margin:0 0 12px;">{{ edition.headline }}</h1>
+    {% for para in edition.intro.split("\n\n") %}
+    <p style="font-family:Arial,sans-serif;font-size:16px;line-height:1.6;margin:0 0 12px;">{{ para }}</p>
+    {% endfor %}
+  </td></tr>
+
+  {% for token in edition.tokens %}
+  <tr><td style="padding:8px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #eadccd;border-radius:12px;">
+    <tr><td style="padding:18px 20px;">
+      <div style="font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:#b5652b;text-transform:uppercase;letter-spacing:1px;">Morning Token #{{ loop.index }} · {{ token.tag }}</div>
+      <h2 style="font-size:20px;line-height:1.3;margin:6px 0 10px;"><a href="{{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html" style="color:#2b1d14;text-decoration:none;">{{ token.title }}</a></h2>
+      <p style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;margin:0 0 10px;">{{ token.summary.split("\n\n")[0] }}</p>
+      <p style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;margin:0 0 10px;border-left:3px solid #b5652b;padding-left:10px;"><strong>Why it matters:</strong> {{ token.why_it_matters }}</p>
+      <a href="{{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html" style="font-family:Arial,sans-serif;font-size:14px;color:#b5652b;font-weight:bold;text-decoration:none;">Read more →</a>
+    </td></tr>
+    </table>
+  </td></tr>
+  {% endfor %}
+
+  <tr><td align="center" style="padding:16px 8px;">
+    <div style="font-size:18px;font-weight:bold;">🍩 Le dernier mot</div>
+    <p style="font-style:italic;font-size:16px;line-height:1.6;margin:6px 0 0;">{{ edition.last_word }}</p>
+  </td></tr>
+
+  <tr><td align="center" style="padding:16px 8px 0;border-top:1px solid #eadccd;font-family:Arial,sans-serif;font-size:12px;line-height:1.6;color:#7a6656;">
+    You get this email because you subscribed on {{ site_url | replace("https://", "") }}.<br>
+    Stories are written with the help of AI tools, from public news sources. Always check the sources.<br>
+    <a href="{{ '{{UNSUBSCRIBE_URL}}' }}" style="color:#7a6656;">Unsubscribe</a> ·
+    <a href="{{ site_url }}/privacy.html" style="color:#7a6656;">Privacy</a> ·
+    <a href="mailto:{{ contact_email }}" style="color:#7a6656;">Contact</a><br>
+    {{ sender }} · {{ postal_address }}
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

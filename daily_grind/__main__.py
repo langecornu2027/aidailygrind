@@ -1,7 +1,7 @@
 """Make today's AI Daily Grind.
 
-    python -m daily_grind              fetch news, ask Claude, make the cover, build the site
-    python -m daily_grind --fetch-only show what the sources found (no Claude call)
+    python -m daily_grind              fetch news, write the edition, make the cover, build the site
+    python -m daily_grind --fetch-only show what the sources found (no AI call)
     python -m daily_grind --build-only rebuild the site from saved editions
     python -m daily_grind --force      write today's edition again even if it exists
 """
@@ -17,7 +17,8 @@ from . import cover, fetch, render, write
 TIMEZONE = ZoneInfo("America/Toronto")
 
 # Short names allowed in .env, and the names the SDKs look for
-ENV_ALIASES = {"ANTH_KEY": "ANTHROPIC_API_KEY", "GEMINI_KEY": "GEMINI_API_KEY"}
+ENV_ALIASES = {"ANTH_KEY": "ANTHROPIC_API_KEY", "GEMINI_KEY": "GEMINI_API_KEY",
+               "EMAIL_TOKEN": "CLOUDFLARE_API_TOKEN"}
 
 
 def load_env() -> None:
@@ -75,7 +76,7 @@ def main() -> None:
             if not items:
                 raise SystemExit("No stories found. Check your internet connection or sources.")
 
-            print("☕ Asking Claude to pick the Morning Tokens...")
+            print("☕ Writing the Morning Tokens...")
             older = [p for p in sorted(render.EDITIONS.glob("*.json")) if p.stem < today.isoformat()]
             yesterday = ([t["title"] for t in json.loads(older[-1].read_text(encoding="utf-8"))["tokens"]]
                          if older else [])

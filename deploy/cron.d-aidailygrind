@@ -1,0 +1,3 @@
+# /etc/cron.d/aidailygrind
+# Every 15 minutes: copy the newest published site, then email today's edition (once).
+*/15 * * * * aidailygrind /usr/local/bin/aidailygrind-sync

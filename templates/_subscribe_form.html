@@ -1,0 +1,17 @@
+{% if subscribe_open %}
+<form class="subscribe" method="post" action="/api/subscribe">
+  <p class="subscribe-title">☕ Get the Grind by email, every morning</p>
+  <div class="subscribe-row">
+    <label class="visually-hidden" for="email-{{ form_id }}">Your email</label>
+    <input id="email-{{ form_id }}" type="email" name="email" required maxlength="254" placeholder="you@example.com" autocomplete="email">
+    <button class="button" type="submit">Subscribe</button>
+  </div>
+  <!-- Hidden from people; bots fill it and are ignored -->
+  <input class="visually-hidden" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <label class="consent">
+    <input type="checkbox" name="consent" value="yes" required>
+    I want to receive The AI Daily Grind by email. I can unsubscribe at any time.
+    See the <a href="privacy.html">Privacy Policy</a>.
+  </label>
+</form>
+{% endif %}

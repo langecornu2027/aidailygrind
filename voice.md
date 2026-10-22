@@ -1,6 +1,6 @@
 # My voice for The AI Daily Grind
 
-Claude reads this file every morning before it writes. Change it any time
+The writer reads this file every morning before it writes. Change it any time
 to make the recap sound more like you.
 
 ## Who I am

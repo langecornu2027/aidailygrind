@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Subscribe · The AI Daily Grind{% endblock %}
+{% block content %}
+<section class="edition-head page">
+  <h1>Get the Grind by email</h1>
+  <p class="intro">One email every morning, with the AI news that matters, in simple words. Free. No ads. Unsubscribe with one click, any time.</p>
+  <p class="notice notice-error" id="error" hidden></p>
+  {% set form_id = "page" %}
+  {% if subscribe_open %}
+    {% include "_subscribe_form.html" %}
+  {% else %}
+    <p class="notice">Email subscriptions open soon. Come back in a few days!</p>
+  {% endif %}
+  <h2>What happens next</h2>
+  <ol>
+    <li>We send you one email to confirm it is really you.</li>
+    <li>You click the link in that email. Nothing is sent before you click.</li>
+    <li>You get The AI Daily Grind every morning.</li>
+  </ol>
+  <p>We only keep your email address, and only to send you the Grind. We never sell it or share it for ads. Details in the <a href="privacy.html">Privacy Policy</a>.</p>
+</section>
+<script>
+  (function () {
+    var params = new URLSearchParams(location.search), box = document.getElementById("error");
+    var messages = {
+      invalid: "Please enter a valid email and check the consent box.",
+      busy: "Too many tries. Please wait one hour and try again.",
+      mail: "We could not send the confirmation email. Please try again later.",
+      expired: "This confirmation link is too old or already used. Please subscribe again."
+    };
+    var key = params.get("error") || (params.get("link") === "expired" ? "expired" : null);
+    if (key && messages[key]) { box.textContent = messages[key]; box.hidden = false; }
+  })();
+</script>
+{% endblock %}

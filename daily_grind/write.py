@@ -1,4 +1,4 @@
-"""Ask Claude to pick the most important stories and write today's AI Daily Grind."""
+"""Pick the most important stories and write today's AI Daily Grind with the writer model."""
 
 import json
 from pathlib import Path
@@ -149,18 +149,18 @@ def write_edition(items: list[dict], date_label: str, yesterday: list[str] | Non
         messages=[{"role": "user", "content": prompt}],
         thinking={"type": "adaptive"},
         output_config={"effort": "high", "format": {"type": "json_schema", "schema": SCHEMA}},
-        # If a safety check declines the request, Anthropic retries on a fallback model.
+        # If a safety check declines the request, the API retries on a fallback model.
         betas=["server-side-fallback-2026-07-01"],
         fallbacks="default",
     )
 
     if response.stop_reason == "refusal":
-        raise RuntimeError(f"Claude declined to write today's edition: {response.stop_details}")
+        raise RuntimeError(f"The model declined to write today's edition: {response.stop_details}")
     if response.stop_reason == "max_tokens":
-        raise RuntimeError("Claude ran out of room before finishing. Raise max_tokens.")
+        raise RuntimeError("The model ran out of room before finishing. Raise max_tokens.")
 
     text = next(block.text for block in response.content if block.type == "text")
     edition = json.loads(text)
     usage = response.usage
-    print(f"  Claude used {usage.input_tokens} input + {usage.output_tokens} output tokens")
+    print(f"  Writer model used {usage.input_tokens} input + {usage.output_tokens} output tokens")
     return edition

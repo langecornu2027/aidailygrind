@@ -1,0 +1,29 @@
+☕ THE AI DAILY GRIND · {{ edition.date_label }}
+
+{{ edition.headline }}
+
+{{ edition.intro }}
+
+Read it online: {{ site_url }}/{{ edition.date }}.html
+{% for token in edition.tokens %}
+------------------------------------------------------------
+MORNING TOKEN #{{ loop.index }} · {{ token.tag }}
+{{ token.title }}
+
+{{ token.summary.split("\n\n")[0] }}
+
+Why it matters: {{ token.why_it_matters }}
+
+Read more: {{ site_url }}/{{ edition.date }}-token-{{ loop.index }}.html
+{% endfor %}
+------------------------------------------------------------
+🍩 LE DERNIER MOT
+
+{{ edition.last_word }}
+
+------------------------------------------------------------
+You get this email because you subscribed on {{ site_url | replace("https://", "") }}.
+Stories are written with the help of AI tools, from public news sources.
+Unsubscribe: {{ '{{UNSUBSCRIBE_URL}}' }}
+Privacy: {{ site_url }}/privacy.html
+{{ sender }} · {{ postal_address }} · {{ contact_email }}

@@ -42,6 +42,9 @@
   <p>{{ edition.last_word }}</p>
 </section>
 
+{% set form_id = "edition" %}
+{% include "_subscribe_form.html" %}
+
 <nav class="pager">
   {% if older %}<a href="{{ older.date }}.html">← {{ older.date_label }}</a>{% else %}<span></span>{% endif %}
   {% if newer %}<a href="{{ newer.date }}.html">{{ newer.date_label }} →</a>{% endif %}

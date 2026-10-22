@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy · The AI Daily Grind{% endblock %}
+{% block content %}
+<section class="edition-head page legal">
+  <h1>Privacy Policy</h1>
+  <p class="date">Last updated: {{ policy_date }}</p>
+
+  <p>The AI Daily Grind is a small, free daily newsletter and website about AI news. We collect as little personal information as we can. This page explains, in simple words, what we collect, why, and your rights.</p>
+
+  <h2>1. Who we are</h2>
+  <p>The AI Daily Grind is run by {{ privacy_officer }}, in Québec, Canada.</p>
+  <ul>
+    <li><strong>Person in charge of personal information</strong> (Québec Law 25): {{ privacy_officer }}</li>
+    <li><strong>Contact:</strong> {% if contact_email %}<a href="mailto:{{ contact_email }}">{{ contact_email }}</a>{% else %}coming soon{% endif %}</li>
+    {% if postal_address %}<li><strong>Postal address:</strong> {{ postal_address }}</li>{% endif %}
+  </ul>
+
+  <h2>2. What we collect</h2>
+  <ul>
+    <li><strong>Your email address</strong>, only if you subscribe.</li>
+    <li><strong>Proof of your consent:</strong> the date you subscribed, the date you confirmed, and the consent text you agreed to. The law asks us to keep this proof.</li>
+    <li><strong>Server logs:</strong> like every website, our server writes down basic visit information (IP address, browser type, page visited, time). We use it only for security and to fix problems.</li>
+  </ul>
+  <p>We do <strong>not</strong> use cookies, analytics, tracking pixels or ads. We do not track if you open our emails or click links. We do not sell or rent your information, and we do not share it for advertising.</p>
+
+  <h2>3. Why we use it (legal basis)</h2>
+  <ul>
+    <li><strong>To send you The AI Daily Grind:</strong> because you gave your express consent (Canada's CASL, Québec Law 25, PIPEDA, and the GDPR in Europe and the UK). You can withdraw it any time.</li>
+    <li><strong>Server logs:</strong> to keep the site safe and working (our legitimate interest under the GDPR).</li>
+  </ul>
+
+  <h2>4. Who helps us (service providers)</h2>
+  <p>We use a few trusted providers. They process data only for us, under their data protection terms:</p>
+  <ul>
+    <li><strong>Cloudflare</strong> (USA): website delivery and security, and sending our emails.</li>
+    <li><strong>Google Cloud</strong> (USA): the server that hosts the website and the subscriber list.</li>
+    <li><strong>GitHub</strong> (USA): stores the website code and the published news. It holds no subscriber data.</li>
+  </ul>
+  <p><strong>Data outside Québec and Canada:</strong> these providers are in the United States. Before using them, we checked that they protect personal information properly (as Québec Law 25 asks). For people in Europe and the UK, transfers rely on the providers' Standard Contractual Clauses or the EU-U.S. Data Privacy Framework.</p>
+
+  <h2>5. How long we keep it</h2>
+  <ul>
+    <li><strong>Subscribers:</strong> until you unsubscribe. When you unsubscribe, we delete your email address right away.</li>
+    <li><strong>Unconfirmed sign-ups:</strong> deleted after 7 days.</li>
+    <li><strong>Server logs:</strong> about 14 days.</li>
+  </ul>
+
+  <h2>6. Your rights</h2>
+  <p>Wherever you live, you can ask us to:</p>
+  <ul>
+    <li>see the information we have about you (access),</li>
+    <li>correct it,</li>
+    <li>delete it,</li>
+    <li>get a copy of it (portability),</li>
+    <li>stop sending you emails (withdraw your consent): use the <strong>Unsubscribe</strong> link in any email.</li>
+  </ul>
+  <p>Write to us at the contact above. We answer within 30 days. If you are not happy with our answer, you can complain to:</p>
+  <ul>
+    <li>Québec: <a href="https://www.cai.gouv.qc.ca/" rel="noopener">Commission d'accès à l'information</a></li>
+    <li>Canada: <a href="https://www.priv.gc.ca/" rel="noopener">Office of the Privacy Commissioner of Canada</a></li>
+    <li>European Union: your country's data protection authority</li>
+    <li>United Kingdom: the <a href="https://ico.org.uk/" rel="noopener">Information Commissioner's Office</a></li>
+  </ul>
+  <p><strong>California residents (CCPA/CPRA):</strong> we do not sell or share your personal information, and we do not use it for targeted advertising. You have the rights listed above, and we will not treat you differently if you use them.</p>
+
+  <h2>7. Emails</h2>
+  <p>We only email people who subscribed and confirmed by clicking a link (double opt-in). Every email says who sends it, includes our postal address, and has a one-click unsubscribe link. We stop sending right away when you unsubscribe (the law allows up to 10 business days).</p>
+
+  <h2>8. Children</h2>
+  <p>The AI Daily Grind is not made for children. Do not subscribe if you are under 16.</p>
+
+  <h2>9. Security</h2>
+  <p>We use HTTPS everywhere, keep the subscriber list on a private server, and limit who can access it. If a security problem puts your information at risk, we will tell you and the authorities, as the law requires.</p>
+
+  <h2>10. Changes</h2>
+  <p>If we change this policy, we update the date at the top. For important changes, we tell subscribers by email.</p>
+</section>
+{% endblock %}
