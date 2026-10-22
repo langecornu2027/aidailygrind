@@ -8,11 +8,11 @@
   <title>{% block title %}The AI Daily Grind{% endblock %}</title>
   <meta name="description" content="{% block description %}The AI news that matters, freshly ground every morning. In simple words.{% endblock %}">
   {% block social %}{% endblock %}
-  <link rel="icon" type="image/svg+xml" href="static/logo.svg">
+  <link rel="icon" type="image/svg+xml" href="static/logo.svg?v={{ v }}">
   <link rel="preload" href="static/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="static/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="static/fonts/fonts.css">
-  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="static/fonts/fonts.css?v={{ v }}">
+  <link rel="stylesheet" href="static/style.css?v={{ v }}">
   {% block head_extra %}{% endblock %}
 </head>
 <body>
@@ -21,7 +21,7 @@
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="index.html" aria-label="The AI Daily Grind, home">
-        <img class="brand-mark" src="static/logo.svg" alt="" width="36" height="36">
+        <img class="brand-mark" src="static/logo.svg?v={{ v }}" alt="" width="36" height="36">
         <span class="brand-text">
           <span class="brand-name">AI Daily <span class="grad">Grind</span></span>
           <span class="brand-tag">// AI news, freshly ground daily</span>
@@ -41,7 +41,7 @@
 
   <footer class="footer">
     <div class="footer-brand">
-      <img src="static/logo.svg" alt="" width="28" height="28">
+      <img src="static/logo.svg?v={{ v }}" alt="" width="28" height="28">
       <span>The AI Daily Grind</span>
     </div>
     <p>The AI news that matters, freshly ground every morning. In simple words. Made with ☕ in Québec.</p>

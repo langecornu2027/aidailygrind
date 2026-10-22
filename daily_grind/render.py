@@ -1,5 +1,6 @@
 """Turn saved editions (data/editions/*.json) into the static website (site/)."""
 
+import hashlib
 import json
 import shutil
 from datetime import date
@@ -66,6 +67,9 @@ def build_site() -> Path:
     )
     env.globals["tag_icons"] = TAG_ICONS
     env.globals["site_url"] = f"https://{DOMAIN}"
+    # Changes when any static file changes, so Cloudflare and browsers fetch the new CSS
+    env.globals["v"] = hashlib.sha1(b"".join(
+        p.read_bytes() for p in sorted((ROOT / "static").rglob("*")) if p.is_file())).hexdigest()[:8]
     env.globals.update(sender=SENDER, postal_address=POSTAL_ADDRESS, contact_email=CONTACT_EMAIL,
                        privacy_officer=PRIVACY_OFFICER, policy_date=POLICY_DATE,
                        subscribe_open=bool(POSTAL_ADDRESS and CONTACT_EMAIL))
