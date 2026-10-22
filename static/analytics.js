@@ -94,6 +94,11 @@
   else if (choice === "denied") removeGaCookies(); // clean up anything left from before
   else banner();
 
+  document.addEventListener("click", function (e) {
+    var follow = e.target.closest("[data-follow]");
+    if (follow) window.grindTrack("follow_click", { method: follow.dataset.follow });
+  });
+
   document.addEventListener("submit", function (e) {
     if (e.target.matches("form.subscribe")) window.grindTrack("sign_up", { method: "email" });
   });

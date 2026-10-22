@@ -19,6 +19,7 @@ COVERS = ROOT / "data" / "covers"
 SITE = ROOT / "site"
 DOMAIN = "aidailygrind.com"
 SITE_URL = f"https://{DOMAIN}"
+LINKEDIN_URL = "https://www.linkedin.com/company/ai-daily-grind/"  # company page 144021861
 AUTHOR = "François Gravel"
 # Google Search Console ownership check (HTML tag method). Keep it, or Search Console stops working.
 GOOGLE_SITE_VERIFICATION = "SHvFTdzmYz2Y-8Z75A0XGGp9NsXz_N2Oh37l4-bQ_IM"
@@ -89,6 +90,7 @@ def build_site() -> Path:
     env.globals["v"] = hashlib.sha1(b"".join(
         p.read_bytes() for p in sorted((ROOT / "static").rglob("*")) if p.is_file())).hexdigest()[:8]
     env.globals["google_site_verification"] = GOOGLE_SITE_VERIFICATION
+    env.globals["linkedin_url"] = LINKEDIN_URL
     env.globals.update(sender=SENDER, postal_address=POSTAL_ADDRESS, contact_email=CONTACT_EMAIL,
                        privacy_officer=PRIVACY_OFFICER, policy_date=POLICY_DATE,
                        subscribe_open=bool(POSTAL_ADDRESS and CONTACT_EMAIL))
@@ -159,6 +161,7 @@ def _ld(data) -> str:
 
 def _org() -> dict:
     return {"@type": "Organization", "name": "The AI Daily Grind", "url": SITE_URL + "/",
+            "sameAs": [LINKEDIN_URL],
             "logo": {"@type": "ImageObject", "url": f"{SITE_URL}/static/logo-512.png", "width": 512, "height": 512}}
 
 

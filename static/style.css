@@ -505,3 +505,46 @@ h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 
   cursor: pointer;
 }
 .consent-no:hover { color: var(--text); }
+
+/* Follow on LinkedIn */
+.li-icon { flex: none; }
+.nav .nav-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #e9f3ff;
+  background: #0a66c2;
+}
+.nav .nav-follow:hover { color: #fff; background: #0b74db; }
+.follow-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+.follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 600 13px var(--sans);
+  color: #e9f3ff;
+  background: #0a66c2;
+  border-radius: 9px;
+  padding: 7px 12px;
+  text-decoration: none;
+}
+.follow-btn:hover { color: #fff; background: #0b74db; }
+@media (max-width: 560px) {
+  .nav .nav-follow span { display: none; }   /* icon only on phones */
+  .nav .nav-follow { padding: 6px 8px; }
+}
+.brand-name { white-space: nowrap; }
+@media (max-width: 560px) {
+  .nav a[href="index.html"] { display: none; }  /* the logo already goes home */
+  .topbar-inner { gap: 8px; }
+}
