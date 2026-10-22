@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Email subscriptions for The AI Daily Grind. Runs on the VM, Python standard library only.
+"""Email subscriptions and the AI voice for The AI Daily Grind.
+Runs on the VM, Python standard library only (plus ffmpeg for MP3).
 
     mailer.py serve              small web API behind nginx at /api/ (systemd service)
     mailer.py send-latest        email today's edition to confirmed subscribers (run by sync)
@@ -11,8 +12,11 @@ Settings come from the environment (/etc/aidailygrind/env on the VM):
     REPLY_TO               where replies go, default info@aidailygrind.com
     DB_PATH                default /var/lib/aidailygrind/subscribers.db
     WEB_ROOT               default /var/www/aidailygrind/public
+    GEMINI_API_KEY         Google Gemini key for the AI voice (text-to-speech)
+    AUDIO_DIR              default /var/www/aidailygrind/audio (served by nginx at /audio/)
 """
 
+import base64
 import html
 import json
 import os
@@ -20,9 +24,13 @@ import re
 import secrets
 import smtplib
 import sqlite3
+import subprocess
 import sys
+import threading
 import time
-from datetime import datetime, timedelta
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+from datetime import date, datetime, timedelta
 from email.message import EmailMessage
 from email.utils import formataddr, make_msgid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -42,6 +50,17 @@ CONSENT_TEXT = "I want to receive The AI Daily Grind by email. I can unsubscribe
 EMAIL_RE = re.compile(r"^[^@\s<>\"']{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,}$")
 PENDING_DAYS = 7  # unconfirmed sign-ups are deleted after this
 RATE_LIMIT = 5  # subscribe requests per IP per hour
+
+# AI voice: an MP3 per part is made the first time someone clicks Listen, then reused
+AUDIO_DIR = Path(os.environ.get("AUDIO_DIR", "/var/www/aidailygrind/audio"))
+TTS_URL = "https://generativelanguage.googleapis.com/v1beta/interactions"
+TTS_MODEL = "gemini-3.8-flash-tts"
+TTS_VOICE = "Sulafat"  # "Warm"
+TTS_STYLE = ("warm, friendly morning radio host reading the news over coffee; "
+             "clear, calm, natural pace, easy to understand for people who speak English as a second language")
+AUDIO_MAX_AGE_DAYS = 45  # only recent editions can be voiced
+AUDIO_DAILY_CAP = 40  # max parts made per day (about 4 full editions), protects the bill
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 # ---------- storage ----------
@@ -174,6 +193,92 @@ def send_latest() -> None:
     print(f"sent {today} to {sent} subscribers")
 
 
+# ---------- AI voice ----------
+
+audio_lock = threading.Lock()
+audio_jobs: dict[str, str] = {}  # "date-NN" -> "working" | "failed"
+audio_failed_at: dict[str, float] = {}
+audio_made: dict[str, int] = {}  # day -> parts made today
+audio_pool = ThreadPoolExecutor(max_workers=3)
+
+
+def speech_parts(day: str) -> list[str] | None:
+    path = WEB_ROOT / "speech" / f"{day}.json"
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def part_name(day: str, n: int) -> str:
+    return f"{day}-{n:02d}"
+
+
+def tts_wav(text: str) -> bytes:
+    body = {
+        "model": TTS_MODEL,
+        "input": [{"type": "user_input", "content": [{
+            "type": "text", "text": text,
+            "annotations": [{"type": "speech_metadata", "style": TTS_STYLE}],
+        }]}],
+        "response_format": {"type": "audio"},
+        "generation_config": {"speech_config": [{"voice": TTS_VOICE}]},
+    }
+    req = urllib.request.Request(TTS_URL, data=json.dumps(body).encode(), headers={
+        "x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=180) as resp:
+        result = json.load(resp)
+    for step in reversed(result.get("steps", [])):
+        for block in reversed(step.get("content", [])):
+            if block.get("type") == "audio" and block.get("data"):
+                return base64.b64decode(block["data"])
+    raise RuntimeError("no audio in the answer")
+
+
+def make_part(day: str, n: int, text: str) -> None:
+    name = part_name(day, n)
+    try:
+        wav = tts_wav(text)
+        tmp = AUDIO_DIR / f".{name}.mp3"
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", "pipe:0", "-ac", "1",
+                        "-codec:a", "libmp3lame", "-b:a", "48k", str(tmp)],
+                       input=wav, check=True, timeout=120)
+        tmp.replace(AUDIO_DIR / f"{name}.mp3")
+        with audio_lock:
+            audio_jobs.pop(name, None)
+        print(f"audio ready {name}", file=sys.stderr)
+    except Exception as exc:
+        print(f"audio failed {name}: {type(exc).__name__}: {exc}", file=sys.stderr)
+        with audio_lock:
+            audio_jobs[name] = "failed"
+            audio_failed_at[name] = time.time()
+
+
+def audio_status(day: str, parts: list[int], start: bool) -> dict | None:
+    """Status of each part; with start=True, begin making the missing ones (in order)."""
+    texts = speech_parts(day)
+    if texts is None:
+        return None
+    parts = [n for n in parts if 0 <= n < len(texts)] or list(range(len(texts)))
+    today = datetime.now(TIMEZONE).date().isoformat()
+    out = []
+    with audio_lock:
+        for n in parts:
+            name = part_name(day, n)
+            if (AUDIO_DIR / f"{name}.mp3").exists():
+                out.append({"n": n, "status": "ready", "url": f"/audio/{name}.mp3"})
+                continue
+            state = audio_jobs.get(name, "idle")
+            if state == "failed" and time.time() - audio_failed_at.get(name, 0) > 600:
+                state = "idle"  # try again after 10 minutes
+            if start and state == "idle":
+                if audio_made.get(today, 0) >= AUDIO_DAILY_CAP:
+                    state = "failed"
+                else:
+                    audio_made[today] = audio_made.get(today, 0) + 1
+                    audio_jobs[name] = state = "working"
+                    audio_pool.submit(make_part, day, n, texts[n])
+            out.append({"n": n, "status": state, "url": None})
+    return {"date": day, "total": len(texts), "parts": out}
+
+
 # ---------- web API ----------
 
 hits: dict[str, list[float]] = {}
@@ -211,8 +316,32 @@ class Handler(BaseHTTPRequestHandler):
     def token(self) -> str:
         return parse_qs(urlparse(self.path).query).get("t", [""])[0][:100]
 
+    def send_json(self, data: dict | None) -> None:
+        if data is None:
+            return self.send_error(404)
+        body = json.dumps(data).encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def audio(self, start: bool) -> None:
+        query = parse_qs(urlparse(self.path).query)
+        day = query.get("date", [""])[0]
+        if not DATE_RE.match(day) or not os.environ.get("GEMINI_API_KEY"):
+            return self.send_error(404)
+        age = (datetime.now(TIMEZONE).date() - date.fromisoformat(day)).days
+        if not 0 <= age <= AUDIO_MAX_AGE_DAYS:
+            return self.send_error(404)
+        parts = [int(n) for n in query.get("part", []) if n.isdigit()][:20]
+        self.send_json(audio_status(day, parts, start))
+
     def do_GET(self):
         path = urlparse(self.path).path
+        if path == "/api/audio":
+            return self.audio(start=False)
         if path == "/api/confirm":
             conn = db()
             with conn:
@@ -237,6 +366,9 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         length = min(int(self.headers.get("Content-Length") or 0), 4096)
         form = parse_qs(self.rfile.read(length).decode("utf-8", "replace"))
+
+        if path == "/api/audio":
+            return self.audio(start=True)
 
         if path == "/api/unsubscribe":  # button on the page, or one-click from the mail app
             conn = db()
@@ -287,6 +419,7 @@ def main() -> None:
     if command == "serve":
         port = int(sys.argv[2]) if len(sys.argv) > 2 else 8787
         db().close()
+        AUDIO_DIR.mkdir(parents=True, exist_ok=True)
         ThreadingHTTPServer(("127.0.0.1", port), Handler).serve_forever()
     elif command == "send-latest":
         send_latest()

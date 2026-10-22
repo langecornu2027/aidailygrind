@@ -104,9 +104,24 @@ def build_site() -> Path:
         html = env.get_template(template).render(page_name=out.removesuffix(".html"))
         (SITE / out).write_text(html, encoding="utf-8")
 
+    build_speech(editions)
     if editions:
         build_email(env, editions[0])
     return SITE
+
+
+def build_speech(editions: list[dict]) -> None:
+    """What the AI voice reads, one part per section. The VM turns a part into an MP3
+    only when a visitor first clicks Listen (deploy/mailer.py, /api/audio)."""
+    out = SITE / "speech"
+    out.mkdir()
+    for edition in editions:
+        parts = [f"The AI Daily Grind, {edition['date_label']}. {edition['headline']}.\n\n{edition['intro']}"]
+        for n, token in enumerate(edition["tokens"], start=1):
+            parts.append(f"Morning Token {n}. {token['title']}.\n\n{token['summary']}\n\n"
+                         f"Why it matters: {token['why_it_matters']}")
+        parts.append(f"Le dernier mot. {edition['last_word']}")
+        (out / f"{edition['date']}.json").write_text(json.dumps(parts, ensure_ascii=False), encoding="utf-8")
 
 
 def build_email(env: Environment, edition: dict) -> None:

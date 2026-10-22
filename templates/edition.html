@@ -26,14 +26,14 @@
     <span>{{ edition.tokens | length }} tokens</span>
     <span>{{ edition.read_minutes }} min read</span>
   </div>
-  <h1 data-speak data-speak-prefix="The AI Daily Grind, {{ edition.date_label }}.">{{ edition.headline }}</h1>
-  {{ listen_player("Listen to today's Grind · about " ~ edition.listen_minutes ~ " min") }}
+  <h1 data-part="0" data-speak data-speak-prefix="The AI Daily Grind, {{ edition.date_label }}.">{{ edition.headline }}</h1>
+  {{ listen_player("Listen to today's Grind · about " ~ edition.listen_minutes ~ " min", edition.date) }}
   {% if edition.cover %}
   <figure class="cover-frame">
     <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
   </figure>
   {% endif %}
-  <div class="intro" data-speak>{% for para in edition.intro.split("\n\n") %}<p>{{ para }}</p>{% endfor %}</div>
+  <div class="intro" data-part="0" data-speak>{% for para in edition.intro.split("\n\n") %}<p>{{ para }}</p>{% endfor %}</div>
   {{ share_bar(page, edition.headline, "Share today's Grind") }}
 </section>
 
@@ -56,7 +56,7 @@
 {{ token_card(token, loop.index, edition) }}
 {% endfor %}
 
-<section class="last-word">
+<section class="last-word" data-part="{{ edition.tokens | length + 1 }}">
   <div class="term-bar"><i></i><i></i><i></i><span>le_dernier_mot.txt</span></div>
   <p><span class="prompt" aria-hidden="true">&gt;</span> <span data-speak data-speak-prefix="Le dernier mot.">{{ edition.last_word }}</span></p>
 </section>

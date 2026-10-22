@@ -1,5 +1,5 @@
 # /etc/systemd/system/aidailygrind-mailer.service
-# Small web API for subscribe / confirm / unsubscribe (deploy/mailer.py)
+# Small web API for subscribe / confirm / unsubscribe and the AI voice (deploy/mailer.py)
 [Unit]
 Description=The AI Daily Grind email subscriptions
 After=network-online.target
@@ -14,7 +14,7 @@ NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
 PrivateTmp=true
-ReadWritePaths=/var/lib/aidailygrind
+ReadWritePaths=/var/lib/aidailygrind /var/www/aidailygrind/audio
 
 [Install]
 WantedBy=multi-user.target

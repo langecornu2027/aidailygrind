@@ -23,7 +23,7 @@
     <a href="{{ edition.date }}.html">← {{ edition.date_label }}</a>
     <span>Edition #{{ edition.number }}</span>
   </div>
-  {{ listen_player("Listen to this token · about " ~ ((token.summary.split() | length + token.why_it_matters.split() | length) / 150) | round(0, "ceil") | int ~ " min") }}
+  {{ listen_player("Listen to this token · about " ~ ((token.summary.split() | length + token.why_it_matters.split() | length) / 150) | round(0, "ceil") | int ~ " min", edition.date, n) }}
   {% if edition.cover %}
   <figure class="cover-frame">
     <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">

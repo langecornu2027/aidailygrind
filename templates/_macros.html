@@ -8,8 +8,8 @@
 </div>
 {% endmacro %}
 
-{% macro listen_player(idle) %}
-<div class="listen" hidden>
+{% macro listen_player(idle, date, part=None) %}
+<div class="listen" hidden data-audio-date="{{ date }}"{% if part is not none %} data-audio-part="{{ part }}"{% endif %}>
   <button type="button" class="listen-play" aria-pressed="false">▶ Listen</button>
   <button type="button" class="listen-speed" title="Reading speed">1×</button>
   <button type="button" class="listen-stop" hidden>■ Stop</button>
@@ -20,7 +20,7 @@
 
 {% macro token_card(token, n, edition, heading="h2", standalone=False) %}
 {% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
-<article class="token{% if n == 1 %} token-top{% endif %}" id="token-{{ n }}">
+<article class="token{% if n == 1 %} token-top{% endif %}" id="token-{{ n }}" data-part="{{ n }}">
   <div class="token-label">
     <span class="token-num">Morning Token <b>{{ "%02d" | format(n) }}</b></span>
     <span class="tag tag-{{ token.tag | lower | replace(' ', '-') }}">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
