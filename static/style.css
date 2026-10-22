@@ -146,6 +146,55 @@ h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 
 }
 @keyframes pulse { 50% { opacity: 0.35; } }
 
+/* ---------- listen (browser voice) ---------- */
+
+.listen {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: -6px 0 24px;
+  padding: 10px 12px 14px;
+  border: 1px solid rgba(94, 234, 212, 0.25);
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(94, 234, 212, 0.07), rgba(255, 180, 84, 0.05));
+  overflow: hidden;
+}
+.listen[hidden] { display: none; }
+.listen button {
+  font: 600 13px var(--mono);
+  border-radius: 9px;
+  padding: 7px 12px;
+  cursor: pointer;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-soft);
+}
+.listen button:hover { color: var(--text); border-color: rgba(94, 234, 212, 0.5); }
+.listen .listen-play {
+  color: #04211c;
+  background: linear-gradient(90deg, var(--cyan), #8af5e3);
+  border-color: transparent;
+  box-shadow: var(--glow-cyan);
+  min-width: 112px;
+}
+.listen .listen-play:hover { color: #04211c; filter: brightness(1.06); }
+.listen-status { font: 12px var(--mono); color: var(--muted); margin-left: 4px; }
+.listen-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, 0.05); }
+.listen-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--amber)); transition: width 0.4s; }
+
+.hero-token .listen { margin: 16px 0 20px; }
+
+/* the part being read aloud */
+.speaking {
+  border-radius: 6px;
+  background: rgba(255, 180, 84, 0.10);
+  box-shadow: 0 0 0 6px rgba(255, 180, 84, 0.10);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.hero h1.speaking { background: linear-gradient(180deg, #ffffff 30%, #ffd08a); -webkit-background-clip: text; background-clip: text; box-shadow: none; }
+
 .cover-frame {
   margin: 0 0 28px;
   padding: 1px;

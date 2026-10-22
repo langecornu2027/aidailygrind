@@ -49,6 +49,7 @@
     <p class="footer-links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a>{% if subscribe_open %}<a href="subscribe.html">Subscribe</a>{% endif %}{% if contact_email %}<a href="mailto:{{ contact_email }}">Contact</a>{% endif %}</p>
   </footer>
 
+  <script src="static/listen.js?v={{ v }}" defer></script>
   <script>
     // "Copy link" buttons; on phones, open the native share sheet instead
     document.querySelectorAll(".share .copy-link").forEach(function (button) {

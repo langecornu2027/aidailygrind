@@ -8,6 +8,16 @@
 </div>
 {% endmacro %}
 
+{% macro listen_player(idle) %}
+<div class="listen" hidden>
+  <button type="button" class="listen-play" aria-pressed="false">▶ Listen</button>
+  <button type="button" class="listen-speed" title="Reading speed">1×</button>
+  <button type="button" class="listen-stop" hidden>■ Stop</button>
+  <span class="listen-status" data-idle="{{ idle }}">{{ idle }}</span>
+  <span class="listen-bar" aria-hidden="true"><i></i></span>
+</div>
+{% endmacro %}
+
 {% macro token_card(token, n, edition, heading="h2", standalone=False) %}
 {% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
 <article class="token{% if n == 1 %} token-top{% endif %}" id="token-{{ n }}">
@@ -15,13 +25,13 @@
     <span class="token-num">Morning Token <b>{{ "%02d" | format(n) }}</b></span>
     <span class="tag tag-{{ token.tag | lower | replace(' ', '-') }}">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
   </div>
-  <{{ heading }}>{% if standalone %}{{ token.title }}{% else %}<a class="token-link" href="{{ edition.date }}-token-{{ n }}.html">{{ token.title }}</a>{% endif %}</{{ heading }}>
-  <div class="token-body">
+  <{{ heading }} data-speak data-speak-prefix="Morning Token {{ n }}.">{% if standalone %}{{ token.title }}{% else %}<a class="token-link" href="{{ edition.date }}-token-{{ n }}.html">{{ token.title }}</a>{% endif %}</{{ heading }}>
+  <div class="token-body" data-speak>
     {% for para in token.summary.split("\n\n") %}<p>{{ para }}</p>{% endfor %}
   </div>
   <div class="why">
     <span class="why-label">Why it matters</span>
-    <p>{{ token.why_it_matters }}</p>
+    <p data-speak data-speak-prefix="Why it matters:">{{ token.why_it_matters }}</p>
   </div>
   {% if token.sources %}
   <div class="sources">

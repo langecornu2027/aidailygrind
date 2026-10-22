@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import token_card %}
+{% from "_macros.html" import token_card, listen_player %}
 {% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
 {% block title %}{{ token.title }} · The AI Daily Grind{% endblock %}
 {% block description %}{{ token.share_text or token.why_it_matters }}{% endblock %}
@@ -23,6 +23,7 @@
     <a href="{{ edition.date }}.html">← {{ edition.date_label }}</a>
     <span>Edition #{{ edition.number }}</span>
   </div>
+  {{ listen_player("Listen to this token · about " ~ ((token.summary.split() | length + token.why_it_matters.split() | length) / 150) | round(0, "ceil") | int ~ " min") }}
   {% if edition.cover %}
   <figure class="cover-frame">
     <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
