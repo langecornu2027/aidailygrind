@@ -36,7 +36,7 @@ Your job:
    and what happens next. Use only facts from the stories you
    were given. If a detail is not in the input, do not invent it. If something is only
    a rumour or early research, say so.
-3. Write a short intro and a short closing word.
+3. Write the daily top recap (the intro, 2 or 3 paragraphs) and a short closing word.
 4. Describe a scene for today's cover illustration.
 
 The author's voice guide:
@@ -53,7 +53,12 @@ SCHEMA = {
         },
         "intro": {
             "type": "string",
-            "description": "2 or 3 short sentences to say hello and present today's tokens.",
+            "description": (
+                "The daily top recap, in 2 or 3 short paragraphs separated by a blank line "
+                "(8 to 12 short sentences in total). Say hello, then tell the big picture of "
+                "the day: what the main stories are, how they connect, and the trend behind "
+                "them. End with what to watch. Do not just list the tokens."
+            ),
         },
         "tokens": {
             "type": "array",
