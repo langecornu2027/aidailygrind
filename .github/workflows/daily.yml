@@ -6,9 +6,7 @@ on:
   workflow_dispatch: # lets you run it by hand from the Actions tab
 
 permissions:
-  contents: write # save the new edition in the repo
-  pages: write
-  id-token: write
+  contents: write # save the new edition and push the built site
 
 concurrency:
   group: aidailygrind
@@ -17,35 +15,39 @@ concurrency:
 jobs:
   brew:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
 
       - run: pip install -r requirements.txt
 
-      - name: Write today's edition
+      - name: Write today's edition and cover
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python -m daily_grind
 
       - name: Save the edition in the repo
         run: |
           git config user.name "AI Daily Grind bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/editions
+          git add data/editions data/covers
           git diff --cached --quiet || git commit -m "☕ AI Daily Grind for $(TZ=America/Toronto date +%F)"
           git push
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-      - id: deploy
-        uses: actions/deploy-pages@v4
+      # The VM (same server as langecornu.com) checks this branch every 15 minutes
+      # and copies it to /var/www/aidailygrind/public. See deploy/sync.sh.
+      - name: Publish the site to the `published` branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd site
+          git init -q -b published
+          git add -A
+          git -c user.name="AI Daily Grind bot" -c user.email="github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Publish $(TZ=America/Toronto date +%F)"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" published

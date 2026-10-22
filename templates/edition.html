@@ -1,8 +1,20 @@
 {% extends "base.html" %}
 {% block title %}The AI Daily Grind · {{ edition.date_label }}{% endblock %}
 {% block description %}{{ edition.headline }}{% endblock %}
+{% block social %}
+  <meta property="og:title" content="{{ edition.headline }}">
+  <meta property="og:description" content="{{ edition.intro }}">
+  <meta property="og:url" content="{{ site_url }}/{{ edition.date }}.html">
+  {% if edition.cover %}
+  <meta property="og:image" content="{{ site_url }}/{{ edition.cover }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% endif %}
+{% endblock %}
 {% block content %}
 <section class="edition-head">
+  {% if edition.cover %}
+  <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
+  {% endif %}
   <p class="date">{{ edition.date_label }}</p>
   <h1>{{ edition.headline }}</h1>
   <p class="intro">{{ edition.intro }}</p>

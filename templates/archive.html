@@ -9,6 +9,7 @@
   {% for edition in editions %}
   <li>
     <a href="{{ edition.date }}.html">
+      {% if edition.cover %}<img class="thumb" src="{{ edition.cover }}" alt="" loading="lazy">{% endif %}
       <span class="date">{{ edition.date_label }}</span>
       <span class="headline">{{ edition.headline }}</span>
     </a>

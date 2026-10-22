@@ -28,6 +28,7 @@ Your job:
    were given. If a detail is not in the input, do not invent it. If something is only
    a rumour or early research, say so.
 3. Write a short intro and a short closing word.
+4. Describe a scene for today's cover illustration.
 
 The author's voice guide:
 <voice>
@@ -85,8 +86,17 @@ SCHEMA = {
             "type": "string",
             "description": "Le dernier mot: one or two sentences, a personal thought to close.",
         },
+        "cover_scene": {
+            "type": "string",
+            "description": (
+                "Scene for today's cover illustration, for an image model. 2 or 3 sentences "
+                "that show the top story (or the mood of the day) as a simple visual metaphor. "
+                "Describe objects, characters and setting only. No text, logos, brand names, "
+                "or real people. The art style is added later, so do not describe it."
+            ),
+        },
     },
-    "required": ["headline", "intro", "tokens", "last_word"],
+    "required": ["headline", "intro", "tokens", "last_word", "cover_scene"],
     "additionalProperties": False,
 }
 

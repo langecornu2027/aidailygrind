@@ -68,6 +68,18 @@ a { color: var(--accent); }
 h1, h2 { font-family: "Fraunces", Georgia, serif; line-height: 1.25; letter-spacing: -0.01em; }
 
 .edition-head { padding: 28px 0 8px; border-top: 1px solid var(--line); margin-top: 20px; }
+.cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  background: var(--accent-soft);
+}
+
 .edition-head .date {
   margin: 0;
   color: var(--accent);
@@ -135,6 +147,15 @@ h1, h2 { font-family: "Fraunces", Georgia, serif; line-height: 1.25; letter-spac
 .archive { list-style: none; padding: 0; }
 .archive li { border-bottom: 1px solid var(--line); }
 .archive a { display: block; padding: 14px 0; text-decoration: none; color: var(--text); }
+.archive .thumb {
+  float: right;
+  width: 112px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-left: 12px;
+}
+.archive a::after { content: ""; display: block; clear: both; }
 .archive .date { display: block; font-size: 13px; color: var(--accent); font-weight: 600; }
 .archive .headline { font-family: "Fraunces", Georgia, serif; font-size: 19px; }
 

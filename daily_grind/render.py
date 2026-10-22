@@ -9,6 +9,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ROOT = Path(__file__).resolve().parent.parent
 EDITIONS = ROOT / "data" / "editions"
+COVERS = ROOT / "data" / "covers"
 SITE = ROOT / "site"
 DOMAIN = "aidailygrind.com"
 
@@ -28,6 +29,8 @@ def load_editions() -> list[dict]:
         edition = json.loads(path.read_text(encoding="utf-8"))
         edition["date"] = path.stem
         edition["date_label"] = nice_date(path.stem)
+        if (COVERS / f"{path.stem}.jpg").exists():
+            edition["cover"] = f"covers/{path.stem}.jpg"
         editions.append(edition)
     return editions
 
@@ -38,12 +41,15 @@ def build_site() -> Path:
         autoescape=select_autoescape(["html"]),
     )
     env.globals["tag_icons"] = TAG_ICONS
+    env.globals["site_url"] = f"https://{DOMAIN}"
     editions = load_editions()
 
     if SITE.exists():
         shutil.rmtree(SITE)
     SITE.mkdir()
     shutil.copytree(ROOT / "static", SITE / "static")
+    if COVERS.exists():
+        shutil.copytree(COVERS, SITE / "covers")
 
     page = env.get_template("edition.html")
     for i, edition in enumerate(editions):
@@ -56,6 +62,4 @@ def build_site() -> Path:
 
     archive = env.get_template("archive.html").render(editions=editions)
     (SITE / "archive.html").write_text(archive, encoding="utf-8")
-    (SITE / ".nojekyll").touch()
-    (SITE / "CNAME").write_text(DOMAIN + "\n")
     return SITE
