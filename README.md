@@ -84,6 +84,14 @@ Repo secrets: `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`.
 - Privacy Policy and Disclaimer: [templates/privacy.html](templates/privacy.html),
   [templates/disclaimer.html](templates/disclaimer.html). Update `POLICY_DATE` when they change.
 
+### Anonymous visit counter (private)
+
+Our own counter, separate from Google Analytics: it counts **all** visitors (with or
+without cookies) by country, page and day. No cookies, no IP stored; a visitor is a
+daily fingerprint whose secret is erased the next day. `static/count.js` sends one ping
+per page view to `/api/hit`. The private dashboard is `/api/stats?key=STATS_TOKEN`
+(the token is in `/etc/aidailygrind/env` on the VM; `&days=7|30|90|365`).
+
 Subscriber count:
 
 ```bash
