@@ -13,7 +13,7 @@
 Read and share: {{ site_url }}/{{ piece.slug }}.html?utm_source=newsletter&utm_medium=email&utm_campaign=cafe_noir
 
 ------------------------------------------------------------
-Le Café Noir is François's personal opinion, written with the help of AI tools from his point of view.
+Le Café Noir is François Gravel's personal opinion.
 You get this email because you subscribed on {{ site_url | replace("https://", "") }}.
 Unsubscribe: {{ '{{UNSUBSCRIBE_URL}}' }}
 Privacy: {{ site_url }}/privacy.html
