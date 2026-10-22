@@ -58,6 +58,11 @@ def load_editions() -> list[dict]:
         words = len(edition["intro"].split()) + sum(
             len(t["summary"].split()) + len(t["why_it_matters"].split()) for t in edition["tokens"])
         edition["read_minutes"] = max(1, round(words / 200))
+        if not edition.get("social_post"):  # editions written before this field existed
+            lines = [f"☕ {edition['headline']}", ""]
+            lines += [f"{TAG_ICONS.get(t['tag'], '▸')} {t['title']}" for t in edition["tokens"][:5]]
+            lines += ["", "What do you think: are we moving too fast? 🤔"]
+            edition["social_post"] = "\n".join(lines)
         edition["listen_minutes"] = max(1, round(words / 150))
         editions.append(edition)
     for number, edition in enumerate(reversed(editions), start=1):

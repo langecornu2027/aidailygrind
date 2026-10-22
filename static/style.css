@@ -461,3 +461,13 @@ h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
 }
+
+/* one-click LinkedIn */
+.share .post-linkedin {
+  color: #e9f3ff;
+  background: #0a66c2;
+  border-color: #0a66c2;
+  font-weight: 600;
+}
+.share .post-linkedin:hover { color: #fff; background: #0b74db; border-color: #0b74db; }
+.share-note { flex-basis: 100%; margin: 6px 0 0; font: 12px var(--mono); color: var(--cyan); }

@@ -1,13 +1,12 @@
-{% macro share_bar(url, text, label="Share", card=None) %}
-{# LinkedIn opens the post box with the text and link already written #}
-{% set post = text ~ "\n\n" ~ url %}
-<div class="share" data-url="{{ url }}" data-text="{{ text }}">
+{% macro share_bar(url, text, label="Share", card=None, post=None) %}
+{% set post = post or text %}
+<div class="share" data-url="{{ url }}" data-text="{{ text }}" data-post="{{ post }}"{% if card %} data-card="{{ card }}"{% endif %}>
   <span class="share-label">{{ label }}</span>
-  <a href="https://www.linkedin.com/feed/?shareActive=true&text={{ post | urlencode }}" target="_blank" rel="noopener">LinkedIn</a>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text={{ (post ~ "\n\n" ~ url) | urlencode }}" target="_blank" rel="noopener">Post on LinkedIn</a>
   <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ url | urlencode }}" target="_blank" rel="noopener">X</a>
   <a href="https://www.facebook.com/sharer/sharer.php?u={{ url | urlencode }}" target="_blank" rel="noopener">Facebook</a>
   <button type="button" class="copy-post">Copy post</button>
-  {% if card %}<a href="{{ card }}" download>Image</a>{% endif %}
+  {% if card %}<a href="{{ card }}" download="ai-daily-grind.jpg">Image</a>{% endif %}
   <button type="button" class="copy-link">Copy link</button>
 </div>
 {% endmacro %}

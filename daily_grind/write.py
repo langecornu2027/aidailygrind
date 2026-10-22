@@ -129,8 +129,19 @@ SCHEMA = {
                 "or real people. The art style is added later, so do not describe it."
             ),
         },
+        "social_post": {
+            "type": "string",
+            "description": (
+                "A LinkedIn post for today's edition, in the author's voice. First line: a hook "
+                "with one emoji. Then one or two short sentences with the big pattern of the day. "
+                "Then the top 4 or 5 tokens, one line each, each starting with a fitting emoji. "
+                "Then one sharp, critical line. End with a question to the reader. "
+                "Short lines, blank lines between parts, max 900 characters, "
+                "no hashtags and no link (both are added later)."
+            ),
+        },
     },
-    "required": ["headline", "intro", "tokens", "last_word", "cover_scene"],
+    "required": ["headline", "intro", "tokens", "last_word", "cover_scene", "social_post"],
     "additionalProperties": False,
 }
 
