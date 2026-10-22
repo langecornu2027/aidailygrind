@@ -1,0 +1,167 @@
+{
+  "headline": "AI finds a giant hole in the web, and the AI agents want to do your shopping",
+  "intro": "Bon, good morning! Grab your coffee: today a big security problem touches a huge part of the web, and AI is in the middle of it. We also have a new agent from Anthropic, stores that disagree about AI shoppers, and a few free tools you can try.",
+  "tokens": [
+    {
+      "title": "PHP2Shell: AI finds two serious holes in PHP, and the web rushes to fix them",
+      "tag": "Safety",
+      "summary": "Two serious security holes were found in PHP, a programming language that powers a big part of the web, including Wikipedia and WordPress. By some accounts, up to 70% of websites use PHP in some way. The holes were found with the help of AI, by OpenAI and Wiz, a security company owned by Google. A leak in the disclosure process meant hackers knew about the bugs before defenders did, and sites like DeviantArt and 4chan were shut down for a while.",
+      "why_it_matters": "If you or your business run a website on PHP, update to the new PHP 8.x version today. It also shows both sides of AI in security: it can find old bugs fast, but it also makes it more urgent to fix them.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/tech/1016574/php2shell-security-vulnerability-websites-down"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/21/php-armageddon-openai-googles-wiz-find-ancient-holes-panicking-the-internet/"
+        },
+        {
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com/security/2026/10/hackers-got-a-four-day-head-start-on-epic-php2shell-vulnerability/"
+        },
+        {
+          "name": "Simon Willison",
+          "url": "https://simonwillison.net/2026/Oct/21/php-security-release/"
+        },
+        {
+          "name": "Wiz (Hacker News)",
+          "url": "https://www.wiz.io/blog/php2shell-php-rce"
+        },
+        {
+          "name": "OpenAI: Patch the Planet (Hacker News)",
+          "url": "https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/"
+        }
+      ]
+    },
+    {
+      "title": "Anthropic launches Claude Duet, its new AI agent",
+      "tag": "Launch",
+      "summary": "Anthropic announced Claude Duet, an AI agent made for professionals and small business owners. An \"agent\" is an AI that does tasks for you, not only answers questions. It is a \"research preview\", so still early, and it is available as an app on iOS and Android and through Claude on the web. For now, access is through a waitlist for Pro and Max plan users.",
+      "why_it_matters": "It goes head to head with Meta's Muse and OpenAI's Dots, so the race for your personal AI helper is getting serious. It was also the most discussed story on Hacker News today. In smaller news, Claude now also works with Google Docs, Sheets and Slides.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1015843/anthropic-claude-duet-ai-agent"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/"
+        },
+        {
+          "name": "Claude Duet product page (Hacker News)",
+          "url": "https://claude.com/product/claude-duet"
+        },
+        {
+          "name": "Claude Duet article",
+          "url": "https://claude.com/resources/articles/claude-duet"
+        },
+        {
+          "name": "Claude in Google Docs, Sheets and Slides",
+          "url": "https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides"
+        }
+      ]
+    },
+    {
+      "title": "Walmart welcomes AI shopping agents, Amazon blocks them",
+      "tag": "Business",
+      "summary": "Starting next month, Walmart will let AI agents shop on its website for you, with tools to approve purchases and set spending limits. Amazon is doing the opposite and blocks AI agents. Meta says its Muse app now has over 10 million users, and shopping is one of the top things people do with it. Also, 1Password launched \"1Password for Agents\", so an agent can sign in to your accounts without seeing your passwords, but only after you approve.",
+      "why_it_matters": "Letting an AI buy things for you is coming fast, and stores do not agree on it yet. A Verge reporter who tested it says the experience is still a bit like sending a nervous teenager to the store.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1015715/walmart-ai-shopping-agents"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/21/while-amazon-blocks-ai-agents-walmart-rolls-out-the-welcome-mat/"
+        },
+        {
+          "name": "The Verge (report)",
+          "url": "https://www.theverge.com/report/1015811/ai-shopping-agents-blocked-amazon-the-realreal-target-meta-muse"
+        },
+        {
+          "name": "TechCrunch (Muse)",
+          "url": "https://techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity/"
+        },
+        {
+          "name": "The Verge (1Password)",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1016399/1password-ai-agent-password-sign-in"
+        }
+      ]
+    },
+    {
+      "title": "OpenAI models are coming to Google Cloud",
+      "tag": "Business",
+      "summary": "OpenAI and Google Cloud are bringing OpenAI models and Codex coding tools to Google Cloud. GPT 6.1 Astra, Sol and Luna will arrive there in the coming weeks, through Gemini's Model Garden and the Google Cloud Marketplace. The models are also coming to Antigravity, Google's coding tool.",
+      "why_it_matters": "Two big rivals are working together. For businesses already on Google Cloud, it means they can use OpenAI models without changing their setup.",
+      "sources": [
+        {
+          "name": "OpenAI",
+          "url": "https://openai.com/index/openai-models-google-cloud"
+        },
+        {
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com/ai/2026/10/openais-latest-ai-models-are-coming-to-google-cloud-and-antigravity/"
+        },
+        {
+          "name": "Hacker News",
+          "url": "https://openai.com/index/openai-models-google-cloud/"
+        }
+      ]
+    },
+    {
+      "title": "Free models to try: Flint, Kitten-TTS 2, and a new Mistral",
+      "tag": "Tool",
+      "summary": "The startup Recursive released Flint, a free coding model small enough for a laptop, and it says the model was mostly built by its own AI research system. Early users on Reddit say it beats a popular Qwen model on coding tests. KittenML released Kitten-TTS 2, an open text-to-speech model (it turns text into voice) that runs in real time on a normal computer chip, with voice cloning and many languages. Mistral, the French AI company, also announced Mistral Large 4, which got a lot of attention on Hacker News, but I do not have more details yet.",
+      "why_it_matters": "These are \"open-weight\" models: you can download them and run them on your own computer, for free and with more privacy. The claim that AI built Flint is interesting, but it is the company's own claim for now.",
+      "sources": [
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/21/recursive-launches-flint-a-laptop-coding-model-it-says-was-largely-built-by-ai/"
+        },
+        {
+          "name": "r/LocalLLaMA (Flint)",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xc23iq/recursive_flint_the_qwen38_35b_weve_all_been/"
+        },
+        {
+          "name": "r/LocalLLaMA (Kitten-TTS 2)",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xc48or/kittentts_2_new_opensource_sota_158_bit_tts/"
+        },
+        {
+          "name": "Mistral (Hacker News)",
+          "url": "https://mistral.ai/news/mistral-large-4/"
+        }
+      ]
+    },
+    {
+      "title": "Meta creates new shares to pay for its AI push",
+      "tag": "Business",
+      "summary": "In its earnings report on Wednesday, Meta said it will create a new class of non-voting shares. The money will fund its AI projects, possible acquisitions and employee pay. Trading of these shares will start in 2027.",
+      "why_it_matters": "Even a giant like Meta needs new ways to pay for AI. It shows how huge the costs of the AI race have become.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/tech/1015799/meta-shares-class-ai-q3-2026-earnings"
+        }
+      ]
+    },
+    {
+      "title": "AI and work: Bill Gates warns of 20 bumpy years, managers feel lost",
+      "tag": "Community",
+      "summary": "In an interview with The Verge, Bill Gates says we should prepare for about 20 years of \"tumultuous\" disruption from AI. A new survey also found that more than half of managers find it harder to judge their employees' work since adopting AI. So for now, AI is often more of a headache than a productivity boost for them.",
+      "why_it_matters": "The change at work is real, but it is messy and slow. If you feel a bit lost with AI at your job, you are not alone.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/podcast/1015408/bill-gates-ai-interview-microsoft-openai-anthropic-risk-policy-regulation"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/21/ai-promises-productivity-but-for-managers-its-mostly-a-headache-for-now-says-new-survey/"
+        }
+      ]
+    }
+  ],
+  "last_word": "Today AI helped find old bugs, and The Verge also reminded us that Claude did not invent a scorpion antivenom, even if the headlines wanted it to. Voilà: AI is useful, but we still need humans to check the work, and to update their PHP!"
+}
