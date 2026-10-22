@@ -1,9 +1,9 @@
 // Share buttons.
 // "Post on LinkedIn" in one click:
 //   - phone: opens the share sheet with the image AND the text (pick LinkedIn, post)
-//   - computer: opens LinkedIn with the text already written, and downloads the image
-//     (LinkedIn does not let a website attach an image for you, so you add it with 🖼️)
-// The text is also copied, in case the app drops it.
+//   - computer: opens LinkedIn with the text already written, and copies the image,
+//     so you only press ⌘V / Ctrl+V in the post box (LinkedIn does not let a website
+//     attach an image for you). If copying an image is not possible, it downloads it.
 (function () {
   var isPhone = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
   var cards = {}; // card url -> File, fetched ahead so the share sheet opens right away
@@ -14,6 +14,31 @@
     fetch(url).then(function (r) { return r.blob(); }).then(function (blob) {
       cards[url] = new File([blob], "ai-daily-grind.jpg", { type: "image/jpeg" });
     }).catch(function () { delete cards[url]; });
+  }
+
+  // Copy the card as a PNG image (the only image type browsers can put on the clipboard)
+  function copyImage(url) {
+    if (!navigator.clipboard || !window.ClipboardItem) return Promise.reject();
+    var png = fetch(url).then(function (r) { return r.blob(); }).then(function (blob) {
+      return createImageBitmap(blob);
+    }).then(function (bitmap) {
+      var canvas = document.createElement("canvas");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      canvas.getContext("2d").drawImage(bitmap, 0, 0);
+      return new Promise(function (resolve) { canvas.toBlob(resolve, "image/png"); });
+    });
+    // Give the promise to ClipboardItem right away, so it still counts as part of the click
+    return navigator.clipboard.write([new ClipboardItem({ "image/png": png })]);
+  }
+
+  function download(url) {
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "ai-daily-grind.jpg";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   function copy(text) {
@@ -51,22 +76,21 @@
     var li = box.querySelector(".post-linkedin");
     if (li) {
       li.addEventListener("click", function (event) {
-        copy(fullPost);
         var file = cards[card];
         if (isPhone && file instanceof File && navigator.canShare && navigator.canShare({ files: [file] })) {
           event.preventDefault();
+          copy(fullPost); // in case the app drops the text
           navigator.share({ files: [file], text: fullPost, title: box.dataset.text }).catch(function () {});
           return;
         }
-        // Computer: the link opens LinkedIn with the text written; we also download the image
+        // Computer: the link opens LinkedIn with the text written; the image goes on the clipboard
         if (card) {
-          var a = document.createElement("a");
-          a.href = card;
-          a.download = "ai-daily-grind.jpg";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          note(box, "✓ LinkedIn opened with your text. The image is downloaded: add it with the 🖼️ button in LinkedIn, then Post.");
+          copyImage(card).then(function () {
+            note(box, "✓ LinkedIn opened with your text, and the image is copied. Click in the post box, press ⌘V (Mac) or Ctrl+V (Windows), then Post.");
+          }).catch(function () {
+            download(card);
+            note(box, "✓ LinkedIn opened with your text. The image is downloaded: add it with the 🖼️ button in LinkedIn, then Post.");
+          });
         }
       });
     }
