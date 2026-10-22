@@ -77,7 +77,8 @@
       });
     });
     var post = box.dataset.post || box.dataset.text;
-    var fullPost = post + "\n\n" + (box.dataset.shareUrl || url);
+    // Hashtags only on manual shares (the automatic LinkedIn page post has none)
+    var fullPost = post + "\n\n" + (box.dataset.shareUrl || url) + (box.dataset.hashtags ? "\n\n" + box.dataset.hashtags : "");
     var card = box.dataset.card;
 
     // Get the image ready before the click (phones need it at once for the share sheet)

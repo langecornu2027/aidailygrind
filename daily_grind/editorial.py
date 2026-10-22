@@ -94,6 +94,15 @@ SCHEMA = {
                 "additionalProperties": False,
             },
         },
+        "hashtags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "3 to 5 hashtags for sharing the editorial on LinkedIn/Facebook, most relevant first, "
+                            "e.g. #AISafety #Cybersecurity #OpenAI. CamelCase, no spaces, start with #. "
+                            "Mix one broad tag (#AI) with specific ones (topic, company, product)."
+                        ),
+                    },
         "social_post": {
             "type": "string",
             "description": (
@@ -110,7 +119,8 @@ SCHEMA = {
             ),
         },
     },
-    "required": ["title", "dek", "body", "call_to_action", "question", "sources", "social_post", "cover_scene"],
+    "required": ["title", "dek", "body", "call_to_action", "question", "sources", "hashtags", "social_post",
+                 "cover_scene"],
     "additionalProperties": False,
 }
 

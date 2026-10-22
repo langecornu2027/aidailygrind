@@ -41,7 +41,7 @@
   </figure>
   {% endif %}
   <div class="intro" data-part="0" data-speak>{% for para in edition.intro.split("\n\n") %}<p>{{ para }}</p>{% endfor %}</div>
-  {{ share_bar(page, "☕ " ~ edition.headline, "Share today's Grind", edition.card, edition.social_post) }}
+  {{ share_bar(page, "☕ " ~ edition.headline, "Share today's Grind", edition.card, edition.social_post, edition.hashtags) }}
 </section>
 
 <section class="manifest" aria-label="Today's Morning Tokens">

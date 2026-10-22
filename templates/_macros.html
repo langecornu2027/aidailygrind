@@ -1,12 +1,14 @@
-{% macro share_bar(url, text, label="Share", card=None, post=None) %}
+{% macro share_bar(url, text, label="Share", card=None, post=None, hashtags=[]) %}
 {% set post = post or text %}
 {# Links in shared posts carry the network name, so Analytics shows where readers come from #}
 {% set tag = "utm_medium=social&utm_campaign=share&utm_source=" %}
-<div class="share" data-url="{{ url }}" data-share-url="{{ url }}?{{ tag }}linkedin" data-text="{{ text }}" data-post="{{ post }}"{% if card %} data-card="{{ card }}"{% endif %}>
+{% set tags = hashtags | join(" ") %}
+{% set specific = (hashtags | reject("equalto", "#AI") | list or hashtags) %}
+<div class="share" data-url="{{ url }}" data-share-url="{{ url }}?{{ tag }}linkedin" data-text="{{ text }}" data-post="{{ post }}" data-hashtags="{{ tags }}"{% if card %} data-card="{{ card }}"{% endif %}>
   <span class="share-label">{{ label }}</span>
-  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text={{ (post ~ "\n\n" ~ url ~ "?" ~ tag ~ "linkedin") | urlencode }}" target="_blank" rel="noopener">Post on LinkedIn</a>
-  <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ (url ~ "?" ~ tag ~ "x") | urlencode }}" target="_blank" rel="noopener">X</a>
-  <a href="https://www.facebook.com/sharer/sharer.php?u={{ (url ~ "?" ~ tag ~ "facebook") | urlencode }}" target="_blank" rel="noopener">Facebook</a>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text={{ (post ~ "\n\n" ~ url ~ "?" ~ tag ~ "linkedin" ~ ("\n\n" ~ tags if tags else "")) | urlencode }}" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ (url ~ "?" ~ tag ~ "x") | urlencode }}{% if hashtags %}&hashtags={{ (specific[:2] | map("replace", "#", "") | join(",")) | urlencode }}{% endif %}" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{ (url ~ "?" ~ tag ~ "facebook") | urlencode }}{% if hashtags %}&hashtag={{ specific[0] | urlencode }}{% endif %}" target="_blank" rel="noopener">Facebook</a>
   <button type="button" class="copy-post">Copy post</button>
   {% if card %}<a href="{{ card }}" download="ai-daily-grind.jpg">Image</a>{% endif %}
   <button type="button" class="copy-link">Copy link</button>
@@ -44,6 +46,6 @@
     {% for source in token.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.name }} ↗</a>{% endfor %}
   </div>
   {% endif %}
-  {{ share_bar(page, token.share_text or token.title, "Share", token.card) }}
+  {{ share_bar(page, token.share_text or token.title, "Share", token.card, None, token.hashtags) }}
 </article>
 {% endmacro %}

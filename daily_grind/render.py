@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import re
 import shutil
 from datetime import date, datetime, timezone
 from email.utils import format_datetime
@@ -54,6 +55,27 @@ TAG_ICONS = {
 }
 
 
+TAG_HASHTAGS = {
+    "Safety": ["#AISafety", "#Cybersecurity"], "Policy": ["#AIPolicy", "#AIRegulation"],
+    "Launch": ["#GenerativeAI", "#AITools"], "Tool": ["#AITools", "#Productivity"],
+    "Open source": ["#OpenSource", "#GitHub"], "Research": ["#AIResearch", "#MachineLearning"],
+    "Business": ["#AIBusiness", "#FutureOfWork"], "Community": ["#AICommunity", "#TechNews"],
+    "Opinion": ["#AIEthics", "#AISafety"],
+}
+BRAND_HASHTAG = "#AIDailyGrind"
+
+
+def clean_hashtags(tags, fallback_tag: str = "") -> list[str]:
+    """Up to 5 hashtags for manual shares: '#' + letters/digits, no duplicates, brand tag last."""
+    tags = list(tags or []) or ["#AI"] + TAG_HASHTAGS.get(fallback_tag, [])
+    out = []
+    for tag in tags:
+        tag = "#" + re.sub(r"[^0-9A-Za-z_]", "", str(tag).lstrip("#"))
+        if len(tag) > 2 and tag.lower() not in [o.lower() for o in out] and tag.lower() != BRAND_HASHTAG.lower():
+            out.append(tag)
+    return out[:4] + [BRAND_HASHTAG]
+
+
 def nice_date(iso: str) -> str:
     return date.fromisoformat(iso).strftime("%A, %B %-d, %Y")
 
@@ -77,6 +99,11 @@ def load_editions() -> list[dict]:
             lines += ["", "What do you think: are we moving too fast? 🤔"]
             edition["social_post"] = "\n".join(lines)
         edition["listen_minutes"] = max(1, round(words / 150))
+        first_tag = edition["tokens"][0]["tag"] if edition["tokens"] else ""
+        edition["hashtags"] = clean_hashtags(edition.get("hashtags") or
+                                             ["#AI", "#ArtificialIntelligence"] + TAG_HASHTAGS.get(first_tag, [])[:1])
+        for token in edition["tokens"]:
+            token["hashtags"] = clean_hashtags(token.get("hashtags"), token["tag"])
         editions.append(edition)
     for number, edition in enumerate(reversed(editions), start=1):
         edition["number"] = number
@@ -104,6 +131,7 @@ def load_editorials() -> list[dict]:
             piece["cover"] = f"covers/editorial-{path.stem}.jpg?v={hashlib.sha1(cover.read_bytes()).hexdigest()[:8]}"
         words = len(piece["body"].split())
         piece["read_minutes"] = max(1, round(words / 200))
+        piece["hashtags"] = clean_hashtags(piece.get("hashtags") or ["#AI", "#AIEthics", "#AISafety", "#FutureOfAI"])
         piece["blocks"] = [("h2", b[3:].strip()) if b.startswith("## ") else ("p", b.strip())
                            for b in piece["body"].split("\n\n") if b.strip()]
         pieces.append(piece)

@@ -91,6 +91,15 @@ SCHEMA = {
                         "type": "string",
                         "description": "Two or three sentences: why the reader should care.",
                     },
+                    "hashtags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "3 to 5 hashtags for sharing this on LinkedIn/Facebook, most relevant first, "
+                            "e.g. #AISafety #Cybersecurity #OpenAI. CamelCase, no spaces, start with #. "
+                            "Mix one broad tag (#AI) with specific ones (topic, company, product)."
+                        ),
+                    },
                     "share_text": {
                         "type": "string",
                         "description": (
@@ -112,7 +121,7 @@ SCHEMA = {
                         },
                     },
                 },
-                "required": ["title", "tag", "summary", "why_it_matters", "share_text", "sources"],
+                "required": ["title", "tag", "summary", "why_it_matters", "hashtags", "share_text", "sources"],
                 "additionalProperties": False,
             },
         },
@@ -129,6 +138,15 @@ SCHEMA = {
                 "or real people. The art style is added later, so do not describe it."
             ),
         },
+        "hashtags": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": (
+                            "3 to 5 hashtags for sharing today's edition on LinkedIn/Facebook, most relevant first, "
+                            "e.g. #AISafety #Cybersecurity #OpenAI. CamelCase, no spaces, start with #. "
+                            "Mix one broad tag (#AI) with specific ones (topic, company, product)."
+                        ),
+                    },
         "social_post": {
             "type": "string",
             "description": (
@@ -141,7 +159,7 @@ SCHEMA = {
             ),
         },
     },
-    "required": ["headline", "intro", "tokens", "last_word", "cover_scene", "social_post"],
+    "required": ["headline", "intro", "tokens", "last_word", "cover_scene", "hashtags", "social_post"],
     "additionalProperties": False,
 }
 
