@@ -1,7 +1,8 @@
 """Share cards: the picture LinkedIn, X and Facebook show when someone shares a page.
 
-1200x630 (the size these sites prefer for a big preview): the cover with a dark fade,
-the brand, a small label, and the title in big letters.
+1200x630 (the size these sites prefer for a big preview). Some apps (Facebook on phones)
+crop it to a square from the center, so all the text stays inside the center 630x630
+"safe square". The cover fills the sides, so the wide version still looks full.
 """
 
 from pathlib import Path
@@ -11,11 +12,11 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "assets" / "fonts"
 W, H = 1200, 630
-PAD = 64
-TEXT_W = 700  # the title stays on the dark left side
-LABEL_Y = 150
-TITLE_Y = LABEL_Y + 54
-TITLE_BOTTOM = H - PAD - 56  # keep clear of the footer
+CX = W // 2
+SAFE = 630          # center square that every crop keeps
+TEXT_W = 540        # title width, inside the safe square with a margin
+TITLE_TOP = 220
+TITLE_BOTTOM = 515
 
 BG = (7, 9, 12)
 AMBER = (255, 180, 84)
@@ -45,14 +46,14 @@ def wrap(draw: ImageDraw.ImageDraw, text: str, f: ImageFont.FreeTypeFont, width:
 
 
 def fit_title(draw: ImageDraw.ImageDraw, text: str) -> tuple[ImageFont.FreeTypeFont, list[str]]:
-    """Biggest size where the title fits in 4 lines and above the footer."""
-    for size in range(68, 34, -4):
+    """Biggest size where the title fits the safe square in 5 lines or less."""
+    for size in range(60, 30, -2):
         f = font("SpaceGrotesk", size, "Bold")
         lines = wrap(draw, text, f, TEXT_W)
-        if len(lines) <= 4 and len(lines) * int(size * 1.12) <= TITLE_BOTTOM - TITLE_Y:
+        if len(lines) <= 5 and len(lines) * int(size * 1.14) <= TITLE_BOTTOM - TITLE_TOP:
             return f, lines
-    f = font("SpaceGrotesk", 36, "Bold")
-    lines = wrap(draw, text, f, TEXT_W)[:4]
+    f = font("SpaceGrotesk", 32, "Bold")
+    lines = wrap(draw, text, f, TEXT_W)[:5]
     lines[-1] = lines[-1].rstrip(".,;:") + "…"
     return f, lines
 
@@ -65,14 +66,17 @@ def background(cover: Path | None) -> Image.Image:
         img = img.resize((round(img.width * scale), round(img.height * scale)), Image.LANCZOS)
         left, top = (img.width - W) // 2, (img.height - H) // 2
         canvas.paste(img.crop((left, top, left + W, top + H)))
-    # dark fade from the left, so the text is easy to read
-    fade = Image.new("L", (W, 1))
+    # dark in the middle (behind the text), lighter on the sides so the picture shows
+    shade = Image.new("L", (W, 1))
     for x in range(W):
-        t = x / W
-        fade.putpixel((x, 0), int(255 * (0.96 if t < 0.45 else max(0.25, 0.96 - (t - 0.45) * 1.6))))
-    shade = Image.new("RGB", (W, H), BG)
-    canvas.paste(shade, (0, 0), fade.resize((W, H)))
+        dist = abs(x - CX) / (W / 2)            # 0 in the center, 1 at the edges
+        shade.putpixel((x, 0), int(255 * (0.86 if dist < 0.45 else max(0.42, 0.86 - (dist - 0.45) * 0.9))))
+    canvas.paste(Image.new("RGB", (W, H), BG), (0, 0), shade.resize((W, H)))
     return canvas
+
+
+def centered(d: ImageDraw.ImageDraw, y: int, text: str, f: ImageFont.FreeTypeFont, fill) -> None:
+    d.text((CX - d.textlength(text, font=f) / 2, y), text, font=f, fill=fill)
 
 
 def make_card(cover: Path | None, out: Path, label: str, title: str, tag: str = "") -> None:
@@ -80,29 +84,36 @@ def make_card(cover: Path | None, out: Path, label: str, title: str, tag: str = 
     d = ImageDraw.Draw(img)
 
     # brand
-    d.rounded_rectangle((PAD, PAD, PAD + 14, PAD + 14), radius=4, fill=AMBER)
-    d.text((PAD + 26, PAD - 6), "AI DAILY GRIND", font=font("JetBrainsMono", 24, "Bold"), fill=WHITE)
+    brand = font("JetBrainsMono", 24, "Bold")
+    bw = d.textlength("AI DAILY GRIND", font=brand) + 26
+    x0 = CX - bw / 2
+    d.rounded_rectangle((x0, 62, x0 + 14, 76), radius=4, fill=AMBER)
+    d.text((x0 + 26, 56), "AI DAILY GRIND", font=brand, fill=WHITE)
 
-    # small label (date / token number) and tag
-    mono = font("JetBrainsMono", 22, "Regular")
-    y = LABEL_Y
-    d.text((PAD, y), label.upper(), font=mono, fill=CYAN)
+    # small label (date / token number), and the tag as a pill
+    mono = font("JetBrainsMono", 21, "Regular")
     if tag:
-        x = PAD + d.textlength(label.upper(), font=mono) + 18
         tw = d.textlength(tag.upper(), font=mono)
-        d.rounded_rectangle((x, y - 4, x + tw + 24, y + 30), radius=15, outline=AMBER, width=2)
-        d.text((x + 12, y), tag.upper(), font=mono, fill=AMBER)
+        lw = d.textlength(label.upper(), font=mono)
+        total = lw + 18 + tw + 24
+        x = CX - total / 2
+        d.text((x, 140), label.upper(), font=mono, fill=CYAN)
+        px = x + lw + 18
+        d.rounded_rectangle((px, 136, px + tw + 24, 170), radius=15, outline=AMBER, width=2)
+        d.text((px + 12, 140), tag.upper(), font=mono, fill=AMBER)
+    else:
+        centered(d, 140, label.upper(), mono, CYAN)
 
-    # title
+    # title, centered in its zone
     f, lines = fit_title(d, title)
-    y = TITLE_Y
-    line_h = int(f.size * 1.12)
+    line_h = int(f.size * 1.14)
+    y = TITLE_TOP + (TITLE_BOTTOM - TITLE_TOP - line_h * len(lines)) // 2
     for line in lines:
-        d.text((PAD, y), line, font=f, fill=WHITE)
+        centered(d, y, line, f, WHITE)
         y += line_h
 
     # footer: site + a coffee-to-tech light line
-    d.text((PAD, H - PAD - 24), "aidailygrind.com", font=font("JetBrainsMono", 24, "Medium"), fill=MUTED)
+    centered(d, H - 78, "aidailygrind.com", font("JetBrainsMono", 22, "Medium"), MUTED)
     for x in range(W):
         t = x / W
         color = tuple(int(AMBER_2[i] + (CYAN[i] - AMBER_2[i]) * t) for i in range(3))
