@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Café IA · {{ edition.date_label }}{% endblock %}
+{% block description %}{{ edition.headline }}{% endblock %}
+{% block content %}
+<section class="edition-head">
+  <p class="date">{{ edition.date_label }}</p>
+  <h1>{{ edition.headline }}</h1>
+  <p class="intro">{{ edition.intro }}</p>
+  <ol class="toc">
+    {% for token in edition.tokens %}
+    <li><a href="#token-{{ loop.index }}">{{ token.title }}</a></li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% for token in edition.tokens %}
+<article class="token" id="token-{{ loop.index }}">
+  <div class="token-label">
+    <span class="token-num">Morning Token #{{ loop.index }}</span>
+    <span class="tag">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
+  </div>
+  <h2>{{ token.title }}</h2>
+  <p>{{ token.summary }}</p>
+  <p class="why"><strong>Why it matters:</strong> {{ token.why_it_matters }}</p>
+  {% if token.sources %}
+  <p class="sources">
+    {% for source in token.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.name }} ↗</a>{% endfor %}
+  </p>
+  {% endif %}
+</article>
+{% endfor %}
+
+<section class="last-word">
+  <h2>🍩 Le dernier mot</h2>
+  <p>{{ edition.last_word }}</p>
+</section>
+
+<nav class="pager">
+  {% if older %}<a href="{{ older.date }}.html">← {{ older.date_label }}</a>{% else %}<span></span>{% endif %}
+  {% if newer %}<a href="{{ newer.date }}.html">{{ newer.date_label }} →</a>{% endif %}
+</nav>
+{% endblock %}

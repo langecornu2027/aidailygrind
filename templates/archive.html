@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Café IA · Archive{% endblock %}
+{% block content %}
+<section class="edition-head">
+  <h1>All the coffees</h1>
+  <p class="intro">Every Café IA edition, newest first.</p>
+</section>
+<ul class="archive">
+  {% for edition in editions %}
+  <li>
+    <a href="{{ edition.date }}.html">
+      <span class="date">{{ edition.date_label }}</span>
+      <span class="headline">{{ edition.headline }}</span>
+    </a>
+  </li>
+  {% else %}
+  <li>No editions yet. The first coffee is coming soon.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

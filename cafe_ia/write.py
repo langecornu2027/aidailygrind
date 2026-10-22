@@ -1,0 +1,128 @@
+"""Ask Claude to pick the most important stories and write today's Café IA."""
+
+import json
+from pathlib import Path
+
+import anthropic
+
+MODEL = "claude-opus-5-5"
+ROOT = Path(__file__).resolve().parent.parent
+
+SYSTEM = """You are the writer of Café IA, a daily recap of what is happening in AI.
+The reader opens Café IA with their morning coffee. In five minutes, they want to know
+what really matters in AI today, explained in simple English.
+
+You will get a list of fresh stories from news sites, AI company blogs, community sites
+(Hacker News, Reddit) and research papers. Many are small, repeated, or off-topic.
+Your job:
+
+1. Find the 5 to 7 most important AI stories. Each one becomes a "Morning Token".
+   - Prefer stories that matter to many people: big launches, new tools people can use,
+     important research, policy, safety, jobs, big business moves.
+   - When several sources talk about the same thing, merge them into one token and
+     list every useful source. A story covered by many sources is usually important.
+   - Community buzz (many points or upvotes) is a good signal, but not proof.
+   - Skip stories that are not really about AI.
+   - Put the most important token first.
+2. Write each token in the author's voice (below). Use only facts from the stories you
+   were given. If a detail is not in the input, do not invent it. If something is only
+   a rumour or early research, say so.
+3. Write a short intro and a short closing word.
+
+The author's voice guide:
+<voice>
+{voice}
+</voice>"""
+
+SCHEMA = {
+    "type": "object",
+    "properties": {
+        "headline": {
+            "type": "string",
+            "description": "One short line that sums up the AI mood of the day.",
+        },
+        "intro": {
+            "type": "string",
+            "description": "2 or 3 short sentences to say hello and present today's tokens.",
+        },
+        "tokens": {
+            "type": "array",
+            "description": "The Morning Tokens, most important first. 5 to 7 items.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string", "description": "Short, clear title. No clickbait."},
+                    "tag": {
+                        "type": "string",
+                        "enum": ["Launch", "Tool", "Research", "Business", "Policy", "Safety", "Community"],
+                    },
+                    "summary": {
+                        "type": "string",
+                        "description": "What happened, in 2 to 4 short, simple sentences.",
+                    },
+                    "why_it_matters": {
+                        "type": "string",
+                        "description": "One or two sentences: why the reader should care.",
+                    },
+                    "sources": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {"type": "string"},
+                                "url": {"type": "string"},
+                            },
+                            "required": ["name", "url"],
+                            "additionalProperties": False,
+                        },
+                    },
+                },
+                "required": ["title", "tag", "summary", "why_it_matters", "sources"],
+                "additionalProperties": False,
+            },
+        },
+        "last_word": {
+            "type": "string",
+            "description": "Le dernier mot: one or two sentences, a personal thought to close.",
+        },
+    },
+    "required": ["headline", "intro", "tokens", "last_word"],
+    "additionalProperties": False,
+}
+
+
+def write_edition(items: list[dict], date_label: str) -> dict:
+    voice = (ROOT / "voice.md").read_text(encoding="utf-8")
+    stories = [
+        {k: v for k, v in item.items() if k in ("source", "kind", "title", "url", "summary", "score") and v}
+        for item in items
+    ]
+    prompt = (
+        f"Today is {date_label}. Here are the {len(stories)} fresh stories, as JSON:\n\n"
+        f"{json.dumps(stories, ensure_ascii=False, indent=1)}\n\n"
+        "Write today's Café IA."
+    )
+
+    client = anthropic.Anthropic()
+    response = client.beta.messages.create(
+        model=MODEL,
+        max_tokens=16000,
+        system=SYSTEM.format(voice=voice),
+        messages=[{"role": "user", "content": prompt}],
+        thinking={"type": "adaptive"},
+        output_config={"effort": "high", "format": {"type": "json_schema", "schema": SCHEMA}},
+        # If a safety check declines the request, Anthropic retries on a fallback model.
+        betas=["server-side-fallback-2026-07-01"],
+        fallbacks="default",
+    )
+
+    if response.stop_reason == "refusal":
+        raise RuntimeError(f"Claude declined to write today's edition: {response.stop_details}")
+    if response.stop_reason == "max_tokens":
+        raise RuntimeError("Claude ran out of room before finishing. Raise max_tokens.")
+
+    text = next(block.text for block in response.content if block.type == "text")
+    edition = json.loads(text)
+    usage = response.usage
+    print(f"  Claude used {usage.input_tokens} input + {usage.output_tokens} output tokens")
+    return edition
