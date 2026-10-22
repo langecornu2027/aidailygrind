@@ -8,6 +8,7 @@
 Settings come from the environment (/etc/aidailygrind/env on the VM):
     CLOUDFLARE_API_TOKEN   token for Cloudflare Email Sending (SMTP)
     MAIL_FROM              sender, default "The AI Daily Grind <welcome@aidailygrind.com>"
+    REPLY_TO               where replies go, default info@aidailygrind.com
     DB_PATH                default /var/lib/aidailygrind/subscribers.db
     WEB_ROOT               default /var/www/aidailygrind/public
 """
@@ -32,6 +33,7 @@ from zoneinfo import ZoneInfo
 SITE = "https://aidailygrind.com"
 SMTP_HOST, SMTP_PORT = "smtp.mx.cloudflare.net", 465
 MAIL_FROM = os.environ.get("MAIL_FROM", "The AI Daily Grind <welcome@aidailygrind.com>")
+REPLY_TO = os.environ.get("REPLY_TO", "info@aidailygrind.com")
 DB_PATH = os.environ.get("DB_PATH", "/var/lib/aidailygrind/subscribers.db")
 WEB_ROOT = Path(os.environ.get("WEB_ROOT", "/var/www/aidailygrind/public"))
 TIMEZONE = ZoneInfo("America/Toronto")
@@ -94,6 +96,7 @@ def build_message(to: str, subject: str, text: str, html_body: str, unsub_url: s
     msg = EmailMessage()
     msg["From"] = MAIL_FROM
     msg["To"] = to
+    msg["Reply-To"] = REPLY_TO
     msg["Subject"] = subject
     msg["Message-ID"] = make_msgid(domain="aidailygrind.com")
     if unsub_url:

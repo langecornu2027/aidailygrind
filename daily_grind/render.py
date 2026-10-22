@@ -18,8 +18,8 @@ DOMAIN = "aidailygrind.com"
 # postal address in every email. A PO box is OK. Email and subscribe stay off until
 # POSTAL_ADDRESS and CONTACT_EMAIL are filled in.
 SENDER = "The AI Daily Grind, by François Gravel"
-POSTAL_ADDRESS = ""
-CONTACT_EMAIL = ""
+POSTAL_ADDRESS = "PO Box 8535 STN B, Montréal QC H3B 3J7, Canada"
+CONTACT_EMAIL = "info@aidailygrind.com"
 PRIVACY_OFFICER = "François Gravel"  # Québec Law 25: person in charge of personal information
 POLICY_DATE = "October 22, 2026"  # change when the privacy policy changes
 
