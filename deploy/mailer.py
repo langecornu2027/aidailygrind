@@ -28,6 +28,7 @@ import subprocess
 import sys
 import threading
 import time
+import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
@@ -199,7 +200,7 @@ audio_lock = threading.Lock()
 audio_jobs: dict[str, str] = {}  # "date-NN" -> "working" | "failed"
 audio_failed_at: dict[str, float] = {}
 audio_made: dict[str, int] = {}  # day -> parts made today
-audio_pool = ThreadPoolExecutor(max_workers=3)
+audio_pool = ThreadPoolExecutor(max_workers=2)
 
 
 def speech_parts(day: str) -> list[dict] | None:
@@ -223,8 +224,17 @@ def tts_wav(text: str) -> bytes:
     }
     req = urllib.request.Request(TTS_URL, data=json.dumps(body).encode(), headers={
         "x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=180) as resp:
-        result = json.load(resp)
+    for attempt in range(6):
+        try:
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                result = json.load(resp)
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code not in (429, 500, 503) or attempt == 5:
+                raise
+            # Google asks us to slow down: wait, then try again
+            wait = int(exc.headers.get("Retry-After") or 0) or 10 * (attempt + 1)
+            time.sleep(min(wait, 60))
     for step in reversed(result.get("steps", [])):
         for block in reversed(step.get("content", [])):
             if block.get("type") == "audio" and block.get("data"):
