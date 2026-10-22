@@ -4,7 +4,9 @@ To add a source, copy a line and change the name and URL.
 To remove one, delete its line (or put a # in front).
 """
 
-# RSS / Atom feeds: (name, kind, url)
+# RSS / Atom feeds: (name, kind, url) or (name, kind, url, hours)
+# `hours` is optional: how far back to look for that source. Use it for sources
+# that publish rarely (default is LOOKBACK_HOURS below).
 FEEDS = [
     # News sites
     ("The Verge", "news", "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"),
@@ -21,9 +23,21 @@ FEEDS = [
     ("Simon Willison", "community", "https://simonwillison.net/atom/everything/"),
     ("r/LocalLLaMA", "community", "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day"),
     ("r/artificial", "community", "https://www.reddit.com/r/artificial/top/.rss?t=day"),
+    # Podcasts and video
+    ("The AI Daily Brief (podcast)", "podcast", "https://anchor.fm/s/f7cac464/podcast/rss"),
+    # AI risk and safety
+    ("InsideAI (YouTube)", "risk",
+     "https://www.youtube.com/feeds/videos.xml?channel_id=UC0_M9eztZvetcyLAb5f-o5w", 24 * 7),
+    ("AI Safety Newsletter (CAIS)", "risk", "https://newsletter.safe.ai/feed", 24 * 4),
+    ("Transformer", "risk", "https://www.transformernews.ai/feed", 48),
     # Research
     ("arXiv cs.AI", "research", "https://rss.arxiv.org/rss/cs.AI"),
 ]
+
+# GitHub trending: new AI repos (created in the last N days) with the most stars
+GITHUB_DAYS = 7
+GITHUB_MIN_STARS = 100
+GITHUB_MAX = 8
 
 # Hacker News: only stories with at least this many points
 HN_MIN_POINTS = 60

@@ -3,10 +3,12 @@
 import calendar
 import html
 import json
+import os
 import re
 import ssl
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from dataclasses import dataclass, asdict
 
@@ -22,7 +24,7 @@ SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
 AI_WORDS = re.compile(
     r"\b(AI|A\.I\.|LLMs?|GPT|Claude|Anthropic|OpenAI|Gemini|DeepMind|Llama|Mistral|"
     r"machine learning|neural|transformer|chatbot|agents?|model|inference|diffusion|"
-    r"Copilot|Hugging ?Face|Nvidia|AGI|deep learning)\b",
+    r"Copilot|Hugging ?Face|Nvidia|AGI|deep learning|agentic|RAG|MCP|embeddings?)\b",
     re.IGNORECASE,
 )
 
@@ -124,13 +126,53 @@ def fetch_hf_papers() -> list[Item]:
     return items[: sources.MAX_PER_SOURCE]
 
 
+def fetch_github_trending() -> list[Item]:
+    created = time.strftime("%Y-%m-%d", time.gmtime(time.time() - sources.GITHUB_DAYS * 86400))
+    query = urllib.parse.urlencode({
+        "q": f"created:>{created} stars:>={sources.GITHUB_MIN_STARS}",
+        "sort": "stars", "order": "desc", "per_page": 100,
+    })
+    headers = {"Accept": "application/vnd.github+json"}
+    if os.environ.get("GITHUB_TOKEN"):  # set in GitHub Actions: higher rate limit
+        headers["Authorization"] = f"Bearer {os.environ['GITHUB_TOKEN']}"
+    req = urllib.request.Request(f"https://api.github.com/search/repositories?{query}",
+                                 headers={"User-Agent": USER_AGENT, **headers})
+    for attempt in range(3):  # GitHub search sometimes answers empty when busy
+        with urllib.request.urlopen(req, timeout=30, context=SSL_CONTEXT) as resp:
+            repos = json.load(resp)["items"]
+        if repos:
+            break
+        time.sleep(5)
+    items = []
+    for repo in repos:
+        about = " ".join([repo["name"], repo.get("description") or "", " ".join(repo.get("topics", []))])
+        if not AI_WORDS.search(about):
+            continue
+        items.append(Item(
+            source="GitHub trending",
+            kind="github",
+            title=repo["full_name"],
+            url=repo["html_url"],
+            summary=_clean(f"{repo.get('description') or ''} "
+                           f"({repo['stargazers_count']} stars in its first days, "
+                           f"language: {repo.get('language') or 'n/a'})"),
+            published=0,
+            score=repo["stargazers_count"],
+        ))
+    return items[: sources.GITHUB_MAX]
+
+
 def fetch_all(verbose: bool = True) -> list[Item]:
     """Fetch every source. A broken source is skipped, never fatal."""
-    since = time.time() - sources.LOOKBACK_HOURS * 3600
-    jobs = [(name, lambda n=name, k=kind, u=url: fetch_feed(n, k, u, since))
-            for name, kind, url in sources.FEEDS]
+    now = time.time()
+    since = now - sources.LOOKBACK_HOURS * 3600
+    jobs = []
+    for name, kind, url, *hours in sources.FEEDS:
+        feed_since = now - hours[0] * 3600 if hours else since
+        jobs.append((name, lambda n=name, k=kind, u=url, s=feed_since: fetch_feed(n, k, u, s)))
     jobs += [("Hacker News", lambda: fetch_hacker_news(since)),
-             ("Hugging Face Papers", fetch_hf_papers)]
+             ("Hugging Face Papers", fetch_hf_papers),
+             ("GitHub trending", fetch_github_trending)]
 
     all_items, seen = [], set()
     for name, job in jobs:

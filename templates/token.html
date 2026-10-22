@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_macros.html" import token_card %}
+{% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
+{% block title %}{{ token.title }} · The AI Daily Grind{% endblock %}
+{% block description %}{{ token.share_text or token.why_it_matters }}{% endblock %}
+{% block social %}
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The AI Daily Grind">
+  <meta property="og:title" content="{{ token.title }}">
+  <meta property="og:description" content="{{ token.share_text or token.why_it_matters }}">
+  <meta property="og:url" content="{{ page }}">
+  <link rel="canonical" href="{{ page }}">
+  {% if edition.cover %}
+  <meta property="og:image" content="{{ site_url }}/{{ edition.cover }}">
+  <meta property="og:image:width" content="1376">
+  <meta property="og:image:height" content="768">
+  <meta name="twitter:card" content="summary_large_image">
+  {% endif %}
+{% endblock %}
+{% block content %}
+<section class="edition-head">
+  <p class="date"><a href="{{ edition.date }}.html">← {{ edition.date_label }}</a></p>
+  {% if edition.cover %}
+  <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
+  {% endif %}
+</section>
+
+{{ token_card(token, n, edition, heading="h1", standalone=True) }}
+
+<section class="more">
+  <h2>More Morning Tokens from {{ edition.date_label }}</h2>
+  <ol class="toc">
+    {% for other in edition.tokens %}
+    {% if loop.index != n %}<li value="{{ loop.index }}"><a href="{{ edition.date }}-token-{{ loop.index }}.html">{{ other.title }}</a></li>{% endif %}
+    {% endfor %}
+  </ol>
+  <p><a href="{{ edition.date }}.html">Read the full AI Daily Grind →</a></p>
+</section>
+{% endblock %}

@@ -26,6 +26,25 @@
     {% block content %}{% endblock %}
   </main>
 
+  <script>
+    // "Copy link" buttons; on phones, open the native share sheet instead
+    document.querySelectorAll(".share .copy-link").forEach(function (button) {
+      var box = button.closest(".share");
+      if (navigator.share) button.textContent = "More…";
+      button.addEventListener("click", function () {
+        var url = box.dataset.url, text = box.dataset.text;
+        if (navigator.share) {
+          navigator.share({ title: text, text: text, url: url }).catch(function () {});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(function () {
+            button.textContent = "Copied ✓";
+            setTimeout(function () { button.textContent = "Copy link"; }, 2000);
+          });
+        }
+      });
+    });
+  </script>
+
   <footer>
     <p>Made with ☕ in Québec. Stories picked and written with help from Claude, from public news sources. Always check the sources.</p>
   </footer>

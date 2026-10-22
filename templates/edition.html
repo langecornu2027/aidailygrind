@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+{% from "_macros.html" import token_card, share_bar %}
+{% set page = site_url ~ "/" ~ edition.date ~ ".html" %}
 {% block title %}The AI Daily Grind · {{ edition.date_label }}{% endblock %}
 {% block description %}{{ edition.headline }}{% endblock %}
 {% block social %}
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The AI Daily Grind">
   <meta property="og:title" content="{{ edition.headline }}">
   <meta property="og:description" content="{{ edition.intro }}">
-  <meta property="og:url" content="{{ site_url }}/{{ edition.date }}.html">
+  <meta property="og:url" content="{{ page }}">
+  <link rel="canonical" href="{{ page }}">
   {% if edition.cover %}
   <meta property="og:image" content="{{ site_url }}/{{ edition.cover }}">
+  <meta property="og:image:width" content="1376">
+  <meta property="og:image:height" content="768">
   <meta name="twitter:card" content="summary_large_image">
   {% endif %}
 {% endblock %}
@@ -18,6 +25,7 @@
   <p class="date">{{ edition.date_label }}</p>
   <h1>{{ edition.headline }}</h1>
   <p class="intro">{{ edition.intro }}</p>
+  {{ share_bar(page, edition.headline, "Share today's Grind") }}
   <ol class="toc">
     {% for token in edition.tokens %}
     <li><a href="#token-{{ loop.index }}">{{ token.title }}</a></li>
@@ -26,20 +34,7 @@
 </section>
 
 {% for token in edition.tokens %}
-<article class="token" id="token-{{ loop.index }}">
-  <div class="token-label">
-    <span class="token-num">Morning Token #{{ loop.index }}</span>
-    <span class="tag">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
-  </div>
-  <h2>{{ token.title }}</h2>
-  <p>{{ token.summary }}</p>
-  <p class="why"><strong>Why it matters:</strong> {{ token.why_it_matters }}</p>
-  {% if token.sources %}
-  <p class="sources">
-    {% for source in token.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.name }} ↗</a>{% endfor %}
-  </p>
-  {% endif %}
-</article>
+{{ token_card(token, loop.index, edition) }}
 {% endfor %}
 
 <section class="last-word">

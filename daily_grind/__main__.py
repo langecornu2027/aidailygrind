@@ -76,7 +76,10 @@ def main() -> None:
                 raise SystemExit("No stories found. Check your internet connection or sources.")
 
             print("☕ Asking Claude to pick the Morning Tokens...")
-            edition = write.write_edition(fetch.to_dicts(items), render.nice_date(today.isoformat()))
+            older = [p for p in sorted(render.EDITIONS.glob("*.json")) if p.stem < today.isoformat()]
+            yesterday = ([t["title"] for t in json.loads(older[-1].read_text(encoding="utf-8"))["tokens"]]
+                         if older else [])
+            edition = write.write_edition(fetch.to_dicts(items), render.nice_date(today.isoformat()), yesterday)
             render.EDITIONS.mkdir(parents=True, exist_ok=True)
             out.write_text(json.dumps(edition, ensure_ascii=False, indent=2), encoding="utf-8")
             print(f"  Saved {out.relative_to(render.ROOT)} ({len(edition['tokens'])} Morning Tokens)")

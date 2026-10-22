@@ -13,7 +13,8 @@ The reader opens The AI Daily Grind with their morning coffee. In five minutes, 
 what really matters in AI today, explained in simple English.
 
 You will get a list of fresh stories from news sites, AI company blogs, community sites
-(Hacker News, Reddit) and research papers. Many are small, repeated, or off-topic.
+(Hacker News, Reddit), a daily AI podcast, AI risk and safety sources, research papers,
+and new AI projects trending on GitHub. Many are small, repeated, or off-topic.
 Your job:
 
 1. Find the 5 to 7 most important AI stories. Each one becomes a "Morning Token".
@@ -23,8 +24,16 @@ Your job:
      list every useful source. A story covered by many sources is usually important.
    - Community buzz (many points or upvotes) is a good signal, but not proof.
    - Skip stories that are not really about AI.
+   - The author cares about AI risk and safety. When a risk or safety source has real
+     news or a strong warning, give it a token.
+   - When a trending GitHub project is useful or surprising for normal people, give it
+     a token (tag "Open source") and say what it does and who could use it.
+   - Do not repeat a story from yesterday's tokens (listed in the request), unless there
+     is real new information. Then say what is new.
    - Put the most important token first.
-2. Write each token in the author's voice (below). Use only facts from the stories you
+2. Write each token in the author's voice (below). A token is a short article, not a
+   one-liner: give the context, the key facts (who, what, numbers, dates when known),
+   and what happens next. Use only facts from the stories you
    were given. If a detail is not in the input, do not invent it. If something is only
    a rumour or early research, say so.
 3. Write a short intro and a short closing word.
@@ -55,15 +64,28 @@ SCHEMA = {
                     "title": {"type": "string", "description": "Short, clear title. No clickbait."},
                     "tag": {
                         "type": "string",
-                        "enum": ["Launch", "Tool", "Research", "Business", "Policy", "Safety", "Community"],
+                        "enum": ["Launch", "Tool", "Open source", "Research", "Business",
+                                 "Policy", "Safety", "Community"],
                     },
                     "summary": {
                         "type": "string",
-                        "description": "What happened, in 2 to 4 short, simple sentences.",
+                        "description": (
+                            "What happened, in 2 or 3 short paragraphs separated by a blank line. "
+                            "6 to 10 short, simple sentences in total. Context first, then the "
+                            "key facts, then what happens next."
+                        ),
                     },
                     "why_it_matters": {
                         "type": "string",
-                        "description": "One or two sentences: why the reader should care.",
+                        "description": "Two or three sentences: why the reader should care.",
+                    },
+                    "share_text": {
+                        "type": "string",
+                        "description": (
+                            "A post to share this token on social media (LinkedIn, X), in the "
+                            "author's voice. Max 220 characters, no hashtags, no link "
+                            "(the link is added later), at most one emoji."
+                        ),
                     },
                     "sources": {
                         "type": "array",
@@ -78,7 +100,7 @@ SCHEMA = {
                         },
                     },
                 },
-                "required": ["title", "tag", "summary", "why_it_matters", "sources"],
+                "required": ["title", "tag", "summary", "why_it_matters", "share_text", "sources"],
                 "additionalProperties": False,
             },
         },
@@ -101,7 +123,7 @@ SCHEMA = {
 }
 
 
-def write_edition(items: list[dict], date_label: str) -> dict:
+def write_edition(items: list[dict], date_label: str, yesterday: list[str] | None = None) -> dict:
     voice = (ROOT / "voice.md").read_text(encoding="utf-8")
     stories = [
         {k: v for k, v in item.items() if k in ("source", "kind", "title", "url", "summary", "score") and v}
@@ -110,6 +132,7 @@ def write_edition(items: list[dict], date_label: str) -> dict:
     prompt = (
         f"Today is {date_label}. Here are the {len(stories)} fresh stories, as JSON:\n\n"
         f"{json.dumps(stories, ensure_ascii=False, indent=1)}\n\n"
+        f"Yesterday's tokens (do not repeat): {json.dumps(yesterday or [], ensure_ascii=False)}\n\n"
         "Write today's AI Daily Grind."
     )
 

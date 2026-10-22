@@ -14,7 +14,7 @@ SITE = ROOT / "site"
 DOMAIN = "aidailygrind.com"
 
 TAG_ICONS = {
-    "Launch": "🚀", "Tool": "🛠️", "Research": "🔬", "Business": "💼",
+    "Launch": "🚀", "Tool": "🛠️", "Open source": "📦", "Research": "🔬", "Business": "💼",
     "Policy": "⚖️", "Safety": "🛡️", "Community": "💬",
 }
 
@@ -52,6 +52,7 @@ def build_site() -> Path:
         shutil.copytree(COVERS, SITE / "covers")
 
     page = env.get_template("edition.html")
+    token_page = env.get_template("token.html")
     for i, edition in enumerate(editions):
         newer = editions[i - 1] if i > 0 else None
         older = editions[i + 1] if i + 1 < len(editions) else None
@@ -59,6 +60,10 @@ def build_site() -> Path:
         (SITE / f"{edition['date']}.html").write_text(html, encoding="utf-8")
         if i == 0:
             (SITE / "index.html").write_text(html, encoding="utf-8")
+        # One page per token, so each one can be shared with its own preview
+        for n, token in enumerate(edition["tokens"], start=1):
+            html = token_page.render(edition=edition, token=token, n=n)
+            (SITE / f"{edition['date']}-token-{n}.html").write_text(html, encoding="utf-8")
 
     archive = env.get_template("archive.html").render(editions=editions)
     (SITE / "archive.html").write_text(archive, encoding="utf-8")

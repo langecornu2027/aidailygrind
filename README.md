@@ -5,12 +5,16 @@ The AI news that matters, freshly ground every morning. In simple words.
 Every morning, The AI Daily Grind:
 
 1. **Reads the sources**: AI news sites, AI company blogs, Hacker News, Reddit,
-   and research papers (list in [daily_grind/sources.py](daily_grind/sources.py)).
+   The AI Daily Brief podcast, AI risk sources (InsideAI, CAIS AI Safety Newsletter,
+   Transformer), research papers, and new AI projects trending on GitHub
+   (list in [daily_grind/sources.py](daily_grind/sources.py)).
 2. **Asks Claude** to pick the 5 to 7 most important stories and write them
    in my voice ([voice.md](voice.md)). Each story is a **Morning Token**.
 3. **Asks Nano Banana** (Google Gemini) to draw a cover image from Claude's scene idea.
 4. **Saves** the edition in `data/editions/` and the cover in `data/covers/`.
 5. **Builds the website** in `site/` and publishes it to aidailygrind.com.
+   Each token also gets its own page (`YYYY-MM-DD-token-N.html`) with a social media
+   preview and share buttons.
 
 ## Change things
 
@@ -83,5 +87,5 @@ gcloud compute ssh handmade-by-francois-prod --configuration=handmade --zone=us-
 
 ## Cost
 
-- Claude Opus 5.5: one call per day, about $0.15 to $0.30.
+- Claude Opus 5.5: one call per day, about $0.30.
 - Nano Banana 2.1: one 1K cover per day, about $0.03.
