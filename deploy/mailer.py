@@ -17,6 +17,7 @@ Settings come from the environment (/etc/aidailygrind/env on the VM):
 """
 
 import base64
+import hashlib
 import html
 import json
 import os
@@ -208,8 +209,10 @@ def speech_parts(day: str) -> list[dict] | None:
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def part_name(day: str, n: int) -> str:
-    return f"{day}-{n:02d}"
+def part_name(day: str, n: int, text: str) -> str:
+    """The text's fingerprint is in the name: a rewritten edition gets new files,
+    never an old copy from Cloudflare's cache."""
+    return f"{day}-{n:02d}-{hashlib.sha1(text.encode()).hexdigest()[:8]}"
 
 
 def tts_wav(text: str) -> bytes:
@@ -243,7 +246,7 @@ def tts_wav(text: str) -> bytes:
 
 
 def make_part(day: str, n: int, text: str) -> None:
-    name = part_name(day, n)
+    name = part_name(day, n, text)
     try:
         wav = tts_wav(text)
         tmp = AUDIO_DIR / f".{name}.mp3"
@@ -272,7 +275,7 @@ def audio_status(day: str, sections: list[int], start: bool) -> dict | None:
     out = []
     with audio_lock:
         for n in parts:
-            name = part_name(day, n)
+            name = part_name(day, n, texts[n]["text"])
             if (AUDIO_DIR / f"{name}.mp3").exists():
                 out.append({"n": n, "s": texts[n]["s"], "status": "ready", "url": f"/audio/{name}.mp3"})
                 continue

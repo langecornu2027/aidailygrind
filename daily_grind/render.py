@@ -49,8 +49,10 @@ def load_editions() -> list[dict]:
         edition = json.loads(path.read_text(encoding="utf-8"))
         edition["date"] = path.stem
         edition["date_label"] = nice_date(path.stem)
-        if (COVERS / f"{path.stem}.jpg").exists():
-            edition["cover"] = f"covers/{path.stem}.jpg"
+        cover = COVERS / f"{path.stem}.jpg"
+        if cover.exists():
+            # Fingerprint in the link, so a new cover is never hidden by Cloudflare's cache
+            edition["cover"] = f"covers/{path.stem}.jpg?v={hashlib.sha1(cover.read_bytes()).hexdigest()[:8]}"
         words = len(edition["intro"].split()) + sum(
             len(t["summary"].split()) + len(t["why_it_matters"].split()) for t in edition["tokens"])
         edition["read_minutes"] = max(1, round(words / 200))
