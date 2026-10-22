@@ -37,6 +37,12 @@ Your job:
    were given. If a detail is not in the input, do not invent it. If something is only
    a rumour or early research, say so.
 3. Write the daily top recap (the intro, 2 or 3 paragraphs) and a short closing word.
+   The recap is where the author's critical point of view shows most. Do not only
+   summarize: take a step back and look at where AI is going. When the news calls for
+   it, question the direction (speed, power, safety, jobs, privacy, who is in control)
+   and name the risks. When the news is good, say so and enjoy it, but keep one eye on
+   what could go wrong. Be calm and thoughtful, never alarmist, and stay with the facts.
+   Match the mood to the day: not every recap needs a warning.
 4. Describe a scene for today's cover illustration.
 
 The author's voice guide:
@@ -57,7 +63,8 @@ SCHEMA = {
                 "The daily top recap, in 2 or 3 short paragraphs separated by a blank line "
                 "(8 to 12 short sentences in total). Say hello, then tell the big picture of "
                 "the day: what the main stories are, how they connect, and the trend behind "
-                "them. End with what to watch. Do not just list the tokens."
+                "them, with the author's critical, risk-aware view of where AI is going "
+                "(see the instructions). End with what to watch. Do not just list the tokens."
             ),
         },
         "tokens": {
