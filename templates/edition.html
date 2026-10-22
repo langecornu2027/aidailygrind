@@ -59,6 +59,15 @@
   </ol>
 </section>
 
+{% if noir %}
+<a class="noir-teaser" href="{{ noir.slug }}.html">
+  <span class="noir-kicker">🖤☕ This week's Café Noir · Opinion</span>
+  <span class="noir-teaser-title">{{ noir.title }}</span>
+  <span class="noir-teaser-dek">{{ noir.dek }}</span>
+  <span class="more-link">Read François's take →</span>
+</a>
+{% endif %}
+
 {% for token in edition.tokens %}
 {{ token_card(token, loop.index, edition) }}
 {% endfor %}

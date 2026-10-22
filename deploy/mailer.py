@@ -163,13 +163,20 @@ def send_confirmation(email: str, token: str) -> None:
 
 
 def send_latest() -> None:
-    """Send today's edition once. Run after each sync; does nothing if already sent."""
+    """Send today's edition, and on Thursdays the Café Noir editorial, once each.
+    Run after each sync; does nothing for an issue already sent."""
     today = datetime.now(TIMEZONE).date().isoformat()
-    html_file = WEB_ROOT / "email" / f"{today}.html"
-    text_file = WEB_ROOT / "email" / f"{today}.txt"
-    subject_file = WEB_ROOT / "email" / f"{today}.subject"
+    for name in (today, f"editorial-{today}"):
+        send_issue(name)
+
+
+def send_issue(name: str) -> None:
+    html_file = WEB_ROOT / "email" / f"{name}.html"
+    text_file = WEB_ROOT / "email" / f"{name}.txt"
+    subject_file = WEB_ROOT / "email" / f"{name}.subject"
     if not html_file.exists():
         return
+    today = name  # the key in the sends table
     conn = db()
     with conn:
         if conn.execute("SELECT 1 FROM sends WHERE edition = ?", (today,)).fetchone():

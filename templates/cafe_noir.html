@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Le Café Noir: weekly AI editorial by François Gravel | AI Daily Grind{% endblock %}
+{% block description %}Le Café Noir: every Thursday, François Gravel's strong, critical and fair take on where AI is going, its promises and its risks.{% endblock %}
+{% block content %}
+<section class="hero page">
+  <p class="noir-kicker">🖤☕ Every Thursday</p>
+  <h1>Le Café Noir</h1>
+  <p class="intro">My weekly take on what is really going on in AI. Passionate about the technology, worried about where it is going, and never afraid to say both. Strong, black, no sugar.</p>
+  <p class="noir-sign">François Gravel</p>
+</section>
+<ul class="archive">
+  {% for piece in pieces %}
+  <li>
+    <a href="{{ piece.slug }}.html">
+      {% if piece.cover %}<img class="thumb" src="{{ piece.cover }}" alt="" loading="lazy">{% else %}<span class="thumb"></span>{% endif %}
+      <span class="a-text">
+        <span class="date">No. {{ piece.number }} · {{ piece.date_label }}</span>
+        <span class="headline">{{ piece.title }}</span>
+      </span>
+    </a>
+  </li>
+  {% else %}
+  <li>The first Café Noir is brewing. Come back Thursday.</li>
+  {% endfor %}
+</ul>
+{% set form_id = "noir" %}
+{% include "_subscribe_form.html" %}
+{% endblock %}

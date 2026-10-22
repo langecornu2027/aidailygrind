@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name "AI Daily Grind bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/editions data/covers
+          git add data/editions data/editorials data/covers
           git diff --cached --quiet || git commit -m "☕ AI Daily Grind for $(TZ=America/Toronto date +%F)"
           git push
 

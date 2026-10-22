@@ -579,3 +579,38 @@ a.tag:hover { filter: brightness(1.2); }
 .topic-list .tag { font: 12px var(--mono); }
 .topic-list .is-current { box-shadow: 0 0 0 1px currentColor; }
 .m-why { display: block; color: var(--muted); font-size: 13px; font-weight: 400; margin-top: 3px; line-height: 1.45; }
+
+/* Le Café Noir (weekly editorial) */
+.noir-kicker { font: 600 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); margin: 0; }
+.noir .hero h1 { font-size: clamp(32px, 5.6vw, 54px); }
+.noir-dek { font-size: 21px; line-height: 1.5; color: var(--text-soft); font-style: italic; margin: -8px 0 22px; }
+.noir-frame { background: linear-gradient(135deg, rgba(255, 180, 84, 0.5), rgba(0, 0, 0, 0.4) 50%, rgba(94, 234, 212, 0.35)); }
+.noir-body { font-size: 18px; line-height: 1.8; }
+.noir-body p { color: var(--text-soft); margin: 0 0 20px; }
+.noir-body p:first-child { font-size: 21px; color: var(--text); }
+.noir-body p:first-child::first-letter {
+  float: left; font-family: var(--display); font-weight: 700; font-size: 64px; line-height: 0.9;
+  margin: 6px 10px 0 0; color: var(--amber);
+}
+.noir-body h2 { font-size: 26px; margin: 34px 0 12px; color: var(--text); }
+.noir-cta { margin: 26px 0; padding: 18px 20px; border-radius: 14px; background: rgba(255, 180, 84, 0.07); border: 1px solid rgba(255, 180, 84, 0.3); }
+.noir-cta .why-label { color: var(--amber); }
+.noir-cta p { margin: 6px 0 0; font-size: 17px; }
+.noir-question p { font-size: 18px; }
+.noir-sources { margin: 22px 0 6px; }
+.noir-note { font-size: 13px; color: var(--muted); margin-top: 18px; }
+.noir-sign { font-family: var(--display); font-style: italic; color: var(--amber); }
+.noir-teaser {
+  display: flex; flex-direction: column; gap: 6px; margin: 28px 0 8px; padding: 22px 24px;
+  border-radius: var(--radius); text-decoration: none; color: var(--text);
+  background: radial-gradient(500px 200px at 0% 0%, rgba(255, 138, 61, 0.16), transparent 70%), #05070a;
+  border: 1px solid rgba(255, 180, 84, 0.35);
+}
+.noir-teaser:hover { color: var(--text); box-shadow: var(--glow-amber); }
+.noir-teaser-title { font-family: var(--display); font-size: 24px; font-weight: 700; line-height: 1.25; }
+.noir-teaser-dek { color: var(--text-soft); font-style: italic; }
+.nav .nav-noir { color: var(--amber); }
+@media (max-width: 560px) {
+  .nav a[href="archive.html"] { display: none; }  /* in the footer; keeps the bar on one line */
+  .noir-body { font-size: 17px; }
+}

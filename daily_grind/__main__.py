@@ -12,7 +12,7 @@ import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from . import cover, fetch, render, write
+from . import cover, editorial, fetch, render, write
 
 TIMEZONE = ZoneInfo("America/Toronto")
 
@@ -51,11 +51,34 @@ def add_cover(day: str, edition: dict) -> None:
         print(f"  ✗ No cover today: {exc}")
 
 
+def add_editorial(today) -> None:
+    """Le Café Noir, the weekly editorial. A failure never stops the daily edition."""
+    out = editorial.EDITORIALS / f"{today.isoformat()}.json"
+    if not out.exists():
+        print("☕ Writing Le Café Noir (weekly editorial)...")
+        try:
+            piece = editorial.write_editorial(today, render.EDITIONS)
+        except Exception as exc:
+            print(f"  ✗ No editorial this week: {type(exc).__name__}: {exc}")
+            return
+        editorial.EDITORIALS.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(piece, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"  Saved {out.relative_to(render.ROOT)}: {piece['title']}")
+    path = render.COVERS / f"editorial-{today.isoformat()}.jpg"
+    if not path.exists() and os.environ.get("GEMINI_API_KEY"):
+        try:
+            cover.make_cover(json.loads(out.read_text(encoding="utf-8"))["cover_scene"], path, cover.NOIR_STYLE)
+            print(f"  Saved {path.relative_to(render.ROOT)}")
+        except Exception as exc:
+            print(f"  ✗ No editorial cover: {exc}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Make today's AI Daily Grind.")
     parser.add_argument("--fetch-only", action="store_true")
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--force", action="store_true")
+    parser.add_argument("--editorial", action="store_true", help="write Le Café Noir today, even if not Thursday")
     args = parser.parse_args()
     load_env()
 
@@ -87,6 +110,9 @@ def main() -> None:
 
         if out.exists() and not args.fetch_only:
             add_cover(today.isoformat(), json.loads(out.read_text(encoding="utf-8")))
+
+        if not args.fetch_only and (today.weekday() == 3 or args.editorial):  # Thursday
+            add_editorial(today)
 
     site = render.build_site()
     print(f"☕ Site ready: {site / 'index.html'}")

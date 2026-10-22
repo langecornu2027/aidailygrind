@@ -1,0 +1,43 @@
+{
+  "title": "AI Found the Fire. Then the Fire Brigade Was 13 Tired Volunteers",
+  "dek": "PHP2Shell shows AI at its best for defense, and it shows why the labs that find the bugs should not be the ones who set the speed for everyone else.",
+  "body": "This week, AI did something wonderful for the internet. And parts of the internet had to switch themselves off to survive it.\n\nLet me explain. PHP is a programming language. It runs a big part of the web, including Wikipedia, WordPress and Drupal. Security firm Wiz (owned by Google), a firm called Calif and OpenAI's Codex Security team used AI to find two critical bugs in it. People call them PHP2Shell.\n\nThe bugs let an attacker run their own code on a server, with no login. They can also leak server memory, where passwords and secret keys may hide. Almost every PHP version back to 2012 is affected.\n\n## Credit where it is due\n\nI want to start with the good part, because it is really good.\n\nA PHP core developer had already seen signs of this bug in a 2024 audit. It was not fixed. Why? Nobody could show a working attack. Without proof, it stayed a \"maybe\" in a long pile of maybes. AI produced the proof.\n\nWiz says that with AI tools, \"a single researcher completed in a week what previously would have taken a world-class team months.\" Calif and OpenAI each found the main bug on their own and reported it on August 11.\n\nThis is the dream of AI for defense. Old, hidden flaws, found before the bad guys find them. I love this. Really.\n\n## Then the seatbelt failed\n\nThe plan was a quiet, orderly release. It did not happen. The bug IDs leaked on online forums on October 20. Chainguard published patched images more than six hours before the official release. The PHP Foundation shipped the fix on October 21.\n\nThen governments started pulling the plug, on purpose. In the UK, 32 government services went fully offline and 4 partly, according to figures given in the House of Lords. Sites in Germany, France, Belgium, Finland and the Netherlands went down. Even Australia's cyber agency took sites offline. The US NSA told organizations to patch right away or take servers offline. DeviantArt and 4chan went dark for a while.\n\nOne analysis also says Amazon logged an exploit attempt four days before disclosure. Nobody knows who made it.\n\nNow, let's stay calm. As of today, there is no confirmed break-in. Someone tested the public exploits on GitHub, and none worked on plain PHP. A viral \"Black October\" post with 542,000 views was hype. Critics on Hacker News said the bug was \"marketed as if it were the first RCE found in human history,\" and nobody shared how much computing power it cost. Fair points.\n\nBut even without a break-in, the damage was real. Citizens could not use public services. That is the price of speed without brakes.\n\n## Who sets the speed?\n\nThis is my real question this week. Look at who did what.\n\nOpenAI helped find the bug. OpenAI then published a post on how the world should coordinate disclosure as agents find more bugs. And Semafor reported that OpenAI and Anthropic both lobbied on letting AI labs share information without breaking antitrust rules. Anthropic lists a bill called the Collaboration on Adversarial Threats and Security Risks Act. Nvidia, Anthropic and OpenAI each just had their biggest lobbying quarter ever.\n\nTo be fair: cooperation on security is not a bad idea. Labs sharing threat information could protect us. And lobbying records do not prove the labs control any decision. I am not saying there is a plot.\n\nBut who did the hard work? About 13 people, for about two months, according to one analysis. Many open-source maintainers are volunteers. The PHP Foundation called the announcement \"clumsy.\" Maintainers told The New Stack that AI is piling security work onto people who are already stretched thin.\n\nVoilà the pattern. The labs find the bugs. The labs write the ideas for disclosure. The labs lobby for the legal right to coordinate among themselves. The volunteers carry the load. Governments take sites offline. Nobody voted on this pace.\n\nDeveloper Armin Ronacher said we built a lot of bad software for 30 years, and now we pay for it. He is right. But the bill is arriving all at once, and the companies with the fastest AI decide when it arrives.\n\n## This is only the beginning\n\nAttackers have the same tools. AI can help turn a public patch into a working exploit very fast. Microsoft says a China-aligned hacker used AI agents to break into customers of IT company ConnectWise. I could not check that story myself, so take it with care.\n\nSo we will see more PHP2Shells. More old bugs, found faster than humans can fix them. Our disclosure system was built for a slower world, where finding a bug was the hard part. Now, fixing it is the hard part.\n\nI do not want AI to stop hunting bugs. That would be crazy. I do not want a pause. I want a seatbelt.\n\nOne company cannot set the speed for the whole internet. One country cannot either. This crossed at least six countries in a few days. It needs an international answer, like other risks that ignore borders.\n\nBon, I will say it simply. AI found the fire. That is great. But the people holding the matches, the map and the lobbyists should not also decide when the fire brigade gets the call. Labs that grade their own homework will always find a good grade.",
+  "call_to_action": "Governments should create an independent, international body that sets the pace for disclosing bugs found by AI, and they should fund the open-source maintainers who do the actual fixing. AI labs that gain prestige from these discoveries should share their costs and pay part of the cleanup. And if you run a PHP website, update today.",
+  "question": "When an AI lab finds a bug that can knock government services offline, who should decide when the world finds out: the lab, the volunteers who fix it, or someone independent?",
+  "sources": [
+    {
+      "name": "SecurityWeek",
+      "url": "https://www.securityweek.com/php2shell-patches-land-as-first-exploitation-attempts-hit-sensors/"
+    },
+    {
+      "name": "The Register",
+      "url": "https://www.theregister.com/security/2026/10/22/php2shell-puts-dozens-of-uk-government-services-out-of-service/5304840"
+    },
+    {
+      "name": "paddo.dev",
+      "url": "https://paddo.dev/blog/php2shell-proof-was-the-bottleneck"
+    },
+    {
+      "name": "ITdaily",
+      "url": "https://itdaily.com/blogs/software/php-angry-clumsy-announcement/"
+    },
+    {
+      "name": "The New Stack",
+      "url": "https://thenewstack.io/php2shell-ai-vulnerabilities-maintainers/"
+    },
+    {
+      "name": "Semafor",
+      "url": "https://www.semafor.com/article/10/21/2026/meta-tops-big-tech-lobbying-as-ai-labs-talk-antitrust"
+    },
+    {
+      "name": "Wiz",
+      "url": "https://www.wiz.io/blog/php2shell-php-rce"
+    },
+    {
+      "name": "OpenAI",
+      "url": "https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/"
+    }
+  ],
+  "social_post": "🔥 AI found a hidden fire in the code that runs a big part of the web. Then 32 UK government services had to go offline.\n\nPHP2Shell is AI at its best: a bug from a 2024 \"maybe\" finally proven and fixed.\nBut the labs found it, the labs talk about how disclosure should work, and the labs lobby to coordinate among themselves. About 13 overstretched people did the fix.\nI don't want a pause. I want a seatbelt, set by someone independent.\n\nWho should decide when the world finds out about a bug like this: the lab, the maintainers, or an independent body?",
+  "cover_scene": "A small old house built from stacked wooden code blocks, with a bright fire glowing through one window. A sleek robot stands outside pointing a flashlight at the flames, while a handful of tired volunteers with buckets run toward the house. In the background, a row of city buildings switches off their lights one by one."
+}

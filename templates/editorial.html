@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% from "_macros.html" import share_bar, listen_player %}
+{% set page = site_url ~ "/" ~ piece.slug ~ ".html" %}
+{% block body_attrs %}data-page-type="editorial" data-edition="{{ piece.date }}"{% endblock %}
+{% block title %}{{ piece.title }} | Le Café Noir, AI Daily Grind{% endblock %}
+{% block description %}{{ piece.dek if piece.dek|length <= 158 else piece.dek[:155].rsplit(" ", 1)[0] ~ "…" }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ page }}">{% endblock %}
+{% block social %}
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The AI Daily Grind">
+  <meta property="og:title" content="{{ piece.title }}">
+  <meta property="og:description" content="{{ piece.dek }}">
+  <meta property="og:url" content="{{ page }}">
+  <meta property="article:published_time" content="{{ piece.date }}T06:30:00">
+  <meta property="article:author" content="François Gravel">
+  <meta property="article:section" content="Opinion">
+  <meta property="og:image" content="{{ site_url }}/{{ piece.card }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Le Café Noir: {{ piece.title }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ piece.title }}">
+  <meta name="twitter:description" content="{{ piece.dek }}">
+  <meta name="twitter:image" content="{{ site_url }}/{{ piece.card }}">
+{% endblock %}
+{% block content %}
+<article class="noir">
+  <header class="hero">
+    <p class="noir-kicker">🖤☕ Le Café Noir · Opinion</p>
+    <div class="meta-row">
+      <time datetime="{{ piece.date }}T06:30:00">{{ piece.date_label }}</time>
+      <a class="byline" href="about.html" rel="author">By François Gravel</a>
+      <span>No. {{ piece.number }}</span>
+      <span>{{ piece.read_minutes }} min read</span>
+    </div>
+    <h1 data-speak>{{ piece.title }}</h1>
+    <p class="noir-dek" data-speak>{{ piece.dek }}</p>
+    {{ listen_player("Listen to this editorial · about " ~ piece.read_minutes ~ " min", "") }}
+    {% if piece.cover %}
+    <figure class="cover-frame noir-frame">
+      <img class="cover" src="{{ piece.cover }}" alt="Illustration for Le Café Noir: {{ piece.title }}" width="1376" height="768">
+    </figure>
+    {% endif %}
+  </header>
+
+  <div class="noir-body" data-speak>
+    {% for kind, text in piece.blocks %}{% if kind == "h2" %}<h2>{{ text }}</h2>{% else %}<p>{{ text }}</p>{% endif %}{% endfor %}
+  </div>
+
+  <aside class="noir-cta">
+    <span class="why-label">What we should do</span>
+    <p data-speak>{{ piece.call_to_action }}</p>
+  </aside>
+
+  <section class="last-word noir-question">
+    <div class="term-bar"><i></i><i></i><i></i><span>your_turn.txt</span></div>
+    <p><span class="prompt" aria-hidden="true">&gt;</span> <span data-speak>{{ piece.question }}</span></p>
+  </section>
+
+  {% if piece.sources %}
+  <div class="sources noir-sources">
+    <span class="sources-label">Sources</span>
+    {% for source in piece.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.name }} ↗</a>{% endfor %}
+  </div>
+  {% endif %}
+
+  {{ share_bar(page, piece.title, "Share Le Café Noir", piece.card, "🖤☕ " ~ piece.social_post) }}
+  <p class="noir-note">Le Café Noir is François's personal opinion, written with the help of AI tools from his written point of view. <a href="about.html#ai">How we use AI</a> · <a href="cafe-noir.html">All editorials</a></p>
+</article>
+
+{% set form_id = "editorial" %}
+{% include "_subscribe_form.html" %}
+{% endblock %}

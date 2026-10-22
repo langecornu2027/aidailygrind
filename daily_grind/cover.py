@@ -20,7 +20,17 @@ STYLE = (
 )
 
 
-def make_cover(scene: str, out_path) -> None:
+# Le Café Noir (weekly editorial): darker and more dramatic
+NOIR_STYLE = (
+    "Dramatic editorial illustration for an opinion column about AI called Le Café Noir. "
+    "Modern, cinematic, slightly surreal, with soft grain. Dark palette: deep black coffee, "
+    "espresso brown, warm amber light, one small accent of teal. Strong contrast, moody light, "
+    "a black coffee cup somewhere in the scene. Wide 16:9 composition. "
+    "No text, no letters, no logos, no brand marks, no real people's faces."
+)
+
+
+def make_cover(scene: str, out_path, style: str = STYLE) -> None:
     """Generate one cover image for `scene` and save it as a JPEG at `out_path`."""
     client = genai.Client(
         api_key=os.environ["GEMINI_API_KEY"],
@@ -28,7 +38,7 @@ def make_cover(scene: str, out_path) -> None:
     )
     interaction = client.interactions.create(
         model=MODEL,
-        input=f"{STYLE}\n\nScene: {scene}",
+        input=f"{style}\n\nScene: {scene}",
         response_format={
             "type": "image",
             "mime_type": "image/jpeg",

@@ -15,6 +15,7 @@ from . import social
 
 ROOT = Path(__file__).resolve().parent.parent
 EDITIONS = ROOT / "data" / "editions"
+EDITORIALS = ROOT / "data" / "editorials"  # Le Café Noir, weekly
 COVERS = ROOT / "data" / "covers"
 SITE = ROOT / "site"
 DOMAIN = "aidailygrind.com"
@@ -82,6 +83,35 @@ def load_editions() -> list[dict]:
     return editions
 
 
+def week_editorial(editorials: list[dict], day: str):
+    """The Café Noir published 0 to 6 days before this edition, if any."""
+    d = date.fromisoformat(day)
+    for piece in editorials:
+        if 0 <= (d - date.fromisoformat(piece["date"])).days <= 6:
+            return piece
+    return None
+
+
+def load_editorials() -> list[dict]:
+    pieces = []
+    for path in sorted(EDITORIALS.glob("*.json"), reverse=True):
+        piece = json.loads(path.read_text(encoding="utf-8"))
+        piece["date"] = path.stem
+        piece["date_label"] = nice_date(path.stem)
+        piece["slug"] = f"cafe-noir-{path.stem}"
+        cover = COVERS / f"editorial-{path.stem}.jpg"
+        if cover.exists():
+            piece["cover"] = f"covers/editorial-{path.stem}.jpg?v={hashlib.sha1(cover.read_bytes()).hexdigest()[:8]}"
+        words = len(piece["body"].split())
+        piece["read_minutes"] = max(1, round(words / 200))
+        piece["blocks"] = [("h2", b[3:].strip()) if b.startswith("## ") else ("p", b.strip())
+                           for b in piece["body"].split("\n\n") if b.strip()]
+        pieces.append(piece)
+    for number, piece in enumerate(reversed(pieces), start=1):
+        piece["number"] = number
+    return pieces
+
+
 def build_site() -> Path:
     env = Environment(
         loader=FileSystemLoader(ROOT / "templates"),
@@ -99,6 +129,7 @@ def build_site() -> Path:
                        privacy_officer=PRIVACY_OFFICER, policy_date=POLICY_DATE,
                        subscribe_open=bool(POSTAL_ADDRESS and CONTACT_EMAIL))
     editions = load_editions()
+    editorials = load_editorials()
 
     if SITE.exists():
         shutil.rmtree(SITE)
@@ -116,11 +147,12 @@ def build_site() -> Path:
         newer = editions[i - 1] if i > 0 else None
         older = editions[i + 1] if i + 1 < len(editions) else None
         ld = jsonld_edition(edition)
-        html = page.render(edition=edition, newer=newer, older=older, is_latest=(i == 0), jsonld=ld)
+        noir = week_editorial(editorials, edition["date"])
+        html = page.render(edition=edition, newer=newer, older=older, is_latest=(i == 0), jsonld=ld, noir=noir)
         (SITE / f"{edition['date']}.html").write_text(html, encoding="utf-8")
         if i == 0:  # the home page shows the newest edition, with the site's own address and info
             html = page.render(edition=edition, newer=newer, older=older, is_latest=True, is_home=True,
-                               jsonld=jsonld_home(edition))
+                               jsonld=jsonld_home(edition), noir=noir)
             (SITE / "index.html").write_text(html, encoding="utf-8")
         # One page per token, so each one can be shared with its own preview
         for n, token in enumerate(edition["tokens"], start=1):
@@ -128,6 +160,15 @@ def build_site() -> Path:
                                       f"Morning Token {n:02d}", token["title"], token["tag"])
             html = token_page.render(edition=edition, token=token, n=n, jsonld=jsonld_token(edition, token, n))
             (SITE / f"{edition['date']}-token-{n}.html").write_text(html, encoding="utf-8")
+
+    noir_page = env.get_template("editorial.html")
+    for piece in editorials:
+        piece["card"] = make_card({"date": piece["date"]}, piece["slug"], f"Le Café Noir · {piece['date_label']}",
+                                  piece["title"], "Opinion", cover_name=f"editorial-{piece['date']}")
+        html = noir_page.render(piece=piece, jsonld=jsonld_editorial(piece), page_name=piece["slug"])
+        (SITE / f"{piece['slug']}.html").write_text(html, encoding="utf-8")
+    (SITE / "cafe-noir.html").write_text(env.get_template("cafe_noir.html").render(
+        pieces=editorials, page_name="cafe-noir"), encoding="utf-8")
 
     archive = env.get_template("archive.html").render(editions=editions, topics=sorted(topics(editions)))
     (SITE / "archive.html").write_text(archive, encoding="utf-8")
@@ -144,10 +185,12 @@ def build_site() -> Path:
         (SITE / out).write_text(html, encoding="utf-8")
 
     (SITE / "404.html").write_text(env.get_template("404.html").render(page_name="404"), encoding="utf-8")
-    build_seo_files(editions)
+    build_seo_files(editions, editorials)
     build_speech(editions)
     if editions:
         build_email(env, editions[0])
+    if editorials and editorials[0]["date"] == datetime.now(ZoneInfo("America/Toronto")).date().isoformat():
+        build_editorial_email(env, editorials[0])
     return SITE
 
 
@@ -209,6 +252,18 @@ def jsonld_edition(edition: dict) -> str:
         edition, url, edition["headline"], short(edition["intro"].split("\n\n")[0]), edition["card"])})
 
 
+def jsonld_editorial(piece: dict) -> str:
+    url = f"{SITE_URL}/{piece['slug']}.html"
+    article = _article(piece, url, piece["title"], short(piece["dek"]), piece["card"], "Opinion")
+    article["@type"] = "OpinionNewsArticle"
+    article["wordCount"] = len(piece["body"].split())
+    return _ld({"@context": "https://schema.org", "@graph": [article, {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "The AI Daily Grind", "item": SITE_URL + "/"},
+        {"@type": "ListItem", "position": 2, "name": "Le Café Noir", "item": f"{SITE_URL}/cafe-noir.html"},
+        {"@type": "ListItem", "position": 3, "name": piece["title"], "item": url},
+    ]}]})
+
+
 def jsonld_home(edition: dict) -> str:
     return _ld({"@context": "https://schema.org", "@graph": [
         {"@type": "WebSite", "name": "The AI Daily Grind", "alternateName": "AI Daily Grind",
@@ -267,7 +322,7 @@ def _rss_item(title, url, when, description, body, image, category) -> str:
             f'<media:content url="{escape(image)}" medium="image" type="image/jpeg" width="1200" height="630"/></item>')
 
 
-def build_seo_files(editions: list[dict]) -> None:
+def build_seo_files(editions: list[dict], editorials: list[dict]) -> None:
     newest = editions[0]["date"] if editions else date.today().isoformat()
     urls = [(f"{SITE_URL}/", newest, "daily", "1.0", editions[0].get("cover") if editions else None),
             (f"{SITE_URL}/archive.html", newest, "daily", "0.6", None)]
@@ -275,6 +330,10 @@ def build_seo_files(editions: list[dict]) -> None:
         urls.append((f"{SITE_URL}/{e['date']}.html", e["date"], "monthly", "0.8", e.get("cover")))
         for n in range(1, len(e["tokens"]) + 1):
             urls.append((f"{SITE_URL}/{e['date']}-token-{n}.html", e["date"], "monthly", "0.7", None))
+    urls.append((f"{SITE_URL}/cafe-noir.html", editorials[0]["date"] if editorials else newest, "weekly", "0.6", None))
+    for piece in editorials:
+        urls.append((f"{SITE_URL}/{piece['slug']}.html", piece["date"], "monthly", "0.8",
+                     piece.get("cover")))
     for tag in topics(editions):
         urls.append((f"{SITE_URL}/{topic_slug(tag)}.html", newest, "daily", "0.6", None))
     for page in ("about", "subscribe", "privacy", "disclaimer", "projects"):
@@ -309,6 +368,12 @@ def build_seo_files(editions: list[dict]) -> None:
                         "<news:name>The AI Daily Grind</news:name><news:language>en</news:language>"
                         f"</news:publication><news:publication_date>{published(e)}</news:publication_date>"
                         f"<news:title>{escape(title)}</news:title></news:news></url>")
+    for piece in editorials:
+        if date.fromisoformat(piece["date"]).toordinal() >= cutoff:
+            news.append(f"<url><loc>{SITE_URL}/{piece['slug']}.html</loc><news:news><news:publication>"
+                        "<news:name>The AI Daily Grind</news:name><news:language>en</news:language>"
+                        f"</news:publication><news:publication_date>{published(piece)}</news:publication_date>"
+                        f"<news:title>{escape(piece['title'])}</news:title></news:news></url>")
     (SITE / "news-sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
         'xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n' + "\n".join(news) + "\n</urlset>\n",
@@ -321,6 +386,8 @@ def build_seo_files(editions: list[dict]) -> None:
         fresh = [f"{SITE_URL}/", f"{SITE_URL}/{e['date']}.html", f"{SITE_URL}/archive.html"]
         fresh += [f"{SITE_URL}/{e['date']}-token-{n}.html" for n in range(1, len(e["tokens"]) + 1)]
         fresh += [f"{SITE_URL}/{topic_slug(t['tag'])}.html" for t in e["tokens"]]
+        if editorials and editorials[0]["date"] == e["date"]:
+            fresh += [f"{SITE_URL}/{editorials[0]['slug']}.html", f"{SITE_URL}/cafe-noir.html"]
         (SITE / "indexnow.json").write_text(json.dumps({
             "host": DOMAIN, "key": INDEXNOW_KEY, "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
             "urlList": list(dict.fromkeys(fresh))}), encoding="utf-8")
@@ -344,6 +411,12 @@ def build_seo_files(editions: list[dict]) -> None:
                 f'<a href="{escape(s["url"])}">{escape(s["name"])}</a>' for s in tok.get("sources", [])) + "</p>"
             entries.append(_rss_item(tok["title"], turl, when, short(tok["summary"].split("\n\n")[0], 300),
                                      tbody, f"{SITE_URL}/{tok['card']}", tok["tag"]))
+    for piece in editorials[:10]:
+        when = format_datetime(datetime.fromisoformat(published(piece)).astimezone(timezone.utc))
+        body = "".join(f"<h2>{escape(x)}</h2>" if kind == "h2" else f"<p>{escape(x)}</p>" for kind, x in piece["blocks"])
+        body += f"<p><strong>{escape(piece['call_to_action'])}</strong></p><p><em>{escape(piece['question'])}</em></p>"
+        entries.append(_rss_item(piece["title"], f"{SITE_URL}/{piece['slug']}.html", when, piece["dek"], body,
+                                 f"{SITE_URL}/{piece['card']}", "Le Café Noir (opinion)"))
     (SITE / "feed.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" '
         'xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" '
@@ -359,6 +432,18 @@ def build_seo_files(editions: list[dict]) -> None:
     # Feed for the daily LinkedIn page post (Zapier / Make read it): one item per edition,
     # with the ready-made post text, the share card and a tagged link
     li = []
+    for piece in editorials[:4]:  # Thursdays: the editorial is posted too
+        url = f"{SITE_URL}/{piece['slug']}.html"
+        tagged = f"{url}?utm_source=linkedin&utm_medium=social&utm_campaign=page_autopost"
+        text = f"🖤☕ LE CAFÉ NOIR, my weekly take\n\n{piece['social_post']}\n\n👉 Read it: {tagged}"
+        card = f"{SITE_URL}/{piece['card']}"
+        when = format_datetime(datetime.fromisoformat(published(piece)).astimezone(timezone.utc))
+        li.append(f"<item><title>{escape(piece['title'])}</title><link>{escape(tagged)}</link>"
+                  f"<guid isPermaLink=\"false\">aidailygrind-cafe-noir-{piece['date']}</guid><pubDate>{when}</pubDate>"
+                  f"<description>{escape(text)}</description>"
+                  f'<enclosure url="{escape(card)}" type="image/jpeg" length="0"/>'
+                  f'<media:content url="{escape(card)}" medium="image" type="image/jpeg" width="1200" height="630"/>'
+                  "</item>")
     for e in editions[:10]:
         url = f"{SITE_URL}/{e['date']}.html"
         tagged = f"{url}?utm_source=linkedin&utm_medium=social&utm_campaign=page_autopost"
@@ -378,10 +463,10 @@ def build_seo_files(editions: list[dict]) -> None:
         + "".join(li) + "</channel></rss>\n", encoding="utf-8")
 
 
-def make_card(edition: dict, name: str, label: str, title: str, tag: str = "") -> str:
+def make_card(edition: dict, name: str, label: str, title: str, tag: str = "", cover_name: str = "") -> str:
     """Share card (1200x630) for social media previews. Returns its link, with a fingerprint."""
     out = SITE / "social" / f"{name}.jpg"
-    cover = COVERS / f"{edition['date']}.jpg"
+    cover = COVERS / f"{cover_name or edition['date']}.jpg"
     social.make_card(cover if cover.exists() else None, out, label, title, tag)
     return f"social/{name}.jpg?v={hashlib.sha1(out.read_bytes()).hexdigest()[:8]}"
 
@@ -403,6 +488,18 @@ def build_speech(editions: list[dict]) -> None:
             parts.append({"s": n, "text": f"Why it matters: {token['why_it_matters']}"})
         parts.append({"s": len(edition["tokens"]) + 1, "text": f"Le dernier mot. {edition['last_word']}"})
         (out / f"{edition['date']}.json").write_text(json.dumps(parts, ensure_ascii=False), encoding="utf-8")
+
+
+def build_editorial_email(env: Environment, piece: dict) -> None:
+    """Thursday: the editorial email. The VM mailer sends it once, next to the daily edition."""
+    if not (POSTAL_ADDRESS and CONTACT_EMAIL):
+        return
+    out = SITE / "email"
+    out.mkdir(exist_ok=True)
+    name = f"editorial-{piece['date']}"
+    (out / f"{name}.html").write_text(env.get_template("email_editorial.html").render(piece=piece), encoding="utf-8")
+    (out / f"{name}.txt").write_text(env.get_template("email_editorial.txt").render(piece=piece), encoding="utf-8")
+    (out / f"{name}.subject").write_text(f"🖤☕ Le Café Noir: {piece['title']}\n", encoding="utf-8")
 
 
 def build_email(env: Environment, edition: dict) -> None:
