@@ -7,13 +7,20 @@
   <meta name="color-scheme" content="dark">
   <title>{% block title %}The AI Daily Grind{% endblock %}</title>
   <meta name="description" content="{% block description %}The AI news that matters, freshly ground every morning. In simple words.{% endblock %}">
+  <meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1{% endblock %}">
+  <meta name="author" content="François Gravel">
+  <meta name="google-site-verification" content="{{ google_site_verification }}">
+  {% block canonical %}{% if page_name %}<link rel="canonical" href="{{ site_url }}/{{ page_name }}.html">{% endif %}{% endblock %}
   {% block social %}{% endblock %}
+  <link rel="alternate" type="application/rss+xml" title="The AI Daily Grind" href="{{ site_url }}/feed.xml">
+  <link rel="apple-touch-icon" href="static/apple-touch-icon.png?v={{ v }}">
   <link rel="icon" type="image/svg+xml" href="static/logo.svg?v={{ v }}">
   <link rel="preload" href="static/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="static/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="static/fonts/fonts.css?v={{ v }}">
   <link rel="stylesheet" href="static/style.css?v={{ v }}">
   {% block head_extra %}{% endblock %}
+  {% if jsonld %}<script type="application/ld+json">{{ jsonld | safe }}</script>{% endif %}
 </head>
 <body {% block body_attrs %}data-page-type="{{ page_name or 'page' }}"{% endblock %}>
   <div class="bg-grid" aria-hidden="true"></div>
@@ -46,7 +53,7 @@
     </div>
     <p>The AI news that matters, freshly ground every morning. In simple words. Made with ☕ in Québec.</p>
     <p class="footer-note">Stories are picked and written with the help of AI tools, from public news sources. Always check the sources.</p>
-    <p class="footer-links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="#" class="cookie-settings">Cookie settings</a>{% if subscribe_open %}<a href="subscribe.html">Subscribe</a>{% endif %}{% if contact_email %}<a href="mailto:{{ contact_email }}">Contact</a>{% endif %}</p>
+    <p class="footer-links"><a href="archive.html">Archive</a><a href="feed.xml">RSS</a><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="#" class="cookie-settings">Cookie settings</a>{% if subscribe_open %}<a href="subscribe.html">Subscribe</a>{% endif %}{% if contact_email %}<a href="mailto:{{ contact_email }}">Contact</a>{% endif %}</p>
   </footer>
 
   <script src="static/count.js?v={{ v }}" defer></script>

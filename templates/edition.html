@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% from "_macros.html" import token_card, share_bar, listen_player %}
 {% set page = site_url ~ "/" ~ edition.date ~ ".html" %}
+{% set self_url = site_url ~ "/" if is_home else page %}
 {% block body_attrs %}data-page-type="edition" data-edition="{{ edition.date }}"{% endblock %}
-{% block title %}The AI Daily Grind · {{ edition.date_label }}{% endblock %}
-{% block description %}{{ edition.headline }}{% endblock %}
+{% block title %}{% if is_home %}The AI Daily Grind: AI news in simple words, every morning{% else %}{{ edition.headline }} | AI Daily Grind{% endif %}{% endblock %}
+{% block description %}{% set d = edition.intro.split("\n\n")[0] %}{{ d if d|length <= 158 else d[:155].rsplit(" ", 1)[0] ~ "…" }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ self_url }}">{% endblock %}
 {% block social %}
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="The AI Daily Grind">
   <meta property="og:title" content="{{ edition.headline }}">
   <meta property="og:description" content="{{ edition.intro.split('\n\n')[0] }}">
-  <meta property="og:url" content="{{ page }}">
-  <link rel="canonical" href="{{ page }}">
+  <meta property="og:url" content="{{ self_url }}">
+  <meta property="article:published_time" content="{{ edition.date }}T06:30:00">
+  <meta property="article:author" content="François Gravel">
   <meta property="og:image" content="{{ site_url }}/{{ edition.card }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">

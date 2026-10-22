@@ -2,15 +2,17 @@
 {% from "_macros.html" import token_card, listen_player %}
 {% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
 {% block body_attrs %}data-page-type="token" data-edition="{{ edition.date }}" data-token="{{ n }}" data-tag="{{ token.tag }}"{% endblock %}
-{% block title %}{{ token.title }} · The AI Daily Grind{% endblock %}
-{% block description %}{{ token.share_text or token.why_it_matters }}{% endblock %}
+{% block title %}{{ token.title }} | AI Daily Grind{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ page }}">{% endblock %}
+{% block description %}{% set d = token.share_text or token.why_it_matters %}{{ d if d|length <= 158 else d[:155].rsplit(" ", 1)[0] ~ "…" }}{% endblock %}
 {% block social %}
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="The AI Daily Grind">
   <meta property="og:title" content="{{ token.title }}">
   <meta property="og:description" content="{{ token.share_text or token.why_it_matters }}">
   <meta property="og:url" content="{{ page }}">
-  <link rel="canonical" href="{{ page }}">
+  <meta property="article:published_time" content="{{ edition.date }}T06:30:00">
+  <meta property="article:section" content="{{ token.tag }}">
   <meta property="og:image" content="{{ site_url }}/{{ token.card }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">

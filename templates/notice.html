@@ -6,7 +6,7 @@
 } %}
 {% set heading, text = notices[page_name] %}
 {% block title %}{{ heading[2:] }} · The AI Daily Grind{% endblock %}
-{% block head_extra %}<meta name="robots" content="noindex">{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
 {% block content %}
 <section class="hero page" style="text-align:center">
   <h1>{{ heading }}</h1>
