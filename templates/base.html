@@ -51,6 +51,17 @@
 
   <script src="static/listen.js?v={{ v }}" defer></script>
   <script>
+    // "Copy post" copies the text and the link, ready to paste in any app
+    document.querySelectorAll(".share .copy-post").forEach(function (button) {
+      var box = button.closest(".share");
+      button.addEventListener("click", function () {
+        if (!navigator.clipboard) return;
+        navigator.clipboard.writeText(box.dataset.text + "\n\n" + box.dataset.url).then(function () {
+          button.textContent = "Copied ✓";
+          setTimeout(function () { button.textContent = "Copy post"; }, 2000);
+        });
+      });
+    });
     // "Copy link" buttons; on phones, open the native share sheet instead
     document.querySelectorAll(".share .copy-link").forEach(function (button) {
       var box = button.closest(".share");

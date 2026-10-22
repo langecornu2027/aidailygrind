@@ -1,9 +1,13 @@
-{% macro share_bar(url, text, label="Share") %}
+{% macro share_bar(url, text, label="Share", card=None) %}
+{# LinkedIn opens the post box with the text and link already written #}
+{% set post = text ~ "\n\n" ~ url %}
 <div class="share" data-url="{{ url }}" data-text="{{ text }}">
   <span class="share-label">{{ label }}</span>
-  <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url | urlencode }}" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://www.linkedin.com/feed/?shareActive=true&text={{ post | urlencode }}" target="_blank" rel="noopener">LinkedIn</a>
   <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ url | urlencode }}" target="_blank" rel="noopener">X</a>
   <a href="https://www.facebook.com/sharer/sharer.php?u={{ url | urlencode }}" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  {% if card %}<a href="{{ card }}" download>Image</a>{% endif %}
   <button type="button" class="copy-link">Copy link</button>
 </div>
 {% endmacro %}
@@ -39,6 +43,6 @@
     {% for source in token.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.name }} ↗</a>{% endfor %}
   </div>
   {% endif %}
-  {{ share_bar(page, token.share_text or token.title, "Share") }}
+  {{ share_bar(page, token.share_text or token.title, "Share", token.card) }}
 </article>
 {% endmacro %}

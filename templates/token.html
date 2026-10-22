@@ -10,12 +10,14 @@
   <meta property="og:description" content="{{ token.share_text or token.why_it_matters }}">
   <meta property="og:url" content="{{ page }}">
   <link rel="canonical" href="{{ page }}">
-  {% if edition.cover %}
-  <meta property="og:image" content="{{ site_url }}/{{ edition.cover }}">
-  <meta property="og:image:width" content="1376">
-  <meta property="og:image:height" content="768">
+  <meta property="og:image" content="{{ site_url }}/{{ token.card }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Morning Token {{ n }}: {{ token.title }}">
   <meta name="twitter:card" content="summary_large_image">
-  {% endif %}
+  <meta name="twitter:title" content="{{ token.title }}">
+  <meta name="twitter:description" content="{{ token.share_text or token.why_it_matters }}">
+  <meta name="twitter:image" content="{{ site_url }}/{{ token.card }}">
 {% endblock %}
 {% block content %}
 <section class="hero hero-token">

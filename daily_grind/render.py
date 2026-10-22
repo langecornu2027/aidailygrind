@@ -8,6 +8,8 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from . import social
+
 ROOT = Path(__file__).resolve().parent.parent
 EDITIONS = ROOT / "data" / "editions"
 COVERS = ROOT / "data" / "covers"
@@ -88,6 +90,9 @@ def build_site() -> Path:
     page = env.get_template("edition.html")
     token_page = env.get_template("token.html")
     for i, edition in enumerate(editions):
+        edition["card"] = make_card(edition, edition["date"],
+                                    f"{date.fromisoformat(edition['date']).strftime('%A, %b %-d, %Y')} · Edition #{edition['number']}",
+                                    edition["headline"])
         newer = editions[i - 1] if i > 0 else None
         older = editions[i + 1] if i + 1 < len(editions) else None
         html = page.render(edition=edition, newer=newer, older=older, is_latest=(i == 0))
@@ -96,6 +101,8 @@ def build_site() -> Path:
             (SITE / "index.html").write_text(html, encoding="utf-8")
         # One page per token, so each one can be shared with its own preview
         for n, token in enumerate(edition["tokens"], start=1):
+            token["card"] = make_card(edition, f"{edition['date']}-token-{n}",
+                                      f"Morning Token {n:02d}", token["title"], token["tag"])
             html = token_page.render(edition=edition, token=token, n=n)
             (SITE / f"{edition['date']}-token-{n}.html").write_text(html, encoding="utf-8")
 
@@ -110,6 +117,14 @@ def build_site() -> Path:
     if editions:
         build_email(env, editions[0])
     return SITE
+
+
+def make_card(edition: dict, name: str, label: str, title: str, tag: str = "") -> str:
+    """Share card (1200x630) for social media previews. Returns its link, with a fingerprint."""
+    out = SITE / "social" / f"{name}.jpg"
+    cover = COVERS / f"{edition['date']}.jpg"
+    social.make_card(cover if cover.exists() else None, out, label, title, tag)
+    return f"social/{name}.jpg?v={hashlib.sha1(out.read_bytes()).hexdigest()[:8]}"
 
 
 def build_speech(editions: list[dict]) -> None:
