@@ -1,6 +1,6 @@
 {% macro share_bar(url, text, label="Share") %}
 <div class="share" data-url="{{ url }}" data-text="{{ text }}">
-  <span class="share-label">{{ label }}:</span>
+  <span class="share-label">{{ label }}</span>
   <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url | urlencode }}" target="_blank" rel="noopener">LinkedIn</a>
   <a href="https://x.com/intent/post?text={{ text | urlencode }}&url={{ url | urlencode }}" target="_blank" rel="noopener">X</a>
   <a href="https://www.facebook.com/sharer/sharer.php?u={{ url | urlencode }}" target="_blank" rel="noopener">Facebook</a>
@@ -10,19 +10,25 @@
 
 {% macro token_card(token, n, edition, heading="h2", standalone=False) %}
 {% set page = site_url ~ "/" ~ edition.date ~ "-token-" ~ n ~ ".html" %}
-<article class="token" id="token-{{ n }}">
+<article class="token{% if n == 1 %} token-top{% endif %}" id="token-{{ n }}">
   <div class="token-label">
-    <span class="token-num">Morning Token #{{ n }}</span>
-    <span class="tag">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
+    <span class="token-num">Morning Token <b>{{ "%02d" | format(n) }}</b></span>
+    <span class="tag tag-{{ token.tag | lower | replace(' ', '-') }}">{{ tag_icons.get(token.tag, "") }} {{ token.tag }}</span>
   </div>
   <{{ heading }}>{% if standalone %}{{ token.title }}{% else %}<a class="token-link" href="{{ edition.date }}-token-{{ n }}.html">{{ token.title }}</a>{% endif %}</{{ heading }}>
-  {% for para in token.summary.split("\n\n") %}<p>{{ para }}</p>{% endfor %}
-  <p class="why"><strong>Why it matters:</strong> {{ token.why_it_matters }}</p>
+  <div class="token-body">
+    {% for para in token.summary.split("\n\n") %}<p>{{ para }}</p>{% endfor %}
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p>{{ token.why_it_matters }}</p>
+  </div>
   {% if token.sources %}
-  <p class="sources">
+  <div class="sources">
+    <span class="sources-label">Sources</span>
     {% for source in token.sources %}<a href="{{ source.url }}" target="_blank" rel="noopener">{{ source.name }} ↗</a>{% endfor %}
-  </p>
+  </div>
   {% endif %}
-  {{ share_bar(page, token.share_text or token.title, "Share this token") }}
+  {{ share_bar(page, token.share_text or token.title, "Share") }}
 </article>
 {% endmacro %}

@@ -18,23 +18,36 @@
   {% endif %}
 {% endblock %}
 {% block content %}
-<section class="edition-head">
-  <p class="date"><a href="{{ edition.date }}.html">← {{ edition.date_label }}</a></p>
+<section class="hero hero-token">
+  <div class="meta-row">
+    <a href="{{ edition.date }}.html">← {{ edition.date_label }}</a>
+    <span>Edition #{{ edition.number }}</span>
+  </div>
   {% if edition.cover %}
-  <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
+  <figure class="cover-frame">
+    <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
+  </figure>
   {% endif %}
 </section>
 
 {{ token_card(token, n, edition, heading="h1", standalone=True) }}
 
-<section class="more">
-  <h2>More Morning Tokens from {{ edition.date_label }}</h2>
-  <ol class="toc">
+<section class="manifest" aria-label="More Morning Tokens">
+  <p class="section-label">More tokens from {{ edition.date_label }}</p>
+  <ol>
     {% for other in edition.tokens %}
-    {% if loop.index != n %}<li value="{{ loop.index }}"><a href="{{ edition.date }}-token-{{ loop.index }}.html">{{ other.title }}</a></li>{% endif %}
+    {% if loop.index != n %}
+    <li>
+      <a href="{{ edition.date }}-token-{{ loop.index }}.html">
+        <span class="m-num">{{ "%02d" | format(loop.index) }}</span>
+        <span class="m-title">{{ other.title }}</span>
+        <span class="m-tag">{{ other.tag }}</span>
+      </a>
+    </li>
+    {% endif %}
     {% endfor %}
   </ol>
-  <p><a href="{{ edition.date }}.html">Read the full AI Daily Grind →</a></p>
+  <p class="more-link"><a href="{{ edition.date }}.html">Read the full AI Daily Grind →</a></p>
 </section>
 
 {% set form_id = "token" %}

@@ -3,27 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07090c">
+  <meta name="color-scheme" content="dark">
   <title>{% block title %}The AI Daily Grind{% endblock %}</title>
   <meta name="description" content="{% block description %}The AI news that matters, freshly ground every morning. In simple words.{% endblock %}">
   {% block social %}{% endblock %}
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="static/logo.svg">
+  <link rel="preload" href="static/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="static/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="static/fonts/fonts.css">
   <link rel="stylesheet" href="static/style.css">
   {% block head_extra %}{% endblock %}
 </head>
 <body>
-  <header class="masthead">
-    <a class="brand" href="index.html">
-      <span class="cup" aria-hidden="true">☕</span>
-      <span class="name">The AI Daily Grind</span>
-    </a>
-    <p class="tagline">The AI news that matters, freshly ground every morning. In simple words.</p>
-    <nav><a href="index.html">Today</a><a href="archive.html">Archive</a>{% if subscribe_open %}<a href="subscribe.html">Subscribe</a>{% endif %}</nav>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="The AI Daily Grind, home">
+        <img class="brand-mark" src="static/logo.svg" alt="" width="36" height="36">
+        <span class="brand-text">
+          <span class="brand-name">AI Daily <span class="grad">Grind</span></span>
+          <span class="brand-tag">// AI news, freshly ground daily</span>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Today</a>
+        <a href="archive.html">Archive</a>
+        {% if subscribe_open %}<a class="nav-cta" href="subscribe.html">Subscribe</a>{% endif %}
+      </nav>
+    </div>
   </header>
 
   <main>
     {% block content %}{% endblock %}
   </main>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      <img src="static/logo.svg" alt="" width="28" height="28">
+      <span>The AI Daily Grind</span>
+    </div>
+    <p>The AI news that matters, freshly ground every morning. In simple words. Made with ☕ in Québec.</p>
+    <p class="footer-note">Stories are picked and written with the help of AI tools, from public news sources. Always check the sources.</p>
+    <p class="footer-links"><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a>{% if subscribe_open %}<a href="subscribe.html">Subscribe</a>{% endif %}{% if contact_email %}<a href="mailto:{{ contact_email }}">Contact</a>{% endif %}</p>
+  </footer>
 
   <script>
     // "Copy link" buttons; on phones, open the native share sheet instead
@@ -43,10 +67,5 @@
       });
     });
   </script>
-
-  <footer>
-    <p>Made with ☕ in Québec. Stories are picked and written with the help of AI tools, from public news sources. Always check the sources.</p>
-    <p class="footer-links"><a href="privacy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a>{% if subscribe_open %} · <a href="subscribe.html">Subscribe</a>{% endif %}{% if contact_email %} · <a href="mailto:{{ contact_email }}">Contact</a>{% endif %}</p>
-  </footer>
 </body>
 </html>

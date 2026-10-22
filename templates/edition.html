@@ -18,17 +18,35 @@
   {% endif %}
 {% endblock %}
 {% block content %}
-<section class="edition-head">
-  {% if edition.cover %}
-  <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
-  {% endif %}
-  <p class="date">{{ edition.date_label }}</p>
+<section class="hero">
+  <div class="meta-row">
+    {% if is_latest %}<span class="live"><i></i>Today</span>{% endif %}
+    <span>{{ edition.date_label }}</span>
+    <span>Edition #{{ edition.number }}</span>
+    <span>{{ edition.tokens | length }} tokens</span>
+    <span>{{ edition.read_minutes }} min read</span>
+  </div>
   <h1>{{ edition.headline }}</h1>
+  {% if edition.cover %}
+  <figure class="cover-frame">
+    <img class="cover" src="{{ edition.cover }}" alt="Cover illustration for {{ edition.date_label }}" width="1376" height="768">
+  </figure>
+  {% endif %}
   <div class="intro">{% for para in edition.intro.split("\n\n") %}<p>{{ para }}</p>{% endfor %}</div>
   {{ share_bar(page, edition.headline, "Share today's Grind") }}
-  <ol class="toc">
+</section>
+
+<section class="manifest" aria-label="Today's Morning Tokens">
+  <p class="section-label">Today's tokens</p>
+  <ol>
     {% for token in edition.tokens %}
-    <li><a href="#token-{{ loop.index }}">{{ token.title }}</a></li>
+    <li>
+      <a href="#token-{{ loop.index }}">
+        <span class="m-num">{{ "%02d" | format(loop.index) }}</span>
+        <span class="m-title">{{ token.title }}</span>
+        <span class="m-tag">{{ token.tag }}</span>
+      </a>
+    </li>
     {% endfor %}
   </ol>
 </section>
@@ -38,8 +56,8 @@
 {% endfor %}
 
 <section class="last-word">
-  <h2>🍩 Le dernier mot</h2>
-  <p>{{ edition.last_word }}</p>
+  <div class="term-bar"><i></i><i></i><i></i><span>le_dernier_mot.txt</span></div>
+  <p><span class="prompt">&gt;</span> {{ edition.last_word }}</p>
 </section>
 
 {% set form_id = "edition" %}

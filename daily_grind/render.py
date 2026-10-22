@@ -50,7 +50,12 @@ def load_editions() -> list[dict]:
         edition["date_label"] = nice_date(path.stem)
         if (COVERS / f"{path.stem}.jpg").exists():
             edition["cover"] = f"covers/{path.stem}.jpg"
+        words = len(edition["intro"].split()) + sum(
+            len(t["summary"].split()) + len(t["why_it_matters"].split()) for t in edition["tokens"])
+        edition["read_minutes"] = max(1, round(words / 200))
         editions.append(edition)
+    for number, edition in enumerate(reversed(editions), start=1):
+        edition["number"] = number
     return editions
 
 

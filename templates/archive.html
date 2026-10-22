@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}The AI Daily Grind · Archive{% endblock %}
 {% block content %}
-<section class="edition-head">
+<section class="hero page">
   <h1>All the coffees</h1>
   <p class="intro">Every AI Daily Grind edition, newest first.</p>
 </section>
@@ -9,9 +9,11 @@
   {% for edition in editions %}
   <li>
     <a href="{{ edition.date }}.html">
-      {% if edition.cover %}<img class="thumb" src="{{ edition.cover }}" alt="" loading="lazy">{% endif %}
-      <span class="date">{{ edition.date_label }}</span>
-      <span class="headline">{{ edition.headline }}</span>
+      {% if edition.cover %}<img class="thumb" src="{{ edition.cover }}" alt="" loading="lazy">{% else %}<span class="thumb"></span>{% endif %}
+      <span class="a-text">
+        <span class="date">#{{ edition.number }} · {{ edition.date_label }}</span>
+        <span class="headline">{{ edition.headline }}</span>
+      </span>
     </a>
   </li>
   {% else %}
