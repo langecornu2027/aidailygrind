@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% set ref = "?utm_source=aidailygrind&utm_medium=referral&utm_campaign=projects" %}
+{% set projects = [
+  ("💍", "Handmade by François", "handmadebyfrancois.com", "https://handmadebyfrancois.com/",
+   "Handcrafted sterling silver jewelry with natural gemstones: rings, pendants and necklaces. Hand-forged, one of a kind.",
+   "Craft"),
+  ("🦉", "LANGE·CORNU", "langecornu.com", "https://langecornu.com/",
+   "My personal site: software engineering leader, silversmith, motorcyclist, off-roader, and traveler to 18 countries.",
+   "Personal"),
+  ("🚗", "TaraRent", "tararent.com", "https://tararent.com/",
+   "An online booking system for car rental businesses in the Philippines: a professional booking page, automatic confirmations and an admin dashboard.",
+   "SaaS"),
+  ("⚡", "Ohm Sweet Ohm", "meter.langecornu.com", "https://meter.langecornu.com/",
+   "A live dashboard of my home's energy use, built from the electric meter. Watts in real time, by the hour and by the day.",
+   "Side project"),
+] %}
+{% block title %}More projects by François Gravel · The AI Daily Grind{% endblock %}
+{% block description %}Other projects by François Gravel, the author of The AI Daily Grind: handmade silver jewelry, a personal site, a car rental booking system, and a home energy dashboard.{% endblock %}
+{% block content %}
+<section class="hero page">
+  <p class="section-label">From the same coffee machine</p>
+  <h1>More projects by François</h1>
+  <p class="intro">The AI Daily Grind is one of my projects. Here are the others: some code, some silver, and a lot of curiosity.</p>
+</section>
+
+<div class="projects">
+  {% for icon, name, host, url, text, tag in projects %}
+  <a class="project" href="{{ url }}{{ ref }}" target="_blank" rel="noopener">
+    <span class="project-icon" aria-hidden="true">{{ icon }}</span>
+    <span class="project-body">
+      <span class="project-tag">{{ tag }}</span>
+      <span class="project-name">{{ name }}</span>
+      <span class="project-text">{{ text }}</span>
+      <span class="project-host">{{ host }} ↗</span>
+    </span>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

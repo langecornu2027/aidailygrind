@@ -548,3 +548,24 @@ h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 
   .nav a[href="index.html"] { display: none; }  /* the logo already goes home */
   .topbar-inner { gap: 8px; }
 }
+
+/* More projects */
+.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 8px 0 24px; }
+.project {
+  display: flex;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.project:hover { color: var(--text); border-color: rgba(255, 180, 84, 0.35); box-shadow: var(--glow-amber); transform: translateY(-2px); }
+.project-icon { font-size: 30px; line-height: 1; }
+.project-body { display: flex; flex-direction: column; gap: 6px; }
+.project-tag { font: 12px var(--mono); color: var(--cyan); text-transform: uppercase; letter-spacing: 0.04em; }
+.project-name { font-family: var(--display); font-size: 21px; font-weight: 700; }
+.project-text { color: var(--text-soft); font-size: 15px; line-height: 1.55; }
+.project-host { font: 13px var(--mono); color: var(--amber); margin-top: 4px; }

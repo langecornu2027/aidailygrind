@@ -42,6 +42,7 @@ PAGES = [
     ("notice.html", "unsubscribed.html"),
     ("privacy.html", "privacy.html"),
     ("disclaimer.html", "disclaimer.html"),
+    ("projects.html", "projects.html"),
 ]
 
 TAG_ICONS = {
@@ -223,7 +224,7 @@ def build_seo_files(editions: list[dict]) -> None:
         urls.append((f"{SITE_URL}/{e['date']}.html", e["date"], "monthly", "0.8", e.get("cover")))
         for n in range(1, len(e["tokens"]) + 1):
             urls.append((f"{SITE_URL}/{e['date']}-token-{n}.html", e["date"], "monthly", "0.7", None))
-    for page in ("subscribe", "privacy", "disclaimer"):
+    for page in ("subscribe", "privacy", "disclaimer", "projects"):
         urls.append((f"{SITE_URL}/{page}.html", newest, "yearly", "0.3", None))
 
     items = []
