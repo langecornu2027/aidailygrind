@@ -14,6 +14,7 @@ Settings come from the environment (/etc/aidailygrind/env on the VM):
     WEB_ROOT               default /var/www/aidailygrind/public
     GEMINI_API_KEY         Google Gemini key for the AI voice (text-to-speech)
     AUDIO_DIR              default /var/www/aidailygrind/audio (served by nginx at /audio/)
+    STATS_TOKEN            secret in the private stats link: /api/stats?key=STATS_TOKEN
 """
 
 import base64
@@ -81,6 +82,16 @@ def db() -> sqlite3.Connection:
             confirmed_at TEXT,
             confirm_sent_at TEXT
         );
+        CREATE TABLE IF NOT EXISTS hits (      -- anonymous visit counter
+            day TEXT NOT NULL,
+            at INTEGER NOT NULL,
+            path TEXT NOT NULL,
+            kind TEXT NOT NULL,
+            country TEXT NOT NULL,
+            visitor TEXT NOT NULL              -- daily fingerprint, see record_hit()
+        );
+        CREATE INDEX IF NOT EXISTS hits_day ON hits(day);
+        CREATE TABLE IF NOT EXISTS salts (day TEXT PRIMARY KEY, salt TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS sends (
             edition TEXT PRIMARY KEY,
             started_at TEXT NOT NULL,
@@ -293,6 +304,166 @@ def audio_status(day: str, sections: list[int], start: bool) -> dict | None:
     return {"date": day, "total": len(texts), "parts": out}
 
 
+# ---------- anonymous visit counter ----------
+# No cookies and no IP address is stored. A visitor is a fingerprint of IP + browser
+# + a random salt that changes every day; old salts are deleted, so a fingerprint can
+# never be linked back to a person or to another day. Only the day, the page, the
+# country (from Cloudflare) and that fingerprint are kept.
+
+BOT_RE = re.compile(r"bot|crawl|spider|slurp|preview|monitor|curl|wget|python|headless|lighthouse", re.I)
+PATH_RE = re.compile(r"^/(?:[A-Za-z0-9_\-]+\.html)?$")  # "/" or one site page, nothing else
+KINDS = {"edition", "token", "page", "subscribe", "subscribed", "check-email", "unsubscribed",
+         "privacy", "disclaimer"}
+HIT_KEEP_DAYS = 400
+
+
+def daily_salt(conn: sqlite3.Connection, day: str) -> str:
+    row = conn.execute("SELECT salt FROM salts WHERE day = ?", (day,)).fetchone()
+    if row:
+        return row["salt"]
+    salt = secrets.token_hex(16)
+    conn.execute("DELETE FROM salts WHERE day <> ?", (day,))  # forget older salts for good
+    conn.execute("INSERT INTO salts (day, salt) VALUES (?, ?)", (day, salt))
+    cutoff = (datetime.now(TIMEZONE).date() - timedelta(days=HIT_KEEP_DAYS)).isoformat()
+    conn.execute("DELETE FROM hits WHERE day < ?", (cutoff,))
+    return salt
+
+
+def record_hit(ip: str, agent: str, country: str, path: str, kind: str) -> None:
+    if not ip or BOT_RE.search(agent or "") or not PATH_RE.match(path or ""):
+        return
+    kind = kind if kind in KINDS else "page"
+    country = country.upper() if re.fullmatch(r"[A-Za-z]{2}", country or "") else "XX"
+    if country in ("XX", "T1"):
+        country = "??"
+    now_ts = int(time.time())
+    day = datetime.now(TIMEZONE).date().isoformat()
+    conn = db()
+    with conn:
+        salt = daily_salt(conn, day)
+        visitor = hashlib.sha256(f"{salt}|{ip}|{agent}".encode()).hexdigest()[:16]
+        recent = conn.execute("SELECT 1 FROM hits WHERE day = ? AND visitor = ? AND path = ? AND at > ?",
+                              (day, visitor, path, now_ts - 1800)).fetchone()
+        if not recent:  # a refresh within 30 minutes is the same view
+            conn.execute("INSERT INTO hits (day, at, path, kind, country, visitor) VALUES (?, ?, ?, ?, ?, ?)",
+                         (day, now_ts, path, kind, country, visitor))
+
+
+def flag(code: str) -> str:
+    if len(code) != 2 or not code.isalpha():
+        return "🌐"
+    return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in code.upper())
+
+
+COUNTRY_NAMES = {
+    "CA": "Canada", "US": "United States", "FR": "France", "BE": "Belgium", "CH": "Switzerland",
+    "GB": "United Kingdom", "DE": "Germany", "ES": "Spain", "IT": "Italy", "NL": "Netherlands",
+    "PT": "Portugal", "IE": "Ireland", "SE": "Sweden", "NO": "Norway", "DK": "Denmark", "FI": "Finland",
+    "PL": "Poland", "AT": "Austria", "IN": "India", "CN": "China", "JP": "Japan", "KR": "South Korea",
+    "SG": "Singapore", "AU": "Australia", "NZ": "New Zealand", "BR": "Brazil", "MX": "Mexico",
+    "AR": "Argentina", "CL": "Chile", "CO": "Colombia", "MA": "Morocco", "DZ": "Algeria", "TN": "Tunisia",
+    "SN": "Senegal", "CI": "Côte d'Ivoire", "NG": "Nigeria", "ZA": "South Africa", "EG": "Egypt",
+    "IL": "Israel", "AE": "United Arab Emirates", "SA": "Saudi Arabia", "TR": "Türkiye", "RU": "Russia",
+    "UA": "Ukraine", "HK": "Hong Kong", "TW": "Taiwan", "VN": "Vietnam", "TH": "Thailand",
+    "PH": "Philippines", "ID": "Indonesia", "MY": "Malaysia", "PK": "Pakistan", "BD": "Bangladesh",
+    "HT": "Haiti", "LU": "Luxembourg", "RO": "Romania", "CZ": "Czechia", "GR": "Greece", "HU": "Hungary",
+}
+
+_titles: dict[str, str] = {}
+
+
+def page_title(path: str) -> str:
+    if path not in _titles:
+        file = (WEB_ROOT / ("index.html" if path == "/" else path.lstrip("/"))).resolve()
+        title = path
+        if WEB_ROOT.resolve() not in file.parents:
+            _titles[path] = title
+            return title
+        try:
+            m = re.search(r"<title>(.*?)</title>", file.read_text(encoding="utf-8")[:3000], re.S)
+            if m:
+                title = html.unescape(m.group(1)).replace(" · The AI Daily Grind", "").strip()
+        except OSError:
+            pass
+        _titles[path] = title
+    return _titles[path]
+
+
+def stats_html(days: int) -> str:
+    conn = db()
+    today = datetime.now(TIMEZONE).date()
+    since = (today - timedelta(days=days - 1)).isoformat()
+
+    def one(sql, *args):
+        return conn.execute(sql, args).fetchone()[0] or 0
+
+    def summary(start):
+        return (one("SELECT COUNT(*) FROM hits WHERE day >= ?", start),
+                one("SELECT COUNT(DISTINCT day || visitor) FROM hits WHERE day >= ?", start))
+
+    cards = [("Today", summary(today.isoformat())),
+             ("Last 7 days", summary((today - timedelta(days=6)).isoformat())),
+             (f"Last {days} days", summary(since))]
+    by_day = conn.execute("SELECT day, COUNT(*), COUNT(DISTINCT visitor) FROM hits WHERE day >= ? "
+                          "GROUP BY day ORDER BY day", (since,)).fetchall()
+    by_country = conn.execute("SELECT country, COUNT(DISTINCT day || visitor) v, COUNT(*) FROM hits "
+                              "WHERE day >= ? GROUP BY country ORDER BY v DESC", (since,)).fetchall()
+    by_page = conn.execute("SELECT path, COUNT(*) n, COUNT(DISTINCT day || visitor) FROM hits WHERE day >= ? "
+                           "GROUP BY path ORDER BY n DESC LIMIT 15", (since,)).fetchall()
+    by_kind = conn.execute("SELECT kind, COUNT(*) n FROM hits WHERE day >= ? GROUP BY kind ORDER BY n DESC",
+                           (since,)).fetchall()
+
+    def bar_rows(rows, label, value, extra=None):
+        if not rows:
+            return '<p class="empty">No visits yet.</p>'
+        top = max(value(r) for r in rows) or 1
+        out = []
+        for r in rows:
+            out.append(f'<div class="row"><span class="lbl">{label(r)}</span>'
+                       f'<span class="bar"><i style="width:{max(2, value(r) * 100 // top)}%"></i></span>'
+                       f'<span class="num">{value(r):,}{extra(r) if extra else ""}</span></div>')
+        return "".join(out)
+
+    def country_label(r):
+        return f"{flag(r[0])} {html.escape(COUNTRY_NAMES.get(r[0], r[0]))}"
+
+    total_visitors = sum(r[1] for r in by_country) or 1
+    cards_html = "".join(f'<div class="card"><div class="k">{name}</div><div class="v">{v:,}</div>'
+                         f'<div class="s">{n:,} views</div></div>' for name, (n, v) in cards)
+    links = " · ".join(f'<a href="?key={html.escape(os.environ.get("STATS_TOKEN", ""))}&days={d}">{d} days</a>'
+                       for d in (7, 30, 90, 365))
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Visits · The AI Daily Grind</title>
+<style>
+body{{margin:0;background:#07090c;color:#e9eef4;font:15px/1.5 -apple-system,system-ui,sans-serif}}
+main{{max-width:900px;margin:0 auto;padding:24px 16px 48px}}
+h1{{font-size:26px;margin:0 0 4px}} h2{{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#5eead4;margin:28px 0 10px}}
+.sub{{color:#8592a0;font-size:13px}} a{{color:#ffb454}}
+.cards{{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:16px}}
+.card{{background:#0e1217;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px}}
+.k{{color:#8592a0;font-size:12px;text-transform:uppercase}} .v{{font-size:30px;font-weight:700}} .s{{color:#8592a0;font-size:12px}}
+.row{{display:grid;grid-template-columns:minmax(0,1.4fr) 1fr auto;gap:10px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}}
+.lbl{{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}} .num{{font-variant-numeric:tabular-nums;color:#c3ccd6;text-align:right}}
+.bar{{background:rgba(255,255,255,.05);border-radius:6px;height:10px}} .bar i{{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#ff8a3d,#ffb454)}}
+.empty{{color:#8592a0}} .note{{color:#8592a0;font-size:12px;margin-top:28px}}
+</style></head><body><main>
+<h1>☕ Visits</h1>
+<div class="sub">The AI Daily Grind · private counter · all visitors, with or without cookies · {links}</div>
+<div class="cards">{cards_html}</div>
+<h2>Visitors by country · last {days} days</h2>
+{bar_rows(by_country, country_label, lambda r: r[1], lambda r: f' <span class="sub">({r[1] * 100 // total_visitors}%)</span>')}
+<h2>Visitors per day</h2>
+{bar_rows(by_day, lambda r: date.fromisoformat(r[0]).strftime("%a %b %-d"), lambda r: r[2], lambda r: f' <span class="sub">· {r[1]:,} views</span>')}
+<h2>Top pages (views)</h2>
+{bar_rows(by_page, lambda r: html.escape(page_title(r[0])), lambda r: r[1])}
+<h2>Kind of page (views)</h2>
+{bar_rows(by_kind, lambda r: html.escape(r[0]), lambda r: r[1])}
+<p class="note">Anonymous: no cookies and no IP addresses are kept. A visitor is counted once per day
+(a daily fingerprint that is erased the next day). Bots are ignored. Times are Montréal time.</p>
+</main></body></html>"""
+
+
 # ---------- web API ----------
 
 hits: dict[str, list[float]] = {}
@@ -356,6 +527,20 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         if path == "/api/audio":
             return self.audio(start=False)
+        if path == "/api/stats":
+            query = parse_qs(urlparse(self.path).query)
+            token = os.environ.get("STATS_TOKEN", "")
+            if not token or not secrets.compare_digest(query.get("key", [""])[0], token):
+                return self.send_error(404)
+            days = query.get("days", ["30"])[0]
+            body = stats_html(int(days) if days.isdigit() and 1 <= int(days) <= 400 else 30).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-store, private")
+            self.send_header("X-Robots-Tag", "noindex, nofollow")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            return self.wfile.write(body)
         if path == "/api/confirm":
             conn = db()
             with conn:
@@ -379,10 +564,23 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         path = urlparse(self.path).path
         length = min(int(self.headers.get("Content-Length") or 0), 4096)
-        form = parse_qs(self.rfile.read(length).decode("utf-8", "replace"))
+        self.rfile_body = self.rfile.read(length).decode("utf-8", "replace")
+        form = parse_qs(self.rfile_body)
 
         if path == "/api/audio":
             return self.audio(start=True)
+
+        if path == "/api/hit":  # anonymous counter, sent by static/count.js
+            try:
+                data = json.loads(self.rfile_body) if self.rfile_body else {}
+            except ValueError:
+                data = {}
+            record_hit(self.headers.get("X-Real-IP", ""), self.headers.get("User-Agent", ""),
+                       self.headers.get("X-Country", ""), str(data.get("p", ""))[:160], str(data.get("k", ""))[:20])
+            self.send_response(204)
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            return
 
         if path == "/api/unsubscribe":  # button on the page, or one-click from the mail app
             conn = db()
