@@ -1,0 +1,38 @@
+name: Weekly analytics report
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # Mondays 12:00 UTC (8:00 in Québec in summer, 7:00 in winter)
+  workflow_dispatch: # run it by hand from the Actions tab
+
+permissions:
+  contents: read
+  id-token: write # lets GitHub get a short-lived Google pass (no key stored)
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt google-analytics-data
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/1080625201872/locations/global/workloadIdentityPools/github/providers/aidailygrind
+          service_account: grind-reports@handmade-by-francois.iam.gserviceaccount.com
+
+      - name: Build and email the report
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python -m daily_grind.report --email --html report.html
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report
+          path: report.html
