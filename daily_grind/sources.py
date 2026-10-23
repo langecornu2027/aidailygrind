@@ -41,6 +41,10 @@ GITHUB_MAX = 8
 
 # Hacker News: only stories with at least this many points
 HN_MIN_POINTS = 60
+# Hacker News is the top signal: keep more of it
+HN_MAX = 25
+# A Hacker News story with this many points is kept even if its title has no AI word
+HN_HOT_POINTS = 300
 
 # Hugging Face daily papers: only papers with at least this many upvotes
 HF_MIN_UPVOTES = 10

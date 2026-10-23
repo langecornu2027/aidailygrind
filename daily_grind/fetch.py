@@ -83,27 +83,67 @@ def fetch_feed(name: str, kind: str, url: str, since: float) -> list[Item]:
     return items[: sources.MAX_PER_SOURCE]
 
 
-def fetch_hacker_news(since: float) -> list[Item]:
+def fetch_hacker_news(since: float, follow_terms: set[str] | None = None) -> list[Item]:
+    """Top Hacker News stories, by points. Kept if the title is about AI, OR it follows up a
+    story from recent editions (follow_terms, like "PHP2Shell"), OR it is very hot."""
     url = (
         "https://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=200"
         f"&numericFilters=created_at_i>{int(since)},points>={sources.HN_MIN_POINTS}"
     )
-    items = []
+    follow_terms = {t.lower() for t in (follow_terms or set())}
+    items, ranks = [], {}
     for hit in _get_json(url)["hits"]:
         title = hit.get("title") or ""
-        if not AI_WORDS.search(title):
+        points = hit.get("points", 0)
+        # "starts with": PHP also matches PHP2Shell
+        follow = sorted(t for t in follow_terms if re.search(rf"\b{re.escape(t)}", title.lower()))
+        is_ai = bool(AI_WORDS.search(title))
+        if not (is_ai or follow or points >= sources.HN_HOT_POINTS):
             continue
+        rank = 2 if follow else 1 if is_ai else 0  # follow-ups first, then AI, then other hot stories
+        note = f"{points} points, {hit.get('num_comments', 0)} comments on Hacker News"
+        if follow:
+            note += f". Follow-up to a recent story ({', '.join(follow)})"
         items.append(Item(
             source="Hacker News",
             kind="community",
             title=title,
             url=hit.get("url") or f"https://news.ycombinator.com/item?id={hit['objectID']}",
-            summary=f"{hit.get('num_comments', 0)} comments on Hacker News",
+            summary=note,
             published=hit.get("created_at_i", 0),
-            score=hit.get("points", 0),
+            score=points,
         ))
-    items.sort(key=lambda i: i.score, reverse=True)
-    return items[: sources.MAX_PER_SOURCE]
+        ranks[items[-1].url] = rank
+    items.sort(key=lambda i: (ranks[i.url] > 0, i.score), reverse=True)
+    relevant = [i for i in items if ranks[i.url] > 0]
+    other_hot = [i for i in items if ranks[i.url] == 0][:5]  # a little context, not a flood
+    return (relevant + other_hot)[: sources.HN_MAX]
+
+
+FOLLOW_STOP = {"the", "and", "for", "with", "from", "this", "that", "into", "about", "your", "what", "when",
+               "investigation", "report", "password", "craft", "study", "survey", "people", "users", "world",
+               "openai", "google", "anthropic", "meta", "microsoft", "apple", "amazon", "nvidia", "model", "models",
+               "agent", "agents", "free", "new", "says", "after", "first", "more", "their", "they", "will"}
+
+
+def follow_terms_from(titles: list[str], summaries: list[str] = ()) -> set[str]:
+    """Distinctive names from recent tokens (PHP2Shell, ConnectWise, Duet...), to catch follow-ups.
+    From titles: proper names. From summaries: only names with digits (PHP2Shell, GPT-5), which
+    are very specific."""
+    terms = set()
+    for title in titles:
+        for word in re.findall(r"[A-Za-z][A-Za-z0-9\-]{2,}", title):
+            if word.lower() in FOLLOW_STOP:
+                continue
+            if any(c.isdigit() for c in word) or (word.isupper() and len(word) >= 3) \
+                    or (len(word) >= 4 and word[0].isupper() and not word.isupper() and word != title.split()[0]):
+                terms.add(word)
+    for text in summaries:
+        for word in re.findall(r"[A-Za-z][A-Za-z0-9\-]*\d[A-Za-z0-9\-]*", text):
+            if len(word) >= 4 and any(c.isalpha() for c in word):
+                terms.add(word)
+    terms.discard("AI")
+    return terms
 
 
 def fetch_hf_papers() -> list[Item]:
@@ -162,15 +202,18 @@ def fetch_github_trending() -> list[Item]:
     return items[: sources.GITHUB_MAX]
 
 
-def fetch_all(verbose: bool = True) -> list[Item]:
-    """Fetch every source. A broken source is skipped, never fatal."""
+def fetch_all(verbose: bool = True, recent_titles: list[str] | None = None,
+              recent_summaries: list[str] | None = None) -> list[Item]:
+    """Fetch every source. A broken source is skipped, never fatal.
+    recent_titles: token titles from the last days, to catch Hacker News follow-ups."""
+    terms = follow_terms_from(recent_titles or [], recent_summaries or [])
     now = time.time()
     since = now - sources.LOOKBACK_HOURS * 3600
     jobs = []
     for name, kind, url, *hours in sources.FEEDS:
         feed_since = now - hours[0] * 3600 if hours else since
         jobs.append((name, lambda n=name, k=kind, u=url, s=feed_since: fetch_feed(n, k, u, s)))
-    jobs += [("Hacker News", lambda: fetch_hacker_news(since)),
+    jobs += [("Hacker News", lambda: fetch_hacker_news(since, terms)),
              ("Hugging Face Papers", fetch_hf_papers),
              ("GitHub trending", fetch_github_trending)]
 

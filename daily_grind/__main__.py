@@ -90,7 +90,10 @@ def main() -> None:
             print(f"☕ Today's edition already exists ({out.name}). Use --force to write it again.")
         else:
             print("☕ Reading the sources...")
-            items = fetch.fetch_all()
+            recent = [t for path in sorted(render.EDITIONS.glob("*.json"))[-3:] if path.stem < today.isoformat()
+                      for t in json.loads(path.read_text(encoding="utf-8"))["tokens"]]
+            items = fetch.fetch_all(recent_titles=[t["title"] for t in recent],
+                                    recent_summaries=[t["summary"] for t in recent])
             print(f"  {len(items)} fresh stories in total")
             if args.fetch_only:
                 for item in items:

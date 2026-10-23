@@ -22,7 +22,14 @@ Your job:
      important research, policy, safety, jobs, big business moves.
    - When several sources talk about the same thing, merge them into one token and
      list every useful source. A story covered by many sources is usually important.
-   - Community buzz (many points or upvotes) is a good signal, but not proof.
+   - Hacker News is the author's favorite signal. Strongly favor the Hacker News stories
+     with the most points: they show what the tech community really cares about today.
+     When a top Hacker News story is relevant to AI (even indirectly, like security or
+     big tech), it should almost always get a token.
+   - New developments on recent big stories matter (new exploits, investigations,
+     reversals, numbers). Items marked "Follow-up to a recent story" are important:
+     give them a token and say clearly what is new since the last edition.
+   - Other community buzz (many upvotes) is a good signal, but not proof.
    - Skip stories that are not really about AI.
    - The author cares about AI risk and safety. When a risk or safety source has real
      news or a strong warning, give it a token.
