@@ -1,0 +1,212 @@
+{
+  "headline": "Agents everywhere: helping, hacking, leaking, and costing a trillion",
+  "intro": "Hello, and happy Friday! Grab your coffee. Today, one word ties almost every story together: agents. These are AI systems that do tasks for you, not just answer questions.\n\nThe dark side came first. Microsoft says a China-aligned hacker used AI agents to break into thousands of companies through the IT giant ConnectWise. Meta dreams of a world where your AI talks to my AI, but its Muse app just leaked private business documents. And the industry is now building safety tools, like NVIDIA's OpenShell and 1Password's agent logins, to contain agents that are already out the door. Meanwhile, OpenAI wants $30 billion at a $1.25 trillion valuation. So power and money keep piling up in a few hands, and safety keeps running behind.\n\nNot everyone is buying it. A new poll says most Americans think AI is bad for society, and Swedish government offices plan to ban ChatGPT and Claude. There is good news too: Microsoft's medical AI did well in a Science study, but read the fine print. To watch: more details on the ConnectWise breach, and whether OpenAI's giant raise really closes.",
+  "tokens": [
+    {
+      "title": "Hackers used AI agents to spy on thousands of companies",
+      "tag": "Safety",
+      "summary": "ConnectWise is a big IT company with thousands of business customers. It was breached, and the attackers then spied on many of those customers.\n\nMicrosoft blames a China-aligned hacker. The key detail: the attacker relied on AI agents to break into thousands of ConnectWise customers very fast. One break-in at the top became a door into many companies at once.\n\nThis comes one day after the PHP2Shell bug, where attackers got a four-day head start. The AI Daily Brief podcast calls it \"AI vs AI\": attackers and defenders now fight at machine speed. We still do not know the full list of victims.",
+      "why_it_matters": "This is not a lab demo anymore. AI agents are now a real weapon, and they make one breach much bigger, much faster. Most businesses are not ready to defend at that speed.",
+      "hashtags": [
+        "#AI",
+        "#Cybersecurity",
+        "#AIAgents",
+        "#AISafety",
+        "#Microsoft"
+      ],
+      "share_text": "Microsoft says a China-aligned hacker used AI agents to break into thousands of companies through one IT provider. AI attacks at machine speed are not a theory anymore.",
+      "sources": [
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/22/chinese-hackers-spied-on-thousands-of-companies-after-breaching-it-giant-connectwise/"
+        },
+        {
+          "name": "The AI Daily Brief (podcast)",
+          "url": "https://podcasters.spotify.com/pod/show/nlw/episodes/The-AI-vs-AI-Battle-for-the-Internet-e3qu3ad"
+        },
+        {
+          "name": "Simon Willison (quoting Armin Ronacher)",
+          "url": "https://simonwillison.net/2026/Oct/22/armin-ronacher/"
+        }
+      ]
+    },
+    {
+      "title": "Meta's Muse: leaked links, news scraping, and a world of bots",
+      "tag": "Safety",
+      "summary": "Meta wants its Muse AI agents to run big parts of our lives. In Mark Zuckerberg's vision, your agent shops, works, and talks to other people's agents for you.\n\nBut this week was rough. Security researchers at Claroc found that public Muse conversation links were easy to find. They saw a marketing company's internal revenue review and a small business owner's loan application. Meta paused sharing, and has now turned it back on.\n\nAlso, Meta changed its business terms to remove words suggesting it could freely train AI on news sites. Legal experts told The Verge this is not enough. Other language could still let Meta scrape them.",
+      "why_it_matters": "Meta asks us to trust its agents with our money and our work. But the basics, like keeping private chats private, are still shaky. Before we let bots talk for us, we need to know who sees what.",
+      "hashtags": [
+        "#AI",
+        "#Privacy",
+        "#Meta",
+        "#AIAgents",
+        "#DataProtection"
+      ],
+      "share_text": "Meta wants your Muse to call my Muse. Meanwhile, researchers found Muse links exposing a loan application and a revenue review. Trust has to come before the agent future.",
+      "sources": [
+        {
+          "name": "The Verge (Muse sharing)",
+          "url": "https://www.theverge.com/tech/1017066/meta-muse-sharing-back-on-artifiacts"
+        },
+        {
+          "name": "The Verge (news scraping terms)",
+          "url": "https://www.theverge.com/tech/1017082/meta-terms-update-ai-training-concerns"
+        },
+        {
+          "name": "The Verge (Meta's agent vision)",
+          "url": "https://www.theverge.com/tech/1016905/meta-earnings-fall-2026-muse-network"
+        }
+      ]
+    },
+    {
+      "title": "OpenAI chases $30B at a $1.25 trillion valuation",
+      "tag": "Business",
+      "summary": "OpenAI is preparing to go public. Before that, it is working on a new raise of $30 billion at a $1.25 trillion valuation.\n\nIf it closes, OpenAI would be the most valuable private company ever. In China, DeepSeek reportedly raised $15 billion, one of the country's largest rounds. That came only days after the US ordered federal agencies to remove DeepSeek's technology for national security reasons.\n\nThe chip race is also eating money. The Verge reports SpaceX is about to borrow another $40 billion to spend on Nvidia chips. These deals are reported, not all final.",
+      "why_it_matters": "These numbers mean the future of AI is decided by a very small group of companies and investors. When so much money is at stake, the pressure to go fast beats the pressure to go carefully.",
+      "hashtags": [
+        "#AI",
+        "#OpenAI",
+        "#DeepSeek",
+        "#TechBusiness",
+        "#IPO"
+      ],
+      "share_text": "OpenAI is working on a $30B raise at a $1.25 trillion valuation. DeepSeek reportedly got $15B. AI power is concentrating fast, and that should worry us a little.",
+      "sources": [
+        {
+          "name": "TechCrunch (OpenAI)",
+          "url": "https://techcrunch.com/2026/10/22/openai-working-on-new-30b-raise-at-1-25t-valuation-ahead-of-ipo/"
+        },
+        {
+          "name": "TechCrunch (DeepSeek)",
+          "url": "https://techcrunch.com/2026/10/22/deepseek-reportedly-raises-15b-days-after-us-restrictions/"
+        },
+        {
+          "name": "The Verge (SpaceX and Tesla)",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1016879/spacex-tesla-cursed-katamari"
+        }
+      ]
+    },
+    {
+      "title": "Microsoft says its AI beats doctors on hard cases",
+      "tag": "Research",
+      "summary": "Healthcare is the promise AI leaders repeat the most. Now Microsoft AI CEO Mustafa Suleyman says \"it is finally here.\"\n\nMicrosoft's diagnostic system beat generalist doctors on hard cases, in a study published in Science. Microsoft claims it can diagnose conditions up to four times more accurately than human doctors. Suleyman talks about chasing \"medical superintelligence.\"\n\nBut TechCrunch notes a key detail. Most of the improvement seems to come from the AI models underneath, not from Microsoft's own system. Also on health: inclusionAI released Sante, a free open-weight medical model (you can download and run it yourself).",
+      "why_it_matters": "Better diagnosis could save lives, and that is real good news. Still, a study on hard cases is not a hospital, and big words like \"superintelligence\" need careful checking before patients rely on them.",
+      "hashtags": [
+        "#AI",
+        "#HealthTech",
+        "#Microsoft",
+        "#MedicalAI",
+        "#Research"
+      ],
+      "share_text": "Microsoft's AI beat generalist doctors on hard cases in a Science study. Good news! But most of the gain comes from the base models, and hospitals are not test sets.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1016690/suleyman-microsoft-diagnostic-orchestrator-science-medical-superintelligence"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/22/microsofts-mustafa-suleyman-says-its-ai-outperforms-doctors-on-hard-cases-as-he-chases-medical-superintelligence/"
+        },
+        {
+          "name": "r/LocalLLaMA (Ling-3.0-flash-Sante)",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xclfkp/inclusionailing30flashsante_hugging_face/"
+        }
+      ]
+    },
+    {
+      "title": "The public pushes back: bad for society, and banned in Sweden",
+      "tag": "Policy",
+      "summary": "A new ABC News/Washington Post/Ipsos poll says most Americans think AI is bad for society. Most also oppose building more data centers.\n\nIn Sweden, public radio reports that government offices will ban ChatGPT and Claude. The report does not give all the reasons in our sources.\n\nEnergy is part of the debate. A Swedish AI company, Berget, says the same AI request emits 8.5 times more CO2 in Texas than in Sweden, because of how the electricity is made. That is a company press release, so take it as one view.",
+      "why_it_matters": "The companies are racing ahead, but the public is not following. When people say no to data centers and governments say no to chatbots, the industry may have to slow down and listen.",
+      "hashtags": [
+        "#AI",
+        "#AIPolicy",
+        "#PublicOpinion",
+        "#DataCenters",
+        "#Sweden"
+      ],
+      "share_text": "Most Americans now say AI is bad for society, and Swedish government offices will ban ChatGPT and Claude. The gap between the AI industry and the public keeps growing.",
+      "sources": [
+        {
+          "name": "ABC News",
+          "url": "https://abcnews.com/Politics/americans-ai-bad-society-oppose-data-centers-abcpostipsos/story?id=137414085"
+        },
+        {
+          "name": "Sveriges Radio",
+          "url": "https://www.sverigesradio.se/artikel/chat-gpt-och-claude-forbjuder-regeringskansliet"
+        },
+        {
+          "name": "Berget AI",
+          "url": "https://berget.ai/en/blog/per-request-co2-press-release"
+        }
+      ]
+    },
+    {
+      "title": "Seatbelts for agents: NVIDIA OpenShell and 1Password",
+      "tag": "Open source",
+      "summary": "If agents are going to act for us, they need safe limits. Two new tools try to give them that.\n\nNVIDIA released OpenShell on GitHub. It is a \"runtime\", a protected space where autonomous AI agents can run safely and privately, even in large fleets. It got 427 points on Hacker News. It is mostly for developers and companies running many agents.\n\n1Password launched a way for agents to log into your personal accounts without ever seeing your password. And Anthropic donated its Agent Skills standard to the Agentic AI Foundation under the Linux Foundation, to keep it open and vendor-neutral.",
+      "why_it_matters": "These are good, practical steps. But notice the order: the agents came first, and the seatbelts come after. Safety is still catching up.",
+      "hashtags": [
+        "#AI",
+        "#OpenSource",
+        "#AIAgents",
+        "#NVIDIA",
+        "#1Password"
+      ],
+      "share_text": "NVIDIA's OpenShell gives AI agents a safe box to run in, and 1Password lets agents log in without seeing your password. Good seatbelts... for cars already on the road.",
+      "sources": [
+        {
+          "name": "GitHub (NVIDIA OpenShell)",
+          "url": "https://github.com/NVIDIA/OpenShell"
+        },
+        {
+          "name": "r/LocalLLaMA",
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1xcs9e2/nvidiaopenshell_safe_private_runtime_for/"
+        },
+        {
+          "name": "TechCrunch (1Password)",
+          "url": "https://techcrunch.com/2026/10/22/1password-launches-a-way-for-ai-agents-to-log-in-on-your-behalf-without-seeing-your-password/"
+        },
+        {
+          "name": "Simon Willison (Agent Skills)",
+          "url": "https://simonwillison.net/2026/Oct/22/donating-agent-skills/"
+        }
+      ]
+    },
+    {
+      "title": "Canva launches Craft, its own image model",
+      "tag": "Launch",
+      "summary": "Canva, the design app many small businesses use, now has its own AI image model. It is called Canva Craft.\n\nIt works in two stages. First it plans the design, then it makes the image. Canva says this gives more precision, consistency, and control. It competes directly with image models from OpenAI, Microsoft, and Google.\n\nCraft is available to all Canva users. Canva promises better, more customizable results at lower cost.",
+      "why_it_matters": "Millions of normal people make posters and social posts in Canva. Now they get AI images built right in. Good for small budgets, but harder times for freelance designers.",
+      "hashtags": [
+        "#AI",
+        "#Canva",
+        "#GenerativeAI",
+        "#Design",
+        "#SmallBusiness"
+      ],
+      "share_text": "Canva now has its own AI image model, Craft. It plans the design before drawing it, and it is open to all users. Useful for small businesses, tough for freelance designers.",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/1017151/canva-craft-in-house-ai-model"
+        },
+        {
+          "name": "TechCrunch",
+          "url": "https://techcrunch.com/2026/10/22/canva-releases-its-first-image-generation-model/"
+        }
+      ]
+    }
+  ],
+  "last_word": "Bon, one small Canadian note to finish: researchers proposed an AI method to make wildfire hazard maps across Canada much faster, when today it can take days or weeks. That is the AI I want, quietly helping, with humans still holding the map.",
+  "cover_scene": "A quiet night town of small houses, each with a glowing front door, where tiny robot messengers carry keys from house to house. A few shadowy robots slip in through back doors, while a watchman with a lantern builds a little fence around the friendly robots. Above the town, a huge golden piggy bank floats like a full moon.",
+  "hashtags": [
+    "#AI",
+    "#AIAgents",
+    "#Cybersecurity",
+    "#AISafety",
+    "#OpenAI"
+  ],
+  "social_post": "☕ Friday's AI news has one word all over it: agents.\n\nThey help us, they hack us, they leak our data. And the safety tools arrive after the agents.\n\n🔓 Hackers used AI agents to spy on thousands of firms via ConnectWise\n\n🕵️ Meta's Muse leaked a loan application and a revenue review\n\n💰 OpenAI chases $30B at a $1.25 trillion valuation\n\n🩺 Microsoft's AI beat doctors on hard cases, with fine print\n\n🗳️ Most Americans now say AI is bad for society\n\nMore power, more money, fewer hands, and safety still running behind.\n\nWould you let an AI agent log into your accounts today?"
+}
