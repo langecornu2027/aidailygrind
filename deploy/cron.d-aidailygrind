@@ -1,3 +1,8 @@
-# /etc/cron.d/aidailygrind
+# /etc/cron.d/aidailygrind (times in UTC, the VM's clock)
 # Every 15 minutes: copy the newest published site, then email today's edition (once).
 */15 * * * * aidailygrind /usr/local/bin/aidailygrind-sync
+# Every morning: start the daily GitHub job (GitHub's own scheduler sometimes skips).
+# 10:05 UTC = 6:05 in Québec in summer, 5:05 in winter. The retry does nothing if the
+# edition is already online.
+5 10 * * * aidailygrind /usr/local/bin/aidailygrind-trigger
+35 11 * * * aidailygrind /usr/local/bin/aidailygrind-trigger
