@@ -1,8 +1,13 @@
 name: The AI Daily Grind
 
 on:
+  # GitHub can delay or skip scheduled runs when it is busy (often at :00 and :30), so
+  # there are 3 start times. The first one writes the edition; the others find it done
+  # ("already exists") and only republish, at no AI cost.
   schedule:
-    - cron: "30 10 * * *" # every day at 10:30 UTC (6:30 in Québec in summer, 5:30 in winter)
+    - cron: "12 10 * * *" # 10:12 UTC (6:12 in Québec in summer, 5:12 in winter)
+    - cron: "7 11 * * *" # backup
+    - cron: "43 12 * * *" # backup
   workflow_dispatch: # lets you run it by hand from the Actions tab
 
 permissions:

@@ -168,6 +168,33 @@ def send_latest() -> None:
     today = datetime.now(TIMEZONE).date().isoformat()
     for name in (today, f"editorial-{today}"):
         send_issue(name)
+    check_missing(today)
+
+
+def check_missing(today: str) -> None:
+    """Alarm: if today's edition is still missing at 8:30 (Montréal time), email the owner once."""
+    now_local = datetime.now(TIMEZONE)
+    if now_local.hour * 60 + now_local.minute < 8 * 60 + 30 or (WEB_ROOT / "email" / f"{today}.html").exists():
+        return
+    key = f"alert-{today}"
+    conn = db()
+    with conn:
+        if conn.execute("SELECT 1 FROM sends WHERE edition = ?", (key,)).fetchone():
+            return
+        conn.execute("INSERT INTO sends (edition, started_at, finished_at, recipients) VALUES (?, ?, ?, 1)",
+                     (key, now(), now()))
+    text = (f"Today's AI Daily Grind ({today}) is not online yet at {now_local:%H:%M}.\n\n"
+            "GitHub may have skipped the scheduled run. Start it by hand:\n"
+            "https://github.com/langecornu2027/aidailygrind/actions/workflows/daily.yml -> Run workflow\n\n"
+            "The site and the email follow within 15 minutes after the run.")
+    msg = EmailMessage()
+    msg["From"] = MAIL_FROM
+    msg["To"] = REPLY_TO
+    msg["Subject"] = f"⚠️ AI Daily Grind: no edition yet today ({today})"
+    msg.set_content(text)
+    with smtp() as server:
+        server.send_message(msg)
+    print(f"alert sent for {today}")
 
 
 def send_issue(name: str) -> None:
