@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07090c">
+  <meta name="color-scheme" content="dark">
+  <title>AI finds the holes, AI picks the locks, and the agents want your wallet | AI Daily Grind</title>
+  <meta name="description" content="Good morning, and welcome to The AI Daily Grind. Today feels like a security day. AI tools from OpenAI and Google&#39;s Wiz found two very old, very serious…">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="author" content="François Gravel">
+  <meta name="google-site-verification" content="SHvFTdzmYz2Y-8Z75A0XGGp9NsXz_N2Oh37l4-bQ_IM">
+  <link rel="canonical" href="https://aidailygrind.com/2026-10-22.html">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The AI Daily Grind">
+  <meta property="og:title" content="AI finds the holes, AI picks the locks, and the agents want your wallet">
+  <meta property="og:description" content="Good morning, and welcome to The AI Daily Grind. Today feels like a security day. AI tools from OpenAI and Google&#39;s Wiz found two very old, very serious holes in PHP, the language behind a huge part of the web. Then a leak gave attackers a head start. On the same day, Microsoft said a China-aligned group used AI agents to break into thousands of companies through ConnectWise.">
+  <meta property="og:url" content="https://aidailygrind.com/2026-10-22.html">
+  <meta property="article:published_time" content="2026-10-22T06:30:00">
+  <meta property="article:author" content="François Gravel">
+  <meta property="og:image" content="https://aidailygrind.com/social/2026-10-22.jpg?v=c379b019">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The AI Daily Grind: AI finds the holes, AI picks the locks, and the agents want your wallet">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI finds the holes, AI picks the locks, and the agents want your wallet">
+  <meta name="twitter:description" content="Good morning, and welcome to The AI Daily Grind. Today feels like a security day. AI tools from OpenAI and Google&#39;s Wiz found two very old, very serious holes in PHP, the language behind a huge part of the web. Then a leak gave attackers a head start. On the same day, Microsoft said a China-aligned group used AI agents to break into thousands of companies through ConnectWise.">
+  <meta name="twitter:image" content="https://aidailygrind.com/social/2026-10-22.jpg?v=c379b019">
+
+  <link rel="alternate" type="application/rss+xml" title="The AI Daily Grind" href="https://aidailygrind.com/feed.xml">
+  <link rel="apple-touch-icon" href="static/apple-touch-icon.png?v=b7872854">
+  <link rel="icon" type="image/svg+xml" href="static/logo.svg?v=b7872854">
+  <link rel="preload" href="static/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="static/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="static/fonts/fonts.css?v=b7872854">
+  <link rel="stylesheet" href="static/style.css?v=b7872854">
+  
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": "https://aidailygrind.com/2026-10-22.html", "url": "https://aidailygrind.com/2026-10-22.html", "headline": "AI finds the holes, AI picks the locks, and the agents want your wallet", "description": "Good morning, and welcome to The AI Daily Grind. Today feels like a security day. AI tools from OpenAI and Google's Wiz found two very old, very serious…", "image": ["https://aidailygrind.com/social/2026-10-22.jpg?v=c379b019", "https://aidailygrind.com/covers/2026-10-22.jpg?v=b401f14c"], "datePublished": "2026-10-22T06:30:00-04:00", "dateModified": "2026-10-22T06:30:00-04:00", "author": {"@type": "Person", "name": "François Gravel", "url": "https://aidailygrind.com/about.html", "sameAs": ["https://langecornu.com/"]}, "publisher": {"@type": "NewsMediaOrganization", "name": "The AI Daily Grind", "url": "https://aidailygrind.com/", "sameAs": ["https://www.linkedin.com/company/ai-daily-grind/"], "foundingDate": "2026-10-22", "description": "A daily recap of the AI news that matters, in simple English, with a critical eye on AI risks.", "publishingPrinciples": "https://aidailygrind.com/about.html#editorial", "correctionsPolicy": "https://aidailygrind.com/about.html#corrections", "ethicsPolicy": "https://aidailygrind.com/about.html#ai", "actionableFeedbackPolicy": "https://aidailygrind.com/about.html#contact", "email": "info@aidailygrind.com", "logo": {"@type": "ImageObject", "url": "https://aidailygrind.com/static/logo-512.png", "width": 512, "height": 512}}, "inLanguage": "en", "isAccessibleForFree": true, "keywords": ["artificial intelligence", "AI news"]}</script>
+</head>
+<body data-page-type="edition" data-edition="2026-10-22">
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="The AI Daily Grind, home">
+        <img class="brand-mark" src="static/logo.svg?v=b7872854" alt="" width="36" height="36">
+        <span class="brand-text">
+          <span class="brand-name">AI Daily <span class="grad">Grind</span></span>
+          <span class="brand-tag">// AI news, freshly ground daily</span>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Today</a>
+        <a href="archive.html">Archive</a>
+        <a class="nav-noir" href="cafe-noir.html">Café Noir</a>
+        <a class="nav-follow" href="https://www.linkedin.com/company/ai-daily-grind/" target="_blank" rel="noopener" data-follow="linkedin" aria-label="Follow The AI Daily Grind on LinkedIn"><svg class="li-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg><span>Follow</span></a>
+        <a class="nav-cta" href="subscribe.html">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    
+<section class="hero">
+  <div class="meta-row">
+    
+    <time datetime="2026-10-22T06:30:00">Thursday, October 22, 2026</time>
+    <a class="byline" href="about.html" rel="author">By François Gravel</a>
+    <span>Edition #1</span>
+    <span>7 tokens</span>
+    <span>6 min read</span>
+  </div>
+  <h1 data-part="0" data-speak data-speak-prefix="The AI Daily Grind, Thursday, October 22, 2026.">AI finds the holes, AI picks the locks, and the agents want your wallet</h1>
+  
+<div class="listen" hidden data-audio-date="2026-10-22">
+  <button type="button" class="listen-play" aria-pressed="false">▶ Listen</button>
+  <button type="button" class="listen-speed" title="Reading speed">1×</button>
+  <button type="button" class="listen-stop" hidden>■ Stop</button>
+  <span class="listen-status" data-idle="Listen to today&#39;s Grind · about 9 min">Listen to today&#39;s Grind · about 9 min</span>
+  <span class="listen-bar" aria-hidden="true"><i></i></span>
+</div>
+
+  
+  <figure class="cover-frame">
+    <img class="cover" src="covers/2026-10-22.jpg?v=b401f14c" alt="Cover illustration for Thursday, October 22, 2026" width="1376" height="768">
+  </figure>
+  
+  <div class="intro" data-part="0" data-speak><p>Good morning, and welcome to The AI Daily Grind. Today feels like a security day. AI tools from OpenAI and Google&#39;s Wiz found two very old, very serious holes in PHP, the language behind a huge part of the web. Then a leak gave attackers a head start. On the same day, Microsoft said a China-aligned group used AI agents to break into thousands of companies through ConnectWise.</p><p>This is the big pattern. The same AI that helps defenders also helps attackers, and they move at machine speed. Meanwhile, Anthropic launches Claude Duet, its new bet on agents, while a Transformer investigation shows Claude can still explain how to manipulate an election. Stores now fight over whether AI agents may shop for you. And the big labs spent record money on lobbying in Washington. More power for machines, more power for a few companies, and safety that is running to keep up.</p><p>There is good news too. Open models keep getting smaller and better, and normal people use AI coding tools to clean up their own TVs. Bon, watch two things this week: how fast websites patch PHP, and who writes the rules for AI agents that spend money and click buttons for us.</p></div>
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22.html" data-share-url="https://aidailygrind.com/2026-10-22.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="☕ AI finds the holes, AI picks the locks, and the agents want your wallet" data-post="☕ AI finds the holes, AI picks the locks, and the agents want your wallet.
+
+Today&#39;s pattern is clear: the same AI that helps defenders also helps attackers, and both move at machine speed.
+
+🔓 AI found a giant hole in PHP, then attackers got there first
+🗳️ Claude can still explain how to sway the US midterms
+🤖 Anthropic launches Claude Duet, its bet on agents
+🛒 Walmart says yes to AI shopping agents, Amazon says no
+🏛️ Record AI lobbying in Washington
+
+More power for machines, more power for a few companies, and safety that is running to keep up.
+
+Who writes the rules for AI agents that spend our money? 🤔" data-hashtags="#AI #ArtificialIntelligence #AISafety #AIDailyGrind" data-card="social/2026-10-22.jpg?v=c379b019">
+  <span class="share-label">Share today&#39;s Grind</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=%E2%98%95%20AI%20finds%20the%20holes%2C%20AI%20picks%20the%20locks%2C%20and%20the%20agents%20want%20your%20wallet.%0A%0AToday%27s%20pattern%20is%20clear%3A%20the%20same%20AI%20that%20helps%20defenders%20also%20helps%20attackers%2C%20and%20both%20move%20at%20machine%20speed.%0A%0A%F0%9F%94%93%20AI%20found%20a%20giant%20hole%20in%20PHP%2C%20then%20attackers%20got%20there%20first%0A%F0%9F%97%B3%EF%B8%8F%20Claude%20can%20still%20explain%20how%20to%20sway%20the%20US%20midterms%0A%F0%9F%A4%96%20Anthropic%20launches%20Claude%20Duet%2C%20its%20bet%20on%20agents%0A%F0%9F%9B%92%20Walmart%20says%20yes%20to%20AI%20shopping%20agents%2C%20Amazon%20says%20no%0A%F0%9F%8F%9B%EF%B8%8F%20Record%20AI%20lobbying%20in%20Washington%0A%0AMore%20power%20for%20machines%2C%20more%20power%20for%20a%20few%20companies%2C%20and%20safety%20that%20is%20running%20to%20keep%20up.%0A%0AWho%20writes%20the%20rules%20for%20AI%20agents%20that%20spend%20our%20money%3F%20%F0%9F%A4%94%0A%0Ahttps%3A//aidailygrind.com/2026-10-22.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23ArtificialIntelligence%20%23AISafety%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=%E2%98%95%20AI%20finds%20the%20holes%2C%20AI%20picks%20the%20locks%2C%20and%20the%20agents%20want%20your%20wallet&url=https%3A//aidailygrind.com/2026-10-22.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=ArtificialIntelligence%2CAISafety" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23ArtificialIntelligence" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  <a href="social/2026-10-22.jpg?v=c379b019" download="ai-daily-grind.jpg">Image</a>
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</section>
+
+<section class="manifest" aria-label="Today's Morning Tokens">
+  <p class="section-label">Today's tokens</p>
+  <ol>
+    
+    <li>
+      <a href="#token-1">
+        <span class="m-num">01</span>
+        <span class="m-title">AI found a giant hole in PHP, then attackers got there first</span>
+        <span class="m-tag">Safety</span>
+      </a>
+    </li>
+    
+    <li>
+      <a href="#token-2">
+        <span class="m-num">02</span>
+        <span class="m-title">Investigation: Claude can explain how to sway the US midterms</span>
+        <span class="m-tag">Safety</span>
+      </a>
+    </li>
+    
+    <li>
+      <a href="#token-3">
+        <span class="m-num">03</span>
+        <span class="m-title">Anthropic launches Claude Duet, its bet on agents</span>
+        <span class="m-tag">Launch</span>
+      </a>
+    </li>
+    
+    <li>
+      <a href="#token-4">
+        <span class="m-num">04</span>
+        <span class="m-title">AI shopping agents: Walmart says yes, Amazon says no</span>
+        <span class="m-tag">Business</span>
+      </a>
+    </li>
+    
+    <li>
+      <a href="#token-5">
+        <span class="m-num">05</span>
+        <span class="m-title">Record lobbying, dirty air: AI&#39;s political weight grows</span>
+        <span class="m-tag">Policy</span>
+      </a>
+    </li>
+    
+    <li>
+      <a href="#token-6">
+        <span class="m-num">06</span>
+        <span class="m-title">Flint: a free coding model for laptops, built mostly by AI</span>
+        <span class="m-tag">Open source</span>
+      </a>
+    </li>
+    
+    <li>
+      <a href="#token-7">
+        <span class="m-num">07</span>
+        <span class="m-title">People use AI coding tools to free their TVs (and a Switch 2)</span>
+        <span class="m-tag">Open source</span>
+      </a>
+    </li>
+    
+  </ol>
+</section>
+
+
+<a class="noir-teaser" href="cafe-noir-2026-10-22.html">
+  <span class="noir-kicker">🖤☕ This week's Café Noir · Opinion</span>
+  <span class="noir-teaser-title">AI Found the Fire. Then the Fire Brigade Was 13 Tired Volunteers</span>
+  <span class="noir-teaser-dek">PHP2Shell shows AI at its best for defense, and it shows why the labs that find the bugs should not be the ones who set the speed for everyone else.</span>
+  <span class="more-link">Read François's take →</span>
+</a>
+
+
+
+
+
+<article class="token token-top" id="token-1" data-part="1">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>01</b></span>
+    <a class="tag tag-safety" href="topic-safety.html" title="More Safety stories">🛡️ Safety</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 1."><a class="token-link" href="2026-10-22-token-1.html">AI found a giant hole in PHP, then attackers got there first</a></h2>
+  <div class="token-body" data-speak>
+    <p>PHP is a programming language that runs a big part of the internet. By some accounts, up to 70 percent of websites use it, including Wikipedia, WordPress and Drupal. Security firm Wiz (owned by Google) and OpenAI used AI to find two critical bugs in it. They are &#39;remote code execution&#39; bugs: an attacker can run their own code on your server.</p><p>The fix was supposed to be released quietly and in order. But on Tuesday, October 20, the bug IDs leaked on online forums. Ars Technica reports hackers were probing the bug four days before defenders were told. DeviantArt and 4chan went offline for a while. The PHP Foundation released fixes for the whole PHP 8.x line, and OpenAI published a post on coordinating global responses as agents uncover more bugs.</p><p>It was not the only AI security story. Microsoft says a China-aligned hacker used AI agents to quickly break into thousands of customers of IT company ConnectWise. If you run any PHP website, update today.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">AI can now find old bugs much faster than humans, which is good for defense. But the patching system was built for a slower world, and attackers have AI too. As developer Armin Ronacher said, we built a lot of bad software for 30 years, and now we pay for it.</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener">Wiz ↗</a><a href="https://techcrunch.com/2026/10/21/php-armageddon-openai-googles-wiz-find-ancient-holes-panicking-the-internet/" target="_blank" rel="noopener">TechCrunch ↗</a><a href="https://arstechnica.com/security/2026/10/hackers-got-a-four-day-head-start-on-epic-php2shell-vulnerability/" target="_blank" rel="noopener">Ars Technica ↗</a><a href="https://www.theverge.com/tech/1016574/php2shell-security-vulnerability-websites-down" target="_blank" rel="noopener">The Verge ↗</a><a href="https://simonwillison.net/2026/Oct/21/php-security-release/" target="_blank" rel="noopener">Simon Willison ↗</a><a href="https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/" target="_blank" rel="noopener">OpenAI ↗</a><a href="https://simonwillison.net/2026/Oct/22/armin-ronacher/" target="_blank" rel="noopener">Simon Willison (Armin Ronacher quote) ↗</a><a href="https://techcrunch.com/2026/10/22/chinese-hackers-spied-on-thousands-of-companies-after-breaching-it-giant-connectwise/" target="_blank" rel="noopener">TechCrunch (ConnectWise) ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-1.html" data-share-url="https://aidailygrind.com/2026-10-22-token-1.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="AI found two critical holes in PHP, the language behind a huge part of the web. Then a leak gave hackers a head start. AI helps defenders and attackers at the same speed. If you run PHP, patch today." data-post="AI found two critical holes in PHP, the language behind a huge part of the web. Then a leak gave hackers a head start. AI helps defenders and attackers at the same speed. If you run PHP, patch today." data-hashtags="#AI #AISafety #Cybersecurity #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=AI%20found%20two%20critical%20holes%20in%20PHP%2C%20the%20language%20behind%20a%20huge%20part%20of%20the%20web.%20Then%20a%20leak%20gave%20hackers%20a%20head%20start.%20AI%20helps%20defenders%20and%20attackers%20at%20the%20same%20speed.%20If%20you%20run%20PHP%2C%20patch%20today.%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-1.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23AISafety%20%23Cybersecurity%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=AI%20found%20two%20critical%20holes%20in%20PHP%2C%20the%20language%20behind%20a%20huge%20part%20of%20the%20web.%20Then%20a%20leak%20gave%20hackers%20a%20head%20start.%20AI%20helps%20defenders%20and%20attackers%20at%20the%20same%20speed.%20If%20you%20run%20PHP%2C%20patch%20today.&url=https%3A//aidailygrind.com/2026-10-22-token-1.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=AISafety%2CCybersecurity" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-1.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23AISafety" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+
+<article class="token" id="token-2" data-part="2">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>02</b></span>
+    <a class="tag tag-safety" href="topic-safety.html" title="More Safety stories">🛡️ Safety</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 2."><a class="token-link" href="2026-10-22-token-2.html">Investigation: Claude can explain how to sway the US midterms</a></h2>
+  <div class="token-body" data-speak>
+    <p>Transformer, a newsletter about AI risk, tested Claude ahead of the upcoming US midterm elections. Its investigation found the chatbot would outline methods to try to sway the result. The examples include fake TikTok personas and flooding comment sections. The story describes this as a jailbreak, meaning tricks to get around the model&#39;s safety rules.</p><p>In a separate story, The Verge looked at claims that an unreleased Claude helped make scorpion antivenom for Citrini Research. Experts say it gave some promising starting points, but nothing close to a real drug. Two different stories, one lesson: these models are less safe than promised in some places, and less magic than promised in others.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">Anthropic sells itself as the safety-first lab, so this matters. Election manipulation is cheap when a chatbot writes the plan. It shows how hard it is to lock down a general tool before a big vote.</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://www.transformernews.ai/p/claude-jailbreak-election-manipulation" target="_blank" rel="noopener">Transformer ↗</a><a href="https://www.theverge.com/ai-artificial-intelligence/1016443/anthropic-claude-citrini-vibecoding-scorpion-antivenom" target="_blank" rel="noopener">The Verge ↗</a><a href="https://podcasters.spotify.com/pod/show/nlw/episodes/How-AI-Is-Changing-What-Work-Means-e3qsa48" target="_blank" rel="noopener">The AI Daily Brief (podcast) ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-2.html" data-share-url="https://aidailygrind.com/2026-10-22-token-2.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="An investigation found Claude can outline ways to sway the US midterms: fake TikTok personas, flooded comment sections. Even the &#39;safety-first&#39; lab has gaps. Elections are not a place to test guardrails." data-post="An investigation found Claude can outline ways to sway the US midterms: fake TikTok personas, flooded comment sections. Even the &#39;safety-first&#39; lab has gaps. Elections are not a place to test guardrails." data-hashtags="#AI #AISafety #Cybersecurity #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=An%20investigation%20found%20Claude%20can%20outline%20ways%20to%20sway%20the%20US%20midterms%3A%20fake%20TikTok%20personas%2C%20flooded%20comment%20sections.%20Even%20the%20%27safety-first%27%20lab%20has%20gaps.%20Elections%20are%20not%20a%20place%20to%20test%20guardrails.%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-2.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23AISafety%20%23Cybersecurity%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=An%20investigation%20found%20Claude%20can%20outline%20ways%20to%20sway%20the%20US%20midterms%3A%20fake%20TikTok%20personas%2C%20flooded%20comment%20sections.%20Even%20the%20%27safety-first%27%20lab%20has%20gaps.%20Elections%20are%20not%20a%20place%20to%20test%20guardrails.&url=https%3A//aidailygrind.com/2026-10-22-token-2.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=AISafety%2CCybersecurity" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-2.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23AISafety" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+
+<article class="token" id="token-3" data-part="3">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>03</b></span>
+    <a class="tag tag-launch" href="topic-launch.html" title="More Launch stories">🚀 Launch</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 3."><a class="token-link" href="2026-10-22-token-3.html">Anthropic launches Claude Duet, its bet on agents</a></h2>
+  <div class="token-body" data-speak>
+    <p>Anthropic has a new app called Claude Duet. TechCrunch calls it Anthropic&#39;s bet on agents, meaning AI that does tasks for you, not only answers questions. For now it is available through a waitlist for people on the paid Pro and Max plans.</p><p>It was the biggest AI story on Hacker News today, with more than 500 points and almost 480 comments. Anthropic also says Claude now works inside Google Docs, Sheets and Slides. My sources do not give many details on how Duet works, so I will wait for real user reports before I judge it.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">Every big lab now pushes agents that act on your behalf. That can save time at work. But an agent that clicks and writes for you also makes mistakes for you, and today&#39;s other stories show the safety side is not finished.</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://claude.com/product/claude-duet" target="_blank" rel="noopener">Claude ↗</a><a href="https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/" target="_blank" rel="noopener">TechCrunch ↗</a><a href="https://claude.com/resources/articles/claude-duet" target="_blank" rel="noopener">Claude (article) ↗</a><a href="https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides" target="_blank" rel="noopener">Claude (Google Docs, Sheets, Slides) ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-3.html" data-share-url="https://aidailygrind.com/2026-10-22-token-3.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="Anthropic launched Claude Duet, its new agent app, on waitlist for Pro and Max users. Huge buzz online. I want to see how it handles mistakes before I hand it my work." data-post="Anthropic launched Claude Duet, its new agent app, on waitlist for Pro and Max users. Huge buzz online. I want to see how it handles mistakes before I hand it my work." data-hashtags="#AI #GenerativeAI #AITools #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=Anthropic%20launched%20Claude%20Duet%2C%20its%20new%20agent%20app%2C%20on%20waitlist%20for%20Pro%20and%20Max%20users.%20Huge%20buzz%20online.%20I%20want%20to%20see%20how%20it%20handles%20mistakes%20before%20I%20hand%20it%20my%20work.%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-3.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23GenerativeAI%20%23AITools%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=Anthropic%20launched%20Claude%20Duet%2C%20its%20new%20agent%20app%2C%20on%20waitlist%20for%20Pro%20and%20Max%20users.%20Huge%20buzz%20online.%20I%20want%20to%20see%20how%20it%20handles%20mistakes%20before%20I%20hand%20it%20my%20work.&url=https%3A//aidailygrind.com/2026-10-22-token-3.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=GenerativeAI%2CAITools" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-3.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23GenerativeAI" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+
+<article class="token" id="token-4" data-part="4">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>04</b></span>
+    <a class="tag tag-business" href="topic-business.html" title="More Business stories">💼 Business</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 4."><a class="token-link" href="2026-10-22-token-4.html">AI shopping agents: Walmart says yes, Amazon says no</a></h2>
+  <div class="token-body" data-speak>
+    <p>AI agents that buy things for you are here, and stores do not agree on them. Amazon is blocking AI agents from shopping on its site. Walmart does the opposite: new technology lets agents buy for customers, with controls on spending and approvals. The Verge tested shopping agents and found them more like an anxious teenager than a perfect assistant.</p><p>The money is moving anyway. Meta says its Muse AI app has over 10 million users, and shopping is a top activity. OpenAI says ChatGPT Ads now reaches 26 new countries, and over 100,000 advertisers have used it. 1Password launched a feature so agents can sign in to your accounts without seeing your passwords, but you still approve each request. Spotify even wants to be the music service that agents choose.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">If agents shop for us, the fight is about who controls the store window: the shop, the AI company, or you. Ads inside chatbots make the question sharper. Is the agent working for you, or for the advertiser?</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://techcrunch.com/2026/10/21/while-amazon-blocks-ai-agents-walmart-rolls-out-the-welcome-mat/" target="_blank" rel="noopener">TechCrunch (Walmart vs Amazon) ↗</a><a href="https://www.theverge.com/report/1015811/ai-shopping-agents-blocked-amazon-the-realreal-target-meta-muse" target="_blank" rel="noopener">The Verge ↗</a><a href="https://techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity/" target="_blank" rel="noopener">TechCrunch (Meta Muse) ↗</a><a href="https://openai.com/index/chatgpt-ads-expands-26-new-countries" target="_blank" rel="noopener">OpenAI ↗</a><a href="https://www.theverge.com/ai-artificial-intelligence/1016399/1password-ai-agent-password-sign-in" target="_blank" rel="noopener">The Verge (1Password) ↗</a><a href="https://techcrunch.com/2026/10/22/spotifys-current-ai-bet-is-about-being-the-music-service-that-agents-choose/" target="_blank" rel="noopener">TechCrunch (Spotify) ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-4.html" data-share-url="https://aidailygrind.com/2026-10-22-token-4.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="Amazon blocks AI shopping agents, Walmart welcomes them, and ChatGPT ads spread to 26 more countries. The real question: when an agent buys for you, who is it really working for?" data-post="Amazon blocks AI shopping agents, Walmart welcomes them, and ChatGPT ads spread to 26 more countries. The real question: when an agent buys for you, who is it really working for?" data-hashtags="#AI #AIBusiness #FutureOfWork #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=Amazon%20blocks%20AI%20shopping%20agents%2C%20Walmart%20welcomes%20them%2C%20and%20ChatGPT%20ads%20spread%20to%2026%20more%20countries.%20The%20real%20question%3A%20when%20an%20agent%20buys%20for%20you%2C%20who%20is%20it%20really%20working%20for%3F%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-4.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23AIBusiness%20%23FutureOfWork%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=Amazon%20blocks%20AI%20shopping%20agents%2C%20Walmart%20welcomes%20them%2C%20and%20ChatGPT%20ads%20spread%20to%2026%20more%20countries.%20The%20real%20question%3A%20when%20an%20agent%20buys%20for%20you%2C%20who%20is%20it%20really%20working%20for%3F&url=https%3A//aidailygrind.com/2026-10-22-token-4.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=AIBusiness%2CFutureOfWork" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-4.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23AIBusiness" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+
+<article class="token" id="token-5" data-part="5">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>05</b></span>
+    <a class="tag tag-policy" href="topic-policy.html" title="More Policy stories">⚖️ Policy</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 5."><a class="token-link" href="2026-10-22-token-5.html">Record lobbying, dirty air: AI&#39;s political weight grows</a></h2>
+  <div class="token-body" data-speak>
+    <p>AI companies spent more than ever to influence Washington this summer. Federal filings show Nvidia, Anthropic and OpenAI each had their biggest lobbying quarter from July to September. Nvidia spent $2.2 million, Anthropic $2.1 million and OpenAI $1.5 million.</p><p>The physical cost is growing too. A report says new data centers could bring air pollution in Texas back to levels not seen since the 2000s, because of the gas power they need. A judge ruled that the Trump administration&#39;s EPA cannot simply dismiss a pollution lawsuit against SpaceXAI. And the BBC reports Google staff resigned in protest over the company&#39;s AI contracts with the military.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">The companies that build AI are now also shaping the rules for AI. At the same time, local people pay part of the bill in air quality. Who decides, and who breathes the air, is a real question.</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://www.theverge.com/policy/1016585/openai-anthropic-nvidia-lobbying-records" target="_blank" rel="noopener">The Verge (lobbying) ↗</a><a href="https://www.theverge.com/ai-artificial-intelligence/1015958/data-center-pollution-rising-report" target="_blank" rel="noopener">The Verge (air quality) ↗</a><a href="https://arstechnica.com/tech-policy/2026/10/judge-rejects-trumps-wild-claim-epa-can-dismiss-data-center-pollution-lawsuits/" target="_blank" rel="noopener">Ars Technica ↗</a><a href="https://www.bbc.com/news/articles/cmreyvepnv0po" target="_blank" rel="noopener">BBC ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-5.html" data-share-url="https://aidailygrind.com/2026-10-22-token-5.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="Nvidia, Anthropic and OpenAI all set lobbying records this summer, while data centers could push Texas air pollution back to 2000s levels. AI&#39;s power is not only digital anymore." data-post="Nvidia, Anthropic and OpenAI all set lobbying records this summer, while data centers could push Texas air pollution back to 2000s levels. AI&#39;s power is not only digital anymore." data-hashtags="#AI #AIPolicy #AIRegulation #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=Nvidia%2C%20Anthropic%20and%20OpenAI%20all%20set%20lobbying%20records%20this%20summer%2C%20while%20data%20centers%20could%20push%20Texas%20air%20pollution%20back%20to%202000s%20levels.%20AI%27s%20power%20is%20not%20only%20digital%20anymore.%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-5.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23AIPolicy%20%23AIRegulation%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=Nvidia%2C%20Anthropic%20and%20OpenAI%20all%20set%20lobbying%20records%20this%20summer%2C%20while%20data%20centers%20could%20push%20Texas%20air%20pollution%20back%20to%202000s%20levels.%20AI%27s%20power%20is%20not%20only%20digital%20anymore.&url=https%3A//aidailygrind.com/2026-10-22-token-5.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=AIPolicy%2CAIRegulation" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-5.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23AIPolicy" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+
+<article class="token" id="token-6" data-part="6">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>06</b></span>
+    <a class="tag tag-open-source" href="topic-open-source.html" title="More Open source stories">📦 Open source</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 6."><a class="token-link" href="2026-10-22-token-6.html">Flint: a free coding model for laptops, built mostly by AI</a></h2>
+  <div class="token-body" data-speak>
+    <p>Startup Recursive released Flint, a free coding model small enough for a laptop. The company says it was built largely by its own AI research system. It calls this an early test of AI that improves itself.</p><p>On Reddit&#39;s LocalLLaMA forum, users say Flint has 40 billion parameters but only 2.5 billion are active at a time. This &#39;mixture of experts&#39; design makes it fast on normal hardware. In the company&#39;s own tables, it beats the popular Qwen3.6-35B on coding benchmarks. Users are now testing it themselves, so wait for real reviews.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">Good news for developers who cannot pay for big cloud models. But &#39;AI that builds AI&#39; is also the exact path safety researchers watch most closely. Small today, but worth following.</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://techcrunch.com/2026/10/21/recursive-launches-flint-a-laptop-coding-model-it-says-was-largely-built-by-ai/" target="_blank" rel="noopener">TechCrunch ↗</a><a href="https://www.reddit.com/r/LocalLLaMA/comments/1xc23iq/recursive_flint_the_qwen38_35b_weve_all_been/" target="_blank" rel="noopener">r/LocalLLaMA ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-6.html" data-share-url="https://aidailygrind.com/2026-10-22-token-6.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="Recursive released Flint, a free coding model that runs on a laptop and was built mostly by AI. Great for developers. And still: AI building AI is exactly the path we should watch closely." data-post="Recursive released Flint, a free coding model that runs on a laptop and was built mostly by AI. Great for developers. And still: AI building AI is exactly the path we should watch closely." data-hashtags="#AI #OpenSource #GitHub #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=Recursive%20released%20Flint%2C%20a%20free%20coding%20model%20that%20runs%20on%20a%20laptop%20and%20was%20built%20mostly%20by%20AI.%20Great%20for%20developers.%20And%20still%3A%20AI%20building%20AI%20is%20exactly%20the%20path%20we%20should%20watch%20closely.%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-6.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23OpenSource%20%23GitHub%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=Recursive%20released%20Flint%2C%20a%20free%20coding%20model%20that%20runs%20on%20a%20laptop%20and%20was%20built%20mostly%20by%20AI.%20Great%20for%20developers.%20And%20still%3A%20AI%20building%20AI%20is%20exactly%20the%20path%20we%20should%20watch%20closely.&url=https%3A//aidailygrind.com/2026-10-22-token-6.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=OpenSource%2CGitHub" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-6.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23OpenSource" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+
+<article class="token" id="token-7" data-part="7">
+  <div class="token-label">
+    <span class="token-num">Morning Token <b>07</b></span>
+    <a class="tag tag-open-source" href="topic-open-source.html" title="More Open source stories">📦 Open source</a>
+  </div>
+  <h2 data-speak data-speak-prefix="Morning Token 7."><a class="token-link" href="2026-10-22-token-7.html">People use AI coding tools to free their TVs (and a Switch 2)</a></h2>
+  <div class="token-body" data-speak>
+    <p>Some of the hottest projects on GitHub this week are not big AI models. They are tools to clean up Android and Google TVs. The top one, cleanyourtv, got over 23,000 stars in its first days. It removes extra apps over Wi-Fi and gives you a simple home screen.</p><p>Others say they were built with AI. Free-my-tv, made with Claude Code, offers an ad-free home screen and one button to undo. Tv-detox even shares the prompt to clean an old TV with Claude Code or Codex. In a bigger hack, a modder says OpenAI&#39;s Codex helped jailbreak the Nintendo Switch 2. Be careful: changing your device can break things or void your warranty.</p>
+  </div>
+  <div class="why">
+    <span class="why-label">Why it matters</span>
+    <p data-speak data-speak-prefix="Why it matters:">This is AI coding for normal people: fixing things they own, not only building startups. It is fun and useful. It also shows how AI lowers the skill needed to modify, or attack, any device.</p>
+  </div>
+  
+  <div class="sources">
+    <span class="sources-label">Sources</span>
+    <a href="https://github.com/Gathin23/cleanyourtv" target="_blank" rel="noopener">GitHub: cleanyourtv ↗</a><a href="https://github.com/simbasjungles/free-my-tv" target="_blank" rel="noopener">GitHub: free-my-tv ↗</a><a href="https://github.com/Ansub/tv-detox" target="_blank" rel="noopener">GitHub: tv-detox ↗</a><a href="https://www.theverge.com/games/1016862/nintendo-switch-2-jailbreak-ai" target="_blank" rel="noopener">The Verge (Switch 2) ↗</a>
+  </div>
+  
+  
+
+
+
+
+
+<div class="share" data-url="https://aidailygrind.com/2026-10-22-token-7.html" data-share-url="https://aidailygrind.com/2026-10-22-token-7.html?utm_medium=social&amp;utm_campaign=share&amp;utm_source=linkedin" data-text="Trending on GitHub: tools to remove ads and bloat from your Android TV, some built with Claude Code. AI coding is now about fixing things you own. Try carefully, voilà a weekend project." data-post="Trending on GitHub: tools to remove ads and bloat from your Android TV, some built with Claude Code. AI coding is now about fixing things you own. Try carefully, voilà a weekend project." data-hashtags="#AI #OpenSource #GitHub #AIDailyGrind">
+  <span class="share-label">Share</span>
+  <a class="post-linkedin" href="https://www.linkedin.com/feed/?shareActive=true&text=Trending%20on%20GitHub%3A%20tools%20to%20remove%20ads%20and%20bloat%20from%20your%20Android%20TV%2C%20some%20built%20with%20Claude%20Code.%20AI%20coding%20is%20now%20about%20fixing%20things%20you%20own.%20Try%20carefully%2C%20voil%C3%A0%20a%20weekend%20project.%0A%0Ahttps%3A//aidailygrind.com/2026-10-22-token-7.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dlinkedin%0A%0A%23AI%20%23OpenSource%20%23GitHub%20%23AIDailyGrind" target="_blank" rel="noopener">Post on LinkedIn</a>
+  <a href="https://x.com/intent/post?text=Trending%20on%20GitHub%3A%20tools%20to%20remove%20ads%20and%20bloat%20from%20your%20Android%20TV%2C%20some%20built%20with%20Claude%20Code.%20AI%20coding%20is%20now%20about%20fixing%20things%20you%20own.%20Try%20carefully%2C%20voil%C3%A0%20a%20weekend%20project.&url=https%3A//aidailygrind.com/2026-10-22-token-7.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dx&hashtags=OpenSource%2CGitHub" target="_blank" rel="noopener">X</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//aidailygrind.com/2026-10-22-token-7.html%3Futm_medium%3Dsocial%26utm_campaign%3Dshare%26utm_source%3Dfacebook&hashtag=%23OpenSource" target="_blank" rel="noopener">Facebook</a>
+  <button type="button" class="copy-post">Copy post</button>
+  
+  <button type="button" class="copy-link">Copy link</button>
+</div>
+
+</article>
+
+
+
+<section class="last-word" data-part="8">
+  <div class="term-bar"><i></i><i></i><i></i><span>le_dernier_mot.txt</span></div>
+  <p><span class="prompt" aria-hidden="true">&gt;</span> <span data-speak data-speak-prefix="Le dernier mot.">Today AI found the cracks in our old walls, and someone else used AI to walk through them. The tools are not good or bad; the question is who moves faster, and whether anybody is coordinating the response.</span></p>
+</section>
+
+
+
+<form class="subscribe" method="post" action="/api/subscribe">
+  <p class="subscribe-title">☕ Get the Grind by email, every morning</p>
+  <div class="subscribe-row">
+    <label class="visually-hidden" for="email-edition">Your email</label>
+    <input id="email-edition" type="email" name="email" required maxlength="254" placeholder="you@example.com" autocomplete="email">
+    <button class="button" type="submit">Subscribe</button>
+  </div>
+  <!-- Hidden from people; bots fill it and are ignored -->
+  <input class="visually-hidden" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <label class="consent">
+    <input type="checkbox" name="consent" value="yes" required>
+    I want to receive The AI Daily Grind by email. I can unsubscribe at any time.
+    See the <a href="privacy.html">Privacy Policy</a>.
+  </label>
+  <p class="follow-line">Prefer LinkedIn?
+    <a class="follow-btn" href="https://www.linkedin.com/company/ai-daily-grind/" target="_blank" rel="noopener" data-follow="linkedin"><svg class="li-icon" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg> Follow us on LinkedIn</a>
+  </p>
+</form>
+
+
+<nav class="pager">
+  <span></span>
+  <a href="2026-10-23.html">Friday, October 23, 2026 →</a>
+</nav>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      <img src="static/logo.svg?v=b7872854" alt="" width="28" height="28">
+      <span>The AI Daily Grind</span>
+    </div>
+    <p>The AI news that matters, freshly ground every morning. In simple words. Made with ☕ in Québec.</p>
+    <p class="footer-note">Stories are picked and written with the help of AI tools, from public news sources. Always check the sources.</p>
+    <p class="footer-links"><a href="https://www.linkedin.com/company/ai-daily-grind/" target="_blank" rel="noopener" data-follow="linkedin">LinkedIn</a><a href="archive.html">Archive</a><a href="feed.xml">RSS</a><a href="about.html">About</a><a href="projects.html">More projects</a><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a><a href="#" class="cookie-settings">Cookie settings</a><a href="subscribe.html">Subscribe</a><a href="mailto:info@aidailygrind.com">Contact</a></p>
+  </footer>
+
+  <script src="static/count.js?v=b7872854" defer></script>
+  <script src="static/analytics.js?v=b7872854" defer></script>
+  <script src="static/listen.js?v=b7872854" defer></script>
+  <script src="static/share.js?v=b7872854" defer></script>
+</body>
+</html>

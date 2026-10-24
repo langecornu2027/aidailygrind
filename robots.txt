@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /email/
+Disallow: /speech/
+
+Sitemap: https://aidailygrind.com/sitemap.xml
+Sitemap: https://aidailygrind.com/news-sitemap.xml
